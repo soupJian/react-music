@@ -7,7 +7,7 @@ const { Header, Sider, Content } = Layout;
 function index(props:{children: React.ReactNode}) {
     return (
         <Layout className={styles.layout_wrap}>
-            <Sider breakpoint="lg" collapsedWidth="0" className={styles.sider}>
+            <Sider className={styles.sider}>
                 <div className={styles.logo}>
                     <span className="iconfont icon-MusicAcc"></span>
                     soupJian

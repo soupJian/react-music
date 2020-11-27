@@ -1,7 +1,8 @@
-import React, { lazy } from 'react'
+import React from 'react'
 import {Swiper,SwiperSlide} from 'swiper/react'
 import SwiperCore, { Pagination,Autoplay,Navigation,Lazy } from 'swiper';
 import styles from './index.less'
+import 'swiper/swiper-bundle.css'
 SwiperCore.use([Pagination,Autoplay,Navigation,Lazy])
 const Index = (props: {bannerList: []}) => {
     const bannerList = props.bannerList
@@ -26,8 +27,8 @@ const Index = (props: {bannerList: []}) => {
                     })
                 }
                 <div className="swiper-pagination"></div>
-                <div className="swiper-button-prev"></div>
-                <div className="swiper-button-next"></div>
+                <div className="swiper-button-prev" style={{color: '#ccc'}}></div>
+                <div className="swiper-button-next" style={{color: '#ccc'}}></div>
             </Swiper>
     )
 }

@@ -1,16 +1,23 @@
 @import  '../asset/base/index.less';
 .layout_wrap{
-    width: 100vw;
-    height: 100vh;
-    :global{
-        .ant-menu-dark .ant-menu-item-selected > a,.ant-menu-dark .ant-menu-item-active > a{
-            color: @color-theme;
-        }
-        .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
-            background-color: @color-highlight-background;
+    width: 1100px;
+    margin: 0 auto;
+    .sider{
+        position: fixed;
+        top: 0;
+        width: 200px;
+        bottom: 0;
+        :global{
+            .ant-menu-dark .ant-menu-item-selected > a,.ant-menu-dark .ant-menu-item-active > a{
+                color: @color-theme;
+            }
+            .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected{
+                background-color: @color-highlight-background;
+            }
         }
     }
     .content{
+        margin-left: 200px;
         background-color: @color-background;
         .content_header{
             padding: 0;
