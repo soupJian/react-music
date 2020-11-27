@@ -35,7 +35,7 @@ function index(props:{children: React.ReactNode}) {
                     <Input placeholder="搜一下" prefix={<span className="iconfont icon-search"></span>} className={styles.header_input}/>
                     <a className={styles.login}>登录</a>
                 </Header>
-                <Content style={{ margin: '24px 16px 0' }}>
+                <Content>
                     <div>
                         {props.children}
                     </div>
