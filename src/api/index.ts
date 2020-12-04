@@ -11,6 +11,8 @@ const request = (params: paramsObj) => {
   return axios.get(url).then((res: { data: any }) => {
     if (res.data.code === 200) {
       return res.data;
+    } else if (res.data.code === 502) {
+      return res.data;
     } else {
       return [];
     }

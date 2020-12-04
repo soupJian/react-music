@@ -33,8 +33,19 @@
       .login {
         padding: 0 20px;
         color: @color-text-d;
-        cursor: point;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         &:hover {
+          color: @color-theme;
+        }
+        img {
+          width: 40px;
+          margin-right: 5px;
+          border-radius: 50%;
+        }
+        .drop_a {
           color: @color-theme;
         }
       }
@@ -50,4 +61,28 @@
   font-size: @font-size-large;
   font-weight: 600;
   line-height: 32px;
+}
+:global {
+  .ant-dropdown {
+    top: 45px !important;
+  }
+  .ant-dropdown-menu {
+    background-color: @color-background;
+    .ant-dropdown-menu-item {
+      &:hover {
+        a,
+        span {
+          color: @color-text-b;
+        }
+      }
+      a,
+      span {
+        color: @color-text;
+      }
+    }
+  }
+  .ant-dropdown-arrow {
+    border-left-color: @color-theme !important;
+    border-top-color: @color-theme !important;
+  }
 }

@@ -1,0 +1,27 @@
+@import '../../asset//base/index.less';
+.login {
+  width: 300px;
+  margin: 100px auto;
+  :global {
+    .ant-tabs,
+    .ant-form-item,
+    .ant-checkbox-wrapper {
+      color: @color-text-l;
+    }
+    .ant-tabs-tab:hover {
+      color: @color-theme-d;
+    }
+    .ant-tabs-ink-bar {
+      background-color: @color-theme-d;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: @color-theme;
+    }
+  }
+  .forget {
+    float: right;
+  }
+  .login_button {
+    width: 300px;
+  }
+}
