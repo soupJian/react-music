@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RankList from '@/component/ranklist/index';
 import RankDetail from '@/component/rankDetail/index';
-import request from '@/api/index';
+import { request } from '@/api/index';
 import styles from './index.less';
 interface playlistType {
   name: string;
@@ -29,8 +29,8 @@ const rank = () => {
     const result = await request({
       url: '/toplist',
     });
-    setRanklist(result.list);
-    setId(result.list[0].id);
+    setRanklist(result.data.list);
+    setId(result.data.list[0].id);
   };
   const getRankDetail = async () => {
     if (id == 0) {
@@ -39,7 +39,7 @@ const rank = () => {
     const result = await request({
       url: `/playlist/detail?id=${id}`,
     });
-    setRankdetail(result.playlist);
+    setRankdetail(result.data.playlist);
   };
   const changeRank = (id: number) => {
     setId(id);

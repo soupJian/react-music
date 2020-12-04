@@ -1,21 +1,26 @@
 import axios from 'axios';
 interface paramsObj {
-  url: String;
+  url: string;
+  data?: string;
 }
-const request = (params: paramsObj) => {
+export const request = (params: paramsObj) => {
   const baseUrl: string = 'http://www.soupjian.work:3000';
-  if (!params.url) {
-    return;
+  let url: string = '';
+  if (params.data) {
+    url = `${baseUrl}${params.url}?${params.data}`;
+  } else {
+    url = `${baseUrl}${params.url}`;
   }
-  const url = baseUrl + params.url;
-  return axios.get(url).then((res: { data: any }) => {
-    if (res.data.code === 200) {
-      return res.data;
-    } else if (res.data.code === 502) {
-      return res.data;
-    } else {
-      return [];
-    }
-  });
+  return axios.get(url);
 };
-export default request;
+export const requestCookie = (params: paramsObj) => {
+  const baseUrl: string = 'http://www.soupjian.work:3000';
+  const cookie = localStorage.getItem('cookie');
+  let url: string = '';
+  if (params.data) {
+    url = `${baseUrl}${params.url}?${params.data}&cookie=${cookie}`;
+  } else {
+    url = `${baseUrl}${params.url}?cookie=${cookie}`;
+  }
+  return axios.get(url);
+};

@@ -1,0 +1,33 @@
+@import '../../asset/base/index.less';
+.me_header {
+  display: flex;
+  padding: 20px;
+  img {
+    width: 100px;
+  }
+  .user_detail {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    padding-left: 20px;
+    .nickname {
+      font-size: @font-size-large-x;
+      color: @color-theme;
+    }
+    .tabItem {
+      a {
+        color: @color-text-l;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+.me_list_header {
+  margin: 0 20px;
+  font-size: @font-size-large;
+  padding-bottom: 10px;
+  border-bottom: 2px solid @color-highlight-background;
+}
+.me_list {
+  padding-top: 20px;
+}

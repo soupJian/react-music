@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, connect, IndexModelState } from 'umi';
 import { Layout, Menu, Input, Dropdown, Button } from 'antd';
+import { propsType } from '../tsType/index';
 import styles from './index.less';
 import '../asset/font/iconfont.css';
 
 const { Header, Sider, Content } = Layout;
-function index(props: {
-  children: React.ReactNode;
-  user: IndexModelState;
-  dispatch: any;
-}) {
+function index(props: propsType) {
   const user = JSON.parse(JSON.stringify(props.user));
-  console.log(user);
+  if (props.location.pathname === '/me' && user.token == 'false') {
+    props.history.push('/login');
+  }
+  const selectKey = [props.location.pathname];
 
   const loginOut = () => {
     const user = {
@@ -33,6 +33,7 @@ function index(props: {
     sessionStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
   const menu = (
     <Menu>
@@ -51,17 +52,17 @@ function index(props: {
           <span className="iconfont icon-MusicAcc"></span>
           soupJian
         </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={selectKey}>
+          <Menu.Item key="/recommend">
             <Link to="/recommend">热门推荐</Link>
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key="/singer">
             <Link to="/singer">分类歌手</Link>
           </Menu.Item>
-          <Menu.Item key="3">
+          <Menu.Item key="/rank">
             <Link to="/rank">排行榜单</Link>
           </Menu.Item>
-          <Menu.Item key="4">
+          <Menu.Item key="/me">
             <Link to="/me">个人中心</Link>
           </Menu.Item>
         </Menu>

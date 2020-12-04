@@ -3,7 +3,7 @@ import { connect, IndexModelState, Loading } from 'umi';
 import { Tabs, Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './index.less';
-import request from '@/api/index';
+import { request } from '@/api/index';
 
 const { TabPane } = Tabs;
 const { Search } = Input;
@@ -27,18 +27,18 @@ const Index = (props: any) => {
       url: `/cellphone/existence/check?phone=${phone}`,
     });
     // 手机号已经注册
-    if (checkPhone.exist == 1) {
+    if (checkPhone.data.exist == 1) {
       // 登录
       const result = await request({
         url: `/login/cellphone?phone=${phone}&password=${password}`,
       });
-      if (result.code && result.code == 200) {
+      if (result.data.code && result.data.code == 200) {
         const user = {
-          nickname: result.profile.nickname,
-          userId: result.profile.userId,
-          avatarUrl: result.profile.avatarUrl,
-          backgroundUrl: result.profile.backgroundUrl,
-          signature: result.profile.signature,
+          nickname: result.data.profile.nickname,
+          userId: result.data.profile.userId,
+          avatarUrl: result.data.profile.avatarUrl,
+          backgroundUrl: result.data.profile.backgroundUrl,
+          signature: result.data.profile.signature,
         };
         props.dispatch({
           type: 'user/setUser',
@@ -53,6 +53,7 @@ const Index = (props: any) => {
           // 记住密码
           localStorage.setItem('token', 'true'),
             localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('cookie', result.data.cookie);
         } else {
           sessionStorage.setItem('token', 'true');
           sessionStorage.setItem('user', JSON.stringify(user));
@@ -60,6 +61,7 @@ const Index = (props: any) => {
           localStorage.removeItem('user');
         }
         message.success('登陆成功');
+        props.history.goBack();
       } else {
         message.error('密码错误');
       }
