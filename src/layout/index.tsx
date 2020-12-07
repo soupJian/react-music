@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, connect, IndexModelState } from 'umi';
+import { Redirect, Link, connect, IndexModelState } from 'umi';
 import { Layout, Menu, Input, Dropdown, Button } from 'antd';
 import { propsType } from '../tsType/index';
 import styles from './index.less';
 import '../asset/font/iconfont.css';
 
 const { Header, Sider, Content } = Layout;
+
 function index(props: propsType) {
   const user = JSON.parse(JSON.stringify(props.user));
-  if (props.location.pathname === '/me' && user.token == 'false') {
-    props.history.push('/login');
+  if (props.location.pathname === '/me' && user.token == '') {
+    return <Redirect to="/login"></Redirect>;
   }
-  const selectKey = [props.location.pathname];
-
   const loginOut = () => {
     const user = {
       nickname: '',
@@ -27,13 +26,14 @@ function index(props: propsType) {
     });
     props.dispatch({
       type: 'user/setToken',
-      payload: 'false',
+      payload: '',
     });
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    localStorage.removeItem('cookie');
   };
   const menu = (
     <Menu>
@@ -45,14 +45,26 @@ function index(props: propsType) {
       </Menu.Item>
     </Menu>
   );
+  const toSelf = () => {
+    props.history.push('/me');
+  };
+  const getMenuSelect = (pathname: string): string[] => {
+    let selectKeys = [];
+    selectKeys.push(pathname);
+    return selectKeys;
+  };
   return (
     <Layout className={styles.layout_wrap}>
       <Sider className={styles.sider}>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={toSelf}>
           <span className="iconfont icon-MusicAcc"></span>
           soupJian
         </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={selectKey}>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={getMenuSelect(props.location.pathname)}
+        >
           <Menu.Item key="/recommend">
             <Link to="/recommend">热门推荐</Link>
           </Menu.Item>

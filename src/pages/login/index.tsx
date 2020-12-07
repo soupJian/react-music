@@ -15,8 +15,6 @@ interface formType {
 }
 
 const Index = (props: any) => {
-  console.log(props);
-
   const [codeMessage, setCodeMessage] = useState<string>('获取验证码');
   const submitLogin = async (e: formType) => {
     const phone = e.phoneNumber;
@@ -61,7 +59,7 @@ const Index = (props: any) => {
           localStorage.removeItem('user');
         }
         message.success('登陆成功');
-        props.history.goBack();
+        props.history.replace('/recommend');
       } else {
         message.error('密码错误');
       }

@@ -34,8 +34,6 @@ const IndexModel: IndexModelType = {
   reducers: {
     // 启用 immer 之后
     setToken(state, action) {
-      console.log(action);
-      //  state.token = action.payload;
       return { ...state, token: action.payload };
     },
     setUser(state, action) {
