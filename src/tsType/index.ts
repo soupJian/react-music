@@ -16,4 +16,21 @@ export interface propsType {
     pathname: string;
   };
   history: any;
+  match?: any;
+}
+
+// 歌单 item
+export interface SongListItem {
+  copywriter: string;
+  id: number;
+  name: string;
+  picUrl?: string;
+  playCount: number;
+  coverImgUrl?: string;
+}
+export interface playlistType {
+  name: string;
+  coverImgUrl: string;
+  description: string;
+  tracks: [];
 }

@@ -51,13 +51,13 @@ const Index = (props: any) => {
           // 记住密码
           localStorage.setItem('token', 'true'),
             localStorage.setItem('user', JSON.stringify(user));
-          localStorage.setItem('cookie', result.data.cookie);
         } else {
           sessionStorage.setItem('token', 'true');
           sessionStorage.setItem('user', JSON.stringify(user));
           localStorage.removeItem('token');
           localStorage.removeItem('user');
         }
+        localStorage.setItem('cookie', result.data.cookie);
         message.success('登陆成功');
         props.history.replace('/recommend');
       } else {

@@ -1,22 +1,25 @@
 import React from 'react';
+import { history } from 'umi';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
-interface SongList {
-  copywriter: string;
-  id: number;
-  name: string;
-  picUrl?: string;
-  playCount: number;
-  coverImgUrl?: string;
-}
+import { SongListItem } from '../../tsType/index';
 
 const Index = (props: { songList: [] }) => {
   const songList = props.songList;
+  const toDetail = (item: SongListItem) => {
+    history.push('/song/' + item.id);
+  };
   return (
     <div className={styles.songList_wrap}>
-      {songList.map((item: SongList) => {
+      {songList.map((item: SongListItem) => {
         return (
-          <div className={styles.songList_item} key={item.id}>
+          <div
+            className={styles.songList_item}
+            key={item.id}
+            onClick={() => {
+              toDetail(item);
+            }}
+          >
             {item.picUrl ? (
               <img src={item.picUrl} />
             ) : (

@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import RankList from '@/component/ranklist/index';
-import RankDetail from '@/component/rankDetail/index';
+import RankDetail from '@/common/detail/index';
 import { request } from '@/api/index';
 import styles from './index.less';
-interface playlistType {
-  name: string;
-  coverImgUrl: string;
-  description: string;
-  tracks: [];
-}
+import { playlistType } from '@/tsType/index';
 const rank = () => {
   const [ranklist, setRanklist] = useState<[]>([]);
   const [id, setId] = useState(0);
@@ -47,7 +42,7 @@ const rank = () => {
   return (
     <div className={styles.rank}>
       <div className={styles.rank_detail}>
-        <RankDetail rankdetail={rankdetail}></RankDetail>
+        <RankDetail detailObj={rankdetail}></RankDetail>
       </div>
       <div className={styles.rank_list}>
         <RankList

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import styles from './index.less';
-import SongItem from '@/common/songItem/index';
+import SongItem from '../songItem/index';
 import '@/asset/font/iconfont.css';
 interface playlistType {
   name: string;
@@ -9,16 +9,16 @@ interface playlistType {
   description: string;
   tracks: [];
 }
-const Index = (props: { rankdetail: playlistType }) => {
-  const rankdetail = props.rankdetail;
+const Index = (props: { detailObj: playlistType }) => {
+  const detailObj = props.detailObj;
   return (
     <div className={styles.rank_detail}>
       <div className={styles.detial_title}>
-        <img src={rankdetail.coverImgUrl} alt="" />
+        <img src={detailObj.coverImgUrl} alt="" />
         <div className={styles.title_des}>
           <div className={styles.title_header}>
-            <p className={styles.title_name}>{rankdetail.name}</p>
-            <p className={styles.title_description}>{rankdetail.description}</p>
+            <p className={styles.title_name}>{detailObj.name}</p>
+            <p className={styles.title_description}>{detailObj.description}</p>
           </div>
           <div className={styles.title_aciton}>
             <Button
@@ -39,7 +39,7 @@ const Index = (props: { rankdetail: playlistType }) => {
         </div>
       </div>
       <div className={styles.detail_content}>
-        <SongItem songitemlist={rankdetail.tracks}></SongItem>
+        <SongItem songitemlist={detailObj.tracks}></SongItem>
       </div>
     </div>
   );

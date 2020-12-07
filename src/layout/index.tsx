@@ -102,7 +102,7 @@ function index(props: propsType) {
             </div>
           ) : (
             <div className={styles.login}>
-              <Link to="login">登录/注册</Link>
+              <Link to="/login">登录/注册</Link>
             </div>
           )}
         </Header>
