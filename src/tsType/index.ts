@@ -34,3 +34,10 @@ export interface playlistType {
   description: string;
   tracks: [];
 }
+// 歌单歌手专辑右侧的相似歌手
+export interface similist {
+  id: number;
+  name: string;
+  coverImgUrl: string;
+  updateFrequency?: string; // 歌单更新时间
+}

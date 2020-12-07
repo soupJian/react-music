@@ -1,22 +1,15 @@
 import React from 'react';
-import { List, Avatar } from 'antd';
 import styles from './index.less';
-
-interface ranklistType {
-  id: number;
-  name: string;
-  coverImgUrl: string;
-  updateFrequency: string;
-}
-const Index = (props: { ranklist: []; id: number; onChangeRank: any }) => {
-  const ranklist = props.ranklist;
+import { similist } from '@/tsType/index';
+const Index = (props: { list: []; id: number; onChangeId: any }) => {
+  const list = props.list;
   const id = props.id;
-  const chooseRank = (item: { id: number }) => {
-    props.onChangeRank(item.id);
+  const chooseId = (item: { id: number }) => {
+    props.onChangeId(item.id);
   };
   return (
-    <div className={styles.ranklist}>
-      {ranklist.map((item: ranklistType) => {
+    <div className={styles.list}>
+      {list.map((item: similist) => {
         return (
           <div
             className={
@@ -24,13 +17,17 @@ const Index = (props: { ranklist: []; id: number; onChangeRank: any }) => {
             }
             key={item.id}
             onClick={() => {
-              chooseRank(item);
+              chooseId(item);
             }}
           >
             <img src={item.coverImgUrl} />
             <div className={styles.item_des}>
               <p className={styles.des_name}>{item.name}</p>
-              <p className={styles.des_update}>{item.updateFrequency}</p>
+              {item.updateFrequency ? (
+                <p className={styles.des_update}>{item.updateFrequency}</p>
+              ) : (
+                ''
+              )}
             </div>
           </div>
         );

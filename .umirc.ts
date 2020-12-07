@@ -20,6 +20,10 @@ export default defineConfig({
         { path: '/me', component: '@/pages/me/index' },
         { path: '/login', component: '@/pages/login/index' },
         { path: '/song/:id', component: '@/component/detail/song_detail/[id]' },
+        {
+          path: '/singer/:id',
+          component: '@/component/detail/singer_detail/[id]',
+        },
       ],
     },
   ],

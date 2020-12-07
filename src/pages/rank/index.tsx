@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import RankList from '@/component/ranklist/index';
+import RankList from '@/common/simi/index';
 import RankDetail from '@/common/detail/index';
 import { request } from '@/api/index';
 import styles from './index.less';
@@ -36,7 +36,7 @@ const rank = () => {
     });
     setRankdetail(result.data.playlist);
   };
-  const changeRank = (id: number) => {
+  const changeId = (id: number) => {
     setId(id);
   };
   return (
@@ -46,10 +46,10 @@ const rank = () => {
       </div>
       <div className={styles.rank_list}>
         <RankList
-          ranklist={ranklist}
+          list={ranklist}
           id={id}
-          onChangeRank={(id: number) => {
-            changeRank(id);
+          onChangeId={(id: number) => {
+            changeId(id);
           }}
         ></RankList>
       </div>
