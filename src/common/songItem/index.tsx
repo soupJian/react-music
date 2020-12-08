@@ -18,6 +18,7 @@ const columns = [
     title: '歌手',
     dataIndex: 'singer',
     key: 'singer',
+    width: 200,
     ellipsis: true,
   },
   {
@@ -37,6 +38,17 @@ interface songItemType {
   id: number;
   ar: [];
 }
+// 获取Body对象高度
+let height = document.body.clientHeight;
+// 左侧列表区域
+let tableHeight = height - 64 - 120 - 10 - 64; // 64 header高度，120图片高度，10margin-top,32底部分页
+let pageSize = tableHeight / 33;
+if (pageSize < 6) {
+  pageSize = 6;
+}
+if (pageSize > 10) {
+  pageSize = 10;
+}
 const formatTime = (time: number) => {
   let minute = Math.floor(time / 1000 / 60);
   let second = Math.floor(time / 1000 - minute * 60);
@@ -48,7 +60,7 @@ const formatTime = (time: number) => {
 const formatSinger = (singer: any) => {
   if (singer.length > 1) {
     return singer.reduce(
-      (total: any, item: { name: string }) => total.concat(item.name),
+      (total: any, item: { name: string }) => total.concat(item.name, ' '),
       [],
     );
   } else {
@@ -69,7 +81,7 @@ const Index = (props: { songitemlist: [] }) => {
       <Table
         className={styles.table_item}
         pagination={{
-          pageSize: 8,
+          pageSize: pageSize,
           showSizeChanger: false,
           showTitle: true,
           showQuickJumper: true,

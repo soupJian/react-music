@@ -34,7 +34,7 @@ const index = () => {
       </div>
       <div>
         <div className={styles.title}>推荐歌单</div>
-        <div className="recommend_list">
+        <div className={styles.recommend_list}>
           <SongList songList={hotSongList}></SongList>
         </div>
       </div>
