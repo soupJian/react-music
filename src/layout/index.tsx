@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Redirect, Link, connect, IndexModelState } from 'umi';
 import { Layout, Menu, Input, Dropdown, Button } from 'antd';
 import { propsType } from '../tsType/index';
+import MiniPlay from '@/component/miniPlay/index';
 import styles from './index.less';
 import '../asset/font/iconfont.css';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 function index(props: propsType) {
   const user = JSON.parse(JSON.stringify(props.user));
   if (props.location.pathname === '/me' && user.token == '') {
     return <Redirect to="/login"></Redirect>;
   }
+  // 退出登录
   const loginOut = () => {
     const user = {
       nickname: '',
@@ -45,16 +47,18 @@ function index(props: propsType) {
       </Menu.Item>
     </Menu>
   );
+  // 跳转到个人中心页
   const toSelf = () => {
     props.history.push('/me');
   };
+  // 登陆成功后，选择下拉菜单
   const getMenuSelect = (pathname: string): string[] => {
     let selectKeys = [];
     selectKeys.push(pathname);
     return selectKeys;
   };
   return (
-    <Layout className={styles.layout_wrap}>
+    <Layout style={{ minHeight: '100vh' }} className={styles.layout_wrap}>
       <Sider className={styles.sider}>
         <div className={styles.logo} onClick={toSelf}>
           <span className="iconfont icon-MusicAcc"></span>
@@ -109,6 +113,9 @@ function index(props: propsType) {
         <Content>
           <div>{props.children}</div>
         </Content>
+        <Footer className={styles.content_footer}>
+          <MiniPlay></MiniPlay>
+        </Footer>
       </Layout>
     </Layout>
   );

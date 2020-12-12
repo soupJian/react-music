@@ -1,43 +1,9 @@
 import React from 'react';
 import { Table } from 'antd';
 import styles from './index.less';
-const columns = [
-  {
-    title: '标题',
-    dataIndex: 'name',
-    key: 'name',
-    width: 250,
-    ellipsis: true,
-  },
-  {
-    title: '时长',
-    dataIndex: 'duration',
-    key: 'duration',
-  },
-  {
-    title: '歌手',
-    dataIndex: 'singer',
-    key: 'singer',
-    width: 200,
-    ellipsis: true,
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    key: 'action',
-    render: () => (
-      <>
-        <a target="blank">操作</a>
-      </>
-    ),
-  },
-];
-interface songItemType {
-  name: string;
-  dt: number;
-  id: number;
-  ar: [];
-}
+import { connect, MusicModelState } from 'umi';
+import { formatTime } from '../common_ts/index';
+import { propsType, songItemType } from '@/tsType/index';
 // 获取Body对象高度
 let height = document.body.clientHeight;
 // 左侧列表区域
@@ -49,14 +15,6 @@ if (pageSize < 6) {
 if (pageSize > 10) {
   pageSize = 10;
 }
-const formatTime = (time: number) => {
-  let minute = Math.floor(time / 1000 / 60);
-  let second = Math.floor(time / 1000 - minute * 60);
-  if (second < 10) {
-    return `${minute}:0${second}`;
-  }
-  return `${minute}:${second}`;
-};
 const formatSinger = (singer: any) => {
   if (singer.length > 1) {
     return singer.reduce(
@@ -67,13 +25,74 @@ const formatSinger = (singer: any) => {
     return [singer[0].name];
   }
 };
-const Index = (props: { songitemlist: [] }) => {
+const Index = (props: propsType) => {
+  const columns = [
+    {
+      title: '标题',
+      dataIndex: 'name',
+      key: 'name',
+      width: 250,
+      ellipsis: true,
+      render: (name: string, data: any) => (
+        <p
+          onClick={() => {
+            // 点击播放
+            playThis(data);
+          }}
+        >
+          {name}
+        </p>
+      ),
+    },
+    {
+      title: '时长',
+      dataIndex: 'duration',
+      key: 'duration',
+      width: 60,
+    },
+    {
+      title: '歌手',
+      dataIndex: 'singer',
+      key: 'singer',
+      width: 200,
+      ellipsis: true,
+    },
+    {
+      title: '操作',
+      dataIndex: 'action',
+      key: 'action',
+      render: () => (
+        <>
+          <span>播放</span>
+          <span>播放</span>
+          <span>播放</span>
+          <span>播放</span>
+        </>
+      ),
+    },
+  ];
+  const playThis = (data: any) => {
+    const index = dataSource.findIndex((item: any) => {
+      return item.id == data.id;
+    });
+
+    props.dispatch({
+      type: 'music/setCurrentIndex',
+      payload: { currentIndex: index },
+    });
+    props.dispatch({
+      type: 'music/setPlayList',
+      payload: { playList: dataSource },
+    });
+  };
   const dataSource = props.songitemlist.map((item: songItemType) => {
     return {
       name: item.name,
       duration: formatTime(item.dt),
       id: item.id,
       singer: formatSinger(item.ar),
+      al: item.al, // 专辑
+      dt: item.dt, // 播放时长
     };
   });
   return (
@@ -93,5 +112,6 @@ const Index = (props: { songitemlist: [] }) => {
     </div>
   );
 };
-
-export default Index;
+export default connect(({ music }: { music: MusicModelState }) => ({
+  music,
+}))(Index);

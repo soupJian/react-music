@@ -1,4 +1,4 @@
-import { IndexModelState } from 'umi';
+import { IndexModelState, MusicModelState } from 'umi';
 // 定义用户信息
 export interface userType {
   nickname: string;
@@ -11,12 +11,14 @@ export interface userType {
 export interface propsType {
   children: React.ReactNode;
   user: IndexModelState;
+  music: MusicModelState;
   dispatch: any;
   location: {
     pathname: string;
   };
   history: any;
   match?: any;
+  songitemlist: [];
 }
 
 // 歌单 item
@@ -40,4 +42,15 @@ export interface similist {
   name: string;
   coverImgUrl: string;
   updateFrequency?: string; // 歌单更新时间
+}
+// 每首歌
+export interface songItemType {
+  name: string;
+  dt: number;
+  id: number;
+  ar: [];
+  al: {
+    id: number;
+    picUrl: string;
+  };
 }

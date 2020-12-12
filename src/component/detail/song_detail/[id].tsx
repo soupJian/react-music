@@ -29,7 +29,7 @@ const index = (props:propsType) => {
   // 获取相似歌单
   const getSimi = async() => {
     const result =  await request({
-      url: '/simi/playlist',
+      url: '/related/playlist',
       data: `id=${id}`
   })
     setSimilist(result.data.playlists)
