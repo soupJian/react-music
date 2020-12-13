@@ -75,14 +75,18 @@ const Index = (props: propsType) => {
     const index = dataSource.findIndex((item: any) => {
       return item.id == data.id;
     });
-
     props.dispatch({
       type: 'music/setCurrentIndex',
       payload: { currentIndex: index },
     });
     props.dispatch({
       type: 'music/setPlayList',
-      payload: { playList: dataSource },
+      payload: { playList: JSON.parse(JSON.stringify(dataSource)) },
+    });
+    // 设置随机播放列表
+    props.dispatch({
+      type: 'music/setRandowList',
+      payload: { randowList: JSON.parse(JSON.stringify(dataSource)) },
     });
   };
   const dataSource = props.songitemlist.map((item: songItemType) => {

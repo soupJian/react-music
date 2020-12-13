@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Progress } from 'antd';
 import { connect, MusicModelState } from 'umi';
+import { shuffle } from '../../common/common_ts/index';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import { request } from '../../api/index';
@@ -10,15 +11,15 @@ import {
   formatPrecent,
 } from '../../common/common_ts/index';
 const Index = (props: any) => {
-  const playList = props.music.playList;
+  const playList = JSON.parse(JSON.stringify(props.music.playList));
+  const randowList = JSON.parse(JSON.stringify(props.music.randowList));
   const currentIndex = props.music.currentIndex;
-  const music = playList[currentIndex];
+  const mode = props.music.mode;
+  const music = randowList[currentIndex];
   const playing = props.music.playing;
   const id: number = currentIndex == -1 ? 0 : music.id;
   const audioRef = useRef<HTMLAudioElement>(null);
   const audio = audioRef.current || null;
-  // 设置播放暂停按钮ICON
-  const [icon, setIcon] = useState('icon-Pause');
   const [currentTime, setCurrentTime] = useState(0);
   // 获取歌曲url,watch id来处理事务
   const [musicUrl, setMusicUrl] = useState<string>('');
@@ -39,7 +40,7 @@ const Index = (props: any) => {
     // 切换歌曲的时候，播放与暂停按钮禁用
     setSongReady(false);
   };
-  // dispatch --- playing
+  // dispatch
   const setPlaying = (playing: boolean) => {
     props.dispatch({
       type: 'music/setPlaying',
@@ -53,11 +54,9 @@ const Index = (props: any) => {
         // 当前是播放状态，取消播放
         setPlaying(false);
         audio.pause();
-        setIcon('icon-play');
       } else {
         setPlaying(true);
         audio.play();
-        setIcon('icon-Pause');
       }
     }
   };
@@ -78,11 +77,82 @@ const Index = (props: any) => {
     formatPrecent(currentTime, music.dt);
   };
   // endMusic 歌曲结束
-  const endMusic = () => {};
+  const endMusic = () => {
+    if (mode == 'loop' || playList.length == 1) {
+      loop();
+    } else {
+      changeMusic(1);
+    }
+  };
   // error 歌曲加载错误
   const error = () => {
     // 出现错误，播放按钮灰色
     setSongReady(false);
+  };
+  // dispatch 上一首，下一首
+  const setDispatch = (index: number) => {
+    props.dispatch({
+      type: 'music/setCurrentIndex',
+      payload: { currentIndex: index },
+    });
+  };
+  // 上一首  下一首
+  const changeMusic = (action: number) => {
+    if (mode == 'loop' || playList.lengt == 1) {
+      loop();
+      return;
+    }
+    let index;
+    if (action == -1) {
+      // 上一首
+      index = currentIndex - 1;
+    } else {
+      // 下一首
+      index = currentIndex + 1;
+    }
+    setDispatch(index);
+  };
+  // 切换播放模式
+  const changeMode = () => {
+    let playmode;
+    switch (mode) {
+      case 'sequence':
+        playmode = 'randow';
+        randow();
+        break;
+      case 'randow':
+        playmode = 'loop';
+        break;
+      case 'loop':
+        playmode = 'sequence';
+        break;
+    }
+    props.dispatch({
+      type: 'music/setMode',
+      payload: playmode,
+    });
+  };
+  // 循环播放
+  const loop = () => {
+    if (audio) {
+      audio.currentTime = 0;
+    }
+  };
+  // 随机播放
+  const randow = () => {
+    const arr = shuffle(playList);
+    const index = arr.findIndex((item: any) => {
+      return item.id == music.id;
+    });
+    props.dispatch({
+      type: 'music/setCurrentIndex',
+      payload: { currentIndex: index },
+    });
+    // 设置随机播放列表
+    props.dispatch({
+      type: 'music/setRandowList',
+      payload: { randowList: JSON.parse(JSON.stringify(arr)) },
+    });
   };
   return (
     <>
@@ -121,17 +191,36 @@ const Index = (props: any) => {
               </div>
             </div>
             <div className={styles.action}>
-              <span className="iconfont icon-sequence"></span>
-              <span className="iconfont icon-aixin-xian"></span>
-              <span className="iconfont icon-previous"></span>
               <span
-                className={`iconfont ${icon} ${
+                className={`iconfont ${
+                  mode == 'sequence'
+                    ? 'icon-sequence'
+                    : mode == 'randow'
+                    ? 'icon-suiji'
+                    : 'icon-xunhuan02'
+                }`}
+                onClick={changeMode}
+              ></span>
+              <span className="iconfont icon-aixin-xian"></span>
+              <span
+                className="iconfont icon-previous"
+                onClick={() => {
+                  changeMusic(-1);
+                }}
+              ></span>
+              <span
+                className={`iconfont ${playing ? 'icon-Pause' : 'icon-play'} ${
                   songReady ? '' : styles.disabled
                 }`}
                 style={{ fontSize: '28px' }}
                 onClick={togglePlay}
               ></span>
-              <span className="iconfont icon-next"></span>
+              <span
+                className="iconfont icon-next"
+                onClick={() => {
+                  changeMusic(1);
+                }}
+              ></span>
               <span className="iconfont icon-1mulu"></span>
             </div>
           </div>
