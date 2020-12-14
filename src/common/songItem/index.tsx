@@ -7,13 +7,13 @@ import { propsType, songItemType } from '@/tsType/index';
 // 获取Body对象高度
 let height = document.body.clientHeight;
 // 左侧列表区域
-let tableHeight = height - 64 - 120 - 10 - 64; // 64 header高度，120图片高度，10margin-top,32底部分页
+let tableHeight = height - 64 - 120 - 10 - 64 - 60; // 64 header高度，120图片高度，10margin-top,32底部分页 60 底部footer
 let pageSize = tableHeight / 33;
 if (pageSize < 6) {
   pageSize = 6;
 }
-if (pageSize > 10) {
-  pageSize = 10;
+if (pageSize > 8) {
+  pageSize = 8;
 }
 const formatSinger = (singer: any) => {
   if (singer.length > 1) {
@@ -32,9 +32,14 @@ const Index = (props: propsType) => {
       dataIndex: 'name',
       key: 'name',
       width: 250,
-      ellipsis: true,
+      // ellipsis: true,
       render: (name: string, data: any) => (
         <p
+          style={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+          }}
           onClick={() => {
             // 点击播放
             playThis(data);

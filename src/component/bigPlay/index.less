@@ -1,0 +1,37 @@
+@import '../../asset/base/index.less';
+.big_playlist {
+  width: 230px;
+  color: @color-text-d;
+  .music_playlist {
+    span {
+      cursor: pointer;
+    }
+    .title {
+      color: @color-text;
+    }
+    .playlist {
+      height: calc(600px - 57px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .list {
+      color: @color-theme;
+      display: flex;
+      justify-content: space-between;
+      .left {
+        width: 195px;
+        display: flex;
+        flex-wrap: nowrap;
+        .empty {
+          margin-right: 16px;
+        }
+        .name {
+          flex: 1;
+          margin-left: 5px;
+          color: @color-text-l;
+          .ellipse();
+        }
+      }
+    }
+  }
+}

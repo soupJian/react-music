@@ -30,7 +30,9 @@
   }
   .content {
     padding-left: 150px;
+    padding-bottom: 60px;
     background-color: @color-background;
+    position: relative;
     .content_header {
       padding: 0;
       display: flex;
@@ -61,12 +63,12 @@
     }
     .content_footer {
       background-color: @color-background;
-      padding: 0 20px;
-      position: relative;
-      height: 0;
-      bottom: 60px;
+      padding: 10px;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
       left: 0;
-      background-color: pink;
+      z-index: 10;
     }
   }
 }

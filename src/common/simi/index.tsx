@@ -8,7 +8,7 @@ const Index = (props: { list: []; id: number; onChangeId: any }) => {
     height = document.body.clientHeight;
   };
   // 右侧列表区域滚动高度
-  let simiHeight = height - 64;
+  let simiHeight = height - 64 - 60;
 
   const list = props.list;
   const id = props.id;

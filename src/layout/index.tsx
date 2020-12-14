@@ -3,6 +3,7 @@ import { Redirect, Link, connect, IndexModelState } from 'umi';
 import { Layout, Menu, Input, Dropdown, Button } from 'antd';
 import { propsType } from '../tsType/index';
 import MiniPlay from '@/component/miniPlay/index';
+
 import styles from './index.less';
 import '../asset/font/iconfont.css';
 
