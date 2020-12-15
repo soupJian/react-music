@@ -6,9 +6,11 @@ import { songItemType } from '../../tsType/index';
 const Index = (props: any) => {
   const playList = props.music.playList;
   const randowList = props.music.randowList;
+  const songReady = props.songReady;
+  const playing = props.playing;
   const mode = props.music.mode;
   const currentIndex = props.music.currentIndex;
-  const id = randowList[currentIndex].id;
+  const music = randowList[currentIndex];
   const changeMode = () => {
     props.changeMode();
   };
@@ -23,6 +25,12 @@ const Index = (props: any) => {
       type: 'music/setCurrentIndex',
       payload: { currentIndex: chooseIndex },
     });
+  };
+  const changeMusic = (index: number) => {
+    props.changeMusic(index);
+  };
+  const togglePlay = () => {
+    props.togglePlay();
   };
   return (
     <div className={styles.big_playlist}>
@@ -61,7 +69,7 @@ const Index = (props: any) => {
                 <div className={styles.left}>
                   <span
                     className={`iconfont ${
-                      item.id == id ? 'icon-Pause' : `${styles.empty}`
+                      item.id == music.id ? 'icon-Pause' : `${styles.empty}`
                     }`}
                   ></span>
                   <span
@@ -82,7 +90,59 @@ const Index = (props: any) => {
           })}
         </div>
       </div>
-      <div className={styles.music_detail}></div>
+      <div className={styles.music_detail}>
+        <div className={styles.detail_wrap}>
+          <div className={styles.title}>
+            <p className={styles.name}>{music.name}</p>
+            <p className={styles.singer}>
+              {music.singer.map((item: { id: number; name: string }) => {
+                return <span key={item.id}>{item.name}</span>;
+              })}
+            </p>
+          </div>
+          <div className={styles.img_wrap}>
+            <img
+              src={music.al.picUrl}
+              className={
+                playing ? styles.play : `${styles.play} ${styles.pause}`
+              }
+            />
+          </div>
+          <div className={styles.action}>
+            <span
+              className={`iconfont ${
+                mode == 'sequence'
+                  ? 'icon-sequence'
+                  : mode == 'randow'
+                  ? 'icon-suiji'
+                  : 'icon-xunhuan02'
+              }`}
+              onClick={changeMode}
+            ></span>
+            <span className="iconfont icon-aixin-xian"></span>
+            <span
+              className="iconfont icon-previous"
+              onClick={() => {
+                changeMusic(-1);
+              }}
+            ></span>
+            <span
+              className={`iconfont ${playing ? 'icon-Pause' : 'icon-play'} ${
+                songReady ? '' : styles.disabled
+              }`}
+              style={{ fontSize: '28px' }}
+              onClick={togglePlay}
+            ></span>
+            <span
+              className="iconfont icon-next"
+              onClick={() => {
+                changeMusic(1);
+              }}
+            ></span>
+          </div>
+        </div>
+        <div className={styles.lyric}></div>
+      </div>
     </div>
   );
 };

@@ -15,17 +15,7 @@ if (pageSize < 6) {
 if (pageSize > 8) {
   pageSize = 8;
 }
-const formatSinger = (singer: any) => {
-  if (singer.length > 1) {
-    return singer.reduce(
-      (total: any, item: { name: string }) => total.concat(item.name, ' '),
-      [],
-    );
-  } else {
-    return [singer[0].name];
-  }
-};
-const Index = (props: propsType) => {
+const Index = (props: any) => {
   const columns = [
     {
       title: '标题',
@@ -61,6 +51,17 @@ const Index = (props: propsType) => {
       key: 'singer',
       width: 200,
       ellipsis: true,
+      render: (singer: any) => (
+        <>
+          {singer.map((item: { id: number; name: string }) => {
+            return (
+              <span style={{ marginRight: '5px' }} key={item.id}>
+                {item.name}
+              </span>
+            );
+          })}
+        </>
+      ),
     },
     {
       title: '操作',
@@ -99,11 +100,12 @@ const Index = (props: propsType) => {
       name: item.name,
       duration: formatTime(item.dt),
       id: item.id,
-      singer: formatSinger(item.ar),
+      singer: item.ar,
       al: item.al, // 专辑
       dt: item.dt, // 播放时长
     };
   });
+
   return (
     <div className={styles.songlist_item}>
       <Table

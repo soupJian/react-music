@@ -53,4 +53,5 @@ export interface songItemType {
     id: number;
     picUrl: string;
   };
+  singer: [];
 }

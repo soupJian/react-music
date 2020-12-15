@@ -189,8 +189,8 @@ const Index = (props: any) => {
               <p className={styles.des_title}>
                 <span className={styles.music_name}>{music.name}</span>
                 <span className={styles.music_singer}>
-                  {music.singer.map((item: any, index: number) => {
-                    return <span key={index}>{item}</span>;
+                  {music.singer.map((item: { name: string; id: number }) => {
+                    return <span key={item.id}>{item.name}</span>;
                   })}
                 </span>
               </p>
@@ -251,8 +251,15 @@ const Index = (props: any) => {
             footer={null}
             width="1100px"
             wrapClassName="musicModal"
+            zIndex={9}
           >
-            <BigPlay changeMode={changeMode}></BigPlay>
+            <BigPlay
+              changeMode={changeMode}
+              changeMusic={changeMusic}
+              playing={playing}
+              togglePlay={togglePlay}
+              songReady={songReady}
+            ></BigPlay>
           </Modal>
           <div>
             <audio

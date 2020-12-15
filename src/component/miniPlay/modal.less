@@ -1,13 +1,15 @@
 @import '../../asset/base/index.less';
 .musicModal {
   .ant-modal {
+    top: 22vh;
+    padding-bottom: 0;
     .ant-modal-content {
       background-color: @color-highlight-background;
-      height: 600px;
-      min-height: 600px;
-      max-height: 600px;
+      .ant-modal-close {
+        color: @color-theme;
+      }
       .ant-modal-body {
-        padding: 10px;
+        padding: 0;
       }
     }
   }

@@ -1,8 +1,11 @@
 @import '../../asset/base/index.less';
 .big_playlist {
-  width: 230px;
   color: @color-text-d;
+  height: 50vh;
+  display: flex;
   .music_playlist {
+    width: 250px;
+    padding: 10px;
     span {
       cursor: pointer;
     }
@@ -10,16 +13,15 @@
       color: @color-text;
     }
     .playlist {
-      height: calc(600px - 57px);
+      height: calc(100% - 47px);
       overflow-y: auto;
-      overflow-x: hidden;
     }
     .list {
       color: @color-theme;
       display: flex;
       justify-content: space-between;
       .left {
-        width: 195px;
+        width: 190px;
         display: flex;
         flex-wrap: nowrap;
         .empty {
@@ -33,5 +35,67 @@
         }
       }
     }
+  }
+  .music_detail {
+    flex: 1;
+    display: flex;
+    text-align: center;
+    .detail_wrap {
+      flex: 1;
+      .title {
+        .name {
+          font-size: @font-size-medium-x;
+          font-weight: 500;
+          line-height: 30px;
+        }
+        .singer {
+          margin-top: 10px;
+          span {
+            margin: 0 5px;
+          }
+        }
+      }
+      .img_wrap {
+        margin-top: 20px;
+        img {
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+        }
+        .play {
+          animation: rotate 20s linear infinite;
+        }
+        .pause {
+          animation-play-state: paused;
+        }
+      }
+      .action {
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        color: @color-theme;
+        justify-content: center;
+        span {
+          margin: 0 5px;
+          font-size: @font-size-large-xx;
+          font-size: 22px;
+          cursor: pointer;
+          &.disabled {
+            color: @color-theme-d;
+          }
+        }
+      }
+    }
+    .lyric {
+      flex: 1;
+    }
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
