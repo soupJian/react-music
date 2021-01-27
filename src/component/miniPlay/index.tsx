@@ -246,7 +246,6 @@ const Index = (props: any) => {
           </div>
           <Modal
             visible={visible}
-            // visible={true}
             onCancel={handleCancel}
             footer={null}
             width="1100px"
@@ -259,6 +258,7 @@ const Index = (props: any) => {
               playing={playing}
               togglePlay={togglePlay}
               songReady={songReady}
+              currentTime={currentTime}
             ></BigPlay>
           </Modal>
           <div>

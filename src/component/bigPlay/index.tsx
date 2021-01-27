@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect, MusicModelState } from 'umi';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import { songItemType } from '../../tsType/index';
+import { request } from '../../api/index';
+import { parseLyric } from '../../common/common_ts/index';
 const Index = (props: any) => {
   const playList = props.music.playList;
   const randowList = props.music.randowList;
@@ -11,6 +13,10 @@ const Index = (props: any) => {
   const mode = props.music.mode;
   const currentIndex = props.music.currentIndex;
   const music = randowList[currentIndex];
+  const currentTime = props.currentTime;
+  const lyric_wrap = useRef<HTMLDivElement>(null);
+  const [scrollFlag, setScrollFlag] = useState(false); // 是否允许手动滚动
+  const [lyric, setLyric] = useState('');
   const changeMode = () => {
     props.changeMode();
   };
@@ -31,6 +37,65 @@ const Index = (props: any) => {
   };
   const togglePlay = () => {
     props.togglePlay();
+  };
+  useEffect(() => {
+    getLyric();
+    scrollTop(0);
+  }, [music.id]);
+  const getLyric = async () => {
+    const result = await request({
+      url: `/lyric?id=${music.id}`,
+    });
+    if (result.data.nolyric) {
+    } else {
+      setLyric(result.data.lrc.lyric);
+    }
+  };
+  // scroll自动滚动距离
+  const scrollTop = (i: number) => {
+    if (scrollFlag) {
+      return;
+    }
+    if (lyric_wrap.current) {
+      const lyric_Div = lyric_wrap.current;
+      lyric_Div.scrollTop = (i - 5) * 22; // 22 是每一个p的高度
+    }
+  };
+  // 解析歌词为歌词和时间的对象
+  const lyricObj = parseLyric(lyric);
+
+  // 防止歌词中出现空，导致滚动出乱
+  lyricObj.forEach((item: { line: String }, index) => {
+    if (item.line == '') {
+      lyricObj.splice(index, 1);
+    }
+  });
+  if (lyricObj.length > 0) {
+    for (let i = 0; i <= lyricObj.length - 1; i++) {
+      if (
+        i != lyricObj.length - 1 &&
+        lyricObj[i].time <= currentTime &&
+        lyricObj[i + 1].time > currentTime
+      ) {
+        // 设置当前播放歌词
+        lyricObj[i].currentLine = true;
+        if (i > 5) {
+          scrollTop(i);
+        }
+      } else {
+        lyricObj[i].currentLine = false;
+      }
+    }
+  }
+  // 鼠标移出继续动画
+  const continueScroll = () => {
+    // console.log("鼠标移出");
+    setScrollFlag(false);
+  };
+  // 鼠标滚动歌词事件
+  const lyricWheel = () => {
+    // console.log("滚动");
+    setScrollFlag(true);
   };
   return (
     <div className={styles.big_playlist}>
@@ -141,7 +206,29 @@ const Index = (props: any) => {
             ></span>
           </div>
         </div>
-        <div className={styles.lyric}></div>
+        <div
+          className={styles.lyric}
+          ref={lyric_wrap}
+          onMouseLeave={continueScroll}
+          onWheel={lyricWheel}
+        >
+          {lyricObj.map(
+            (item: { line: string; time: string; currentLine: boolean }) => {
+              return (
+                <p
+                  key={item.time}
+                  style={{
+                    color: item.currentLine
+                      ? '#fff'
+                      : ' rgba(255, 255, 255, 0.5)',
+                  }}
+                >
+                  {item.line}
+                </p>
+              );
+            },
+          )}
+        </div>
       </div>
     </div>
   );

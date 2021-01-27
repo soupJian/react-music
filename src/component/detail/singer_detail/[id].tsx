@@ -37,8 +37,6 @@ const index = (props:propsType) => {
       url:'/simi/artist',
       data: `id=${id}`
     })
-    console.log(result);
-    console.log(result.data.artists);
     const artists = result.data.artists
     artists.forEach((item:any)=>{
       item.coverImgUrl = item.img1v1Url
