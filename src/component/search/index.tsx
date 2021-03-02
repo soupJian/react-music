@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { connect, MusicModelState } from 'umi';
+import { connect, MusicModelState, history } from 'umi';
 import { formatTime } from '../../common/common_ts';
 import { Input, Dropdown, Spin } from 'antd';
 import { request } from '../../api/index';
+import { singerType, SongListItem } from '@/tsType/index';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
 
@@ -33,6 +34,7 @@ const index = (props: any) => {
     setTimer(setTimeout(searchValue, 1000));
     // searchValue()
   }, [value]);
+  // 获取热门搜索
   const getHotSearch = async () => {
     const res = await request({
       url: '/search/hot/detail',
@@ -67,6 +69,7 @@ const index = (props: any) => {
     });
     setResultList(res.data.result);
   };
+  // 设置搜索下拉框显示隐藏
   const handleVisibleChange = (flag: boolean) => {
     setVisible(flag);
   };
@@ -100,7 +103,20 @@ const index = (props: any) => {
         type: 'music/setCurrentIndex',
         payload: { currentIndex: index },
       });
+      handleVisibleChange(false);
     });
+  };
+  // 点击歌手进入歌手详情
+  const toSinger = (item: singerType) => {
+    history.push(`/singer/${item.id}`);
+    handleVisibleChange(false);
+  };
+  // 点击歌单进入歌单详情
+  const toSong = (item: SongListItem) => {
+    history.replace('/song/' + item.id);
+  };
+  const toAlbum = (item: any) => {
+    history.replace('/album/' + item.id);
   };
   return (
     <div className={styles.search}>
@@ -161,7 +177,13 @@ const index = (props: any) => {
                             name: string;
                           }) => {
                             return (
-                              <div key={item.id} className={styles.result_item}>
+                              <div
+                                key={item.id}
+                                className={styles.result_item}
+                                onClick={() => {
+                                  toSinger(item);
+                                }}
+                              >
                                 <img
                                   src={item.picUrl}
                                   className={styles.resultImg}
@@ -220,15 +242,23 @@ const index = (props: any) => {
                     <div className={styles.result_wrap}>
                       <div className={styles.result_title}>歌单</div>
                       <div className={styles.result_container}>
-                        {resultList.playlists.map(
-                          (item: { id: number; name: string }) => {
-                            return (
-                              <div key={item.id} className={styles.result_item}>
-                                {item.name}
-                              </div>
-                            );
-                          },
-                        )}
+                        {resultList.playlists.map((item: SongListItem) => {
+                          return (
+                            <div
+                              key={item.id}
+                              className={styles.result_item}
+                              onClick={() => {
+                                toSong(item);
+                              }}
+                            >
+                              <img
+                                src={item.coverImgUrl}
+                                className={styles.resultImg}
+                              />
+                              {item.name}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   ) : (
@@ -245,7 +275,13 @@ const index = (props: any) => {
                             artist: { picUrl: string };
                           }) => {
                             return (
-                              <div key={item.id} className={styles.result_item}>
+                              <div
+                                key={item.id}
+                                className={styles.result_item}
+                                onClick={() => {
+                                  toAlbum(item);
+                                }}
+                              >
                                 <img
                                   src={item.artist.picUrl}
                                   className={styles.resultImg}

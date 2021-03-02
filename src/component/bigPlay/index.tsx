@@ -74,6 +74,12 @@ const Index = (props: any) => {
     for (let i = 0; i <= lyricObj.length - 1; i++) {
       if (
         i != lyricObj.length - 1 &&
+        lyricObj[i + 1].time == lyricObj[i].time
+      ) {
+        lyricObj[i + 1].time += 0.0000001;
+      }
+      if (
+        i != lyricObj.length - 1 &&
         lyricObj[i].time <= currentTime &&
         lyricObj[i + 1].time > currentTime
       ) {

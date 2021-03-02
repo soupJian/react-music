@@ -23,11 +23,10 @@ export interface propsType {
 
 // 歌单 item
 export interface SongListItem {
-  copywriter: string;
   id: number;
   name: string;
   picUrl?: string;
-  playCount: number;
+  playCount?: number;
   coverImgUrl?: string;
 }
 export interface playlistType {
@@ -54,4 +53,9 @@ export interface songItemType {
     picUrl: string;
   };
   singer: [];
+}
+export interface singerType {
+  id: number;
+  name: string;
+  picUrl: string;
 }

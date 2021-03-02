@@ -6,7 +6,9 @@ import SongDetail from '@/common/detail/index'
 import SimiList from '@/common/simi/index'
 import styles from './index.less'
 const index = (props:propsType) => {
-  const [id,setId] = useState(props.match.params.id)
+  let arr = props.location.pathname.split('/')
+  let id = props.match.params.id
+  // const [id,setId] = useState(props.match.params.id)
   const [similist, setSimilist] = useState<[]>([]);
   const [songdetail, setSongdetail] = useState<playlistType>({
     name: '',
@@ -20,11 +22,26 @@ const index = (props:propsType) => {
   }, [id]);
   // 获取歌单详情
   const getsongDetail = async() => {
-    const result =  await requestCookie({
-        url: '/playlist/detail',
+    if(arr[1] == 'song'){
+      const result =  await requestCookie({
+          url: '/playlist/detail',
+          data: `id=${id}`
+      })
+      setSongdetail(result.data.playlist);
+    }
+    if(arr[1] == 'album'){
+      const result =  await requestCookie({
+        url: '/album',
         data: `id=${id}`
-    })
-    setSongdetail(result.data.playlist);
+      })
+      let list = {
+        name: result.data.album.name,
+        coverImgUrl: result.data.album.picUrl,
+        description: '',
+        tracks: result.data.songs
+      }
+      setSongdetail(list);
+    }
   }
   // 获取相似歌单
   const getSimi = async() => {
@@ -35,8 +52,8 @@ const index = (props:propsType) => {
     setSimilist(result.data.playlists)
   }
   const changeId= (id:number) =>{
-    setId(id)
-    history.push(`/song/${id}`)    
+    id = id
+    history.replace(`/song/${id}`)    
   }
   return (
     <div className={styles.song}>

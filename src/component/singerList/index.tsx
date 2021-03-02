@@ -1,15 +1,9 @@
 import React from 'react';
 import { history } from 'umi';
 import styles from './index.less';
-interface singerType {
-  id: number;
-  name: string;
-  picUrl: string;
-}
+import { singerType } from '@/tsType/index';
 const index = (props: { singerlist: [] }) => {
-  const toSinge = (item: singerType) => {
-    console.log(item);
-
+  const toSinger = (item: singerType) => {
     history.push(`/singer/${item.id}`);
   };
   const singerlist = props.singerlist;
@@ -21,7 +15,7 @@ const index = (props: { singerlist: [] }) => {
             key={item.id}
             className={styles.singer_item}
             onClick={() => {
-              toSinge(item);
+              toSinger(item);
             }}
           >
             <img src={item.picUrl} />

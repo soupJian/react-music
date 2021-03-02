@@ -42,12 +42,14 @@
     display: flex;
     text-align: center;
     .detail_wrap {
-      flex: 1;
+      width: 400px;
+      max-width: 400px;
       .title {
         .name {
           font-size: @font-size-medium-x;
           font-weight: 500;
           line-height: 30px;
+          .ellipse();
         }
         .singer {
           margin-top: 10px;

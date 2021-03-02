@@ -1,5 +1,8 @@
 import React from 'react';
 import { Button } from 'antd';
+import { connect, MusicModelState } from 'umi';
+import { songItemType } from '@/tsType/index';
+import { formatTime, shuffle } from '@/common/common_ts';
 import styles from './index.less';
 import SongItem from '../songItem/index';
 import '@/asset/font/iconfont.css';
@@ -9,8 +12,43 @@ interface playlistType {
   description: string;
   tracks: [];
 }
-const Index = (props: { detailObj: playlistType }) => {
+const Index = (props: any) => {
   const detailObj = props.detailObj;
+  const mode = props.music.mode;
+  // 随机播放
+  const randowPlay = () => {
+    changeMode();
+  };
+  // 切换播放模式
+  const changeMode = () => {
+    props.dispatch({
+      type: 'music/setMode',
+      payload: 'randow',
+    });
+    const dataSource = detailObj.tracks.map((item: songItemType) => {
+      return {
+        name: item.name,
+        duration: formatTime(item.dt),
+        id: item.id,
+        singer: item.ar,
+        al: item.al, // 专辑
+        dt: item.dt, // 播放时长
+      };
+    });
+    props.dispatch({
+      type: 'music/setPlayList',
+      payload: { playList: JSON.parse(JSON.stringify(dataSource)) },
+    });
+    // 设置随机播放列表
+    props.dispatch({
+      type: 'music/setRandowList',
+      payload: { randowList: JSON.parse(JSON.stringify(shuffle(dataSource))) },
+    });
+    props.dispatch({
+      type: 'music/setCurrentIndex',
+      payload: { currentIndex: 0 },
+    });
+  };
   return (
     <div className={styles.rank_detail}>
       <div className={styles.detial_title}>
@@ -26,6 +64,7 @@ const Index = (props: { detailObj: playlistType }) => {
               danger
               className={styles.playButton}
               icon={<span className="iconfont icon-play"></span>}
+              onClick={randowPlay}
             >
               随机播放全部
             </Button>
@@ -45,4 +84,6 @@ const Index = (props: { detailObj: playlistType }) => {
   );
 };
 
-export default Index;
+export default connect(({ music }: { music: MusicModelState }) => ({
+  music,
+}))(Index);
