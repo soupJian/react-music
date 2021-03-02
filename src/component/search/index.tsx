@@ -73,38 +73,42 @@ const index = (props: any) => {
   const handleVisibleChange = (flag: boolean) => {
     setVisible(flag);
   };
+  let song = {};
   // 获取歌曲封面
   const chooseSong = (item: any) => {
     request({
       url: '/album?id=' + item.album.id,
-    }).then(data => {
-      const song = {
-        name: item.name,
-        id: item.id,
-        singer: item.artists,
-        dt: item.duration, // 播放时长
-        duration: formatTime(item.duration),
-        al: {
-          id: data.data.album.id,
-          picUrl: data.data.album.picUrl,
-        },
-      };
-      props.dispatch({
-        type: 'music/setPlayList',
-        payload: { playList: JSON.parse(JSON.stringify([song])) },
+    })
+      .then(data => {
+        song = {
+          name: item.name,
+          id: item.id,
+          singer: item.artists,
+          dt: item.duration, // 播放时长
+          duration: formatTime(item.duration),
+          al: {
+            id: data.data.album.id,
+            picUrl: data.data.album.picUrl,
+          },
+        };
+      })
+      .then(() => {
+        props.dispatch({
+          type: 'music/setPlayList',
+          payload: { playList: JSON.parse(JSON.stringify([song])) },
+        });
+        // 设置随机播放列表
+        props.dispatch({
+          type: 'music/setRandowList',
+          payload: { randowList: JSON.parse(JSON.stringify([song])) },
+        });
+        const index = 0;
+        props.dispatch({
+          type: 'music/setCurrentIndex',
+          payload: { currentIndex: index },
+        });
+        handleVisibleChange(false);
       });
-      // 设置随机播放列表
-      props.dispatch({
-        type: 'music/setRandowList',
-        payload: { randowList: JSON.parse(JSON.stringify([song])) },
-      });
-      const index = 0;
-      props.dispatch({
-        type: 'music/setCurrentIndex',
-        payload: { currentIndex: index },
-      });
-      handleVisibleChange(false);
-    });
   };
   // 点击歌手进入歌手详情
   const toSinger = (item: singerType) => {
