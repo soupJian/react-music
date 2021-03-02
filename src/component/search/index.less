@@ -1,0 +1,113 @@
+@import '../../asset/base/index.less';
+.search {
+  position: relative;
+  color: @color-text;
+  .searh_input {
+    width: 300px;
+  }
+}
+.search_container,
+.searchResult,
+.result_load {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  padding: 10px;
+  z-index: 1;
+  background-color: @color-dialog-background;
+  border-radius: 10px;
+}
+.search_container {
+  width: 450px;
+  height: 340px;
+  display: flex; // 由 none -> flex -> none
+  .hot_search,
+  .history_search {
+    flex: 1;
+  }
+  .history_search,
+  .hot_search {
+    .search_title {
+      padding: 0 10px;
+      color: @color-theme;
+      height: 30px;
+      line-height: 30px;
+      cursor: pointer;
+    }
+    .itemList {
+      height: 300px;
+      overflow-y: auto;
+      .item {
+        font-size: @font-size-medium;
+        padding: 0 10px;
+        height: 30px;
+        line-height: 30px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+      }
+    }
+  }
+  .history_search {
+    .search_title {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+.searchResult {
+  width: 300px;
+  .search_title {
+    padding: 0 10px;
+    color: @color-theme;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    .searchMore {
+      color: @color-text;
+      font-size: @font-size-small;
+      margin-right: 5px;
+    }
+  }
+  .result_wrap {
+    display: flex;
+    .result_title {
+      min-width: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .result_container {
+      flex: 1;
+      .result_item {
+        display: flex;
+        flex-wrap: nowrap;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        align-items: center;
+        overflow: hidden;
+        margin-bottom: 5px;
+        cursor: pointer;
+        .resultImg {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 5px;
+        }
+        .result_singer {
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}
+.result_load {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

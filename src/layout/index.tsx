@@ -3,7 +3,7 @@ import { Redirect, Link, connect, IndexModelState } from 'umi';
 import { Layout, Menu, Input, Dropdown, Button } from 'antd';
 import { propsType } from '../tsType/index';
 import MiniPlay from '@/component/miniPlay/index';
-
+import SearchInput from '@/component/search/index';
 import styles from './index.less';
 import '../asset/font/iconfont.css';
 
@@ -86,11 +86,7 @@ function index(props: propsType) {
       </Sider>
       <Layout className={styles.content}>
         <Header className={styles.content_header}>
-          <Input
-            placeholder="搜一下"
-            prefix={<span className="iconfont icon-search"></span>}
-            className={styles.header_input}
-          />
+          <SearchInput></SearchInput>
           {user.token === 'true' ? (
             <div className={styles.login}>
               <img src={props.user.user_detail.avatarUrl} alt="" />
