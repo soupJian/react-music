@@ -37,6 +37,7 @@ function index(props: propsType) {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('cookie');
+    props.history.replace('/recommend');
   };
   const menu = (
     <Menu>
@@ -103,7 +104,7 @@ function index(props: propsType) {
             </div>
           ) : (
             <div className={styles.login}>
-              <Link to="/login">登录/注册</Link>
+              <Link to="/login">登录</Link>
             </div>
           )}
         </Header>
