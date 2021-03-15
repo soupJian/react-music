@@ -4,6 +4,7 @@ import { formatTime } from '../../common/common_ts';
 import { Input, Dropdown, Spin } from 'antd';
 import { request } from '../../api/index';
 import { singerType, SongListItem } from '@/tsType/index';
+import Confirm from '@/component/modal/index';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
 
@@ -11,7 +12,9 @@ const index = (props: any) => {
   // 热门搜索
   const [hotSearch, setHotSearch] = useState([] as []);
   //  历史搜索
-  const [historySearch, setHistorySearch] = useState([] as []);
+  const [historySearch, setHistorySearch] = useState(
+    JSON.parse(localStorage.getItem('historySearch') || '[]'),
+  );
   // 输入框内容
   const [value, setValue] = useState('');
   // 输入框定时器
@@ -25,6 +28,12 @@ const index = (props: any) => {
     playlists: [],
     order: [],
   });
+  // 搜索loading
+  const [showload, setShowload] = useState(false);
+  // 搜索结果为空
+  const [empetyResult, setEmptyResult] = useState(false);
+  //
+  const [showConfirm, setShowConfirm] = useState(false);
   // 单曲专辑
   useEffect(() => {
     getHotSearch();
@@ -41,13 +50,32 @@ const index = (props: any) => {
     });
     setHotSearch(res.data.data);
   };
+  // 点击展示清空搜索弹窗
+  const showModal = () => {
+    if (historySearch.length == 0) {
+      return;
+    }
+    setVisible(false);
+    setShowConfirm(true);
+  };
+  const closeConfirm = () => {
+    setShowConfirm(false);
+  };
   // 清除历史查验数据
-  const clearHistory = () => {};
+  const clearHistory = () => {
+    setShowConfirm(false);
+    setHistorySearch([]);
+    localStorage.removeItem('historySearch');
+  };
   // 点击列表，进行搜索
   const searchItem = (value: string) => {
-    setValue(value);
+    // 取消空格
+    const query = value.replace(/\s+/g, '');
+    setShowload(true);
+    setEmptyResult(false);
+    setValue(query);
   };
-  // 自我输入框的值改变
+  // 自我输入框的值change事件
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 每次更改输入框的值之前先制空
     setResultList({
@@ -57,6 +85,8 @@ const index = (props: any) => {
       playlists: [],
       order: [],
     });
+    setShowload(true);
+    setEmptyResult(false);
     setValue(e.target.value);
   };
   // 输入框值改变进行搜索
@@ -64,10 +94,18 @@ const index = (props: any) => {
     if (!value.trim()) {
       return;
     }
+    // 发送请求的时候展示load
     const res = await request({
       url: '/search/suggest?keywords=' + value,
     });
-    setResultList(res.data.result);
+    setShowload(false);
+    if (res.data.result.order) {
+      // 有搜索结果的时候取消加载load
+      setResultList(res.data.result);
+    } else {
+      // 搜索结果为空的时候战术noresult
+      setEmptyResult(true);
+    }
   };
   // 设置搜索下拉框显示隐藏
   const handleVisibleChange = (flag: boolean) => {
@@ -109,18 +147,37 @@ const index = (props: any) => {
         });
         handleVisibleChange(false);
       });
+    local();
   };
   // 点击歌手进入歌手详情
   const toSinger = (item: singerType) => {
     history.push(`/singer/${item.id}`);
     handleVisibleChange(false);
+    local();
+    setVisible(false);
   };
   // 点击歌单进入歌单详情
   const toSong = (item: SongListItem) => {
     history.replace('/song/' + item.id);
+    local();
+    setVisible(false);
   };
+  // 点击跳转专辑详情
   const toAlbum = (item: any) => {
     history.replace('/album/' + item.id);
+    local();
+    setVisible(false);
+  };
+  const local = () => {
+    // 进行本地存储
+    historySearch.forEach((item: string, index: number) => {
+      if (item === value) {
+        historySearch.splice(index, 1);
+      }
+    });
+    historySearch.unshift(value);
+    localStorage.setItem('historySearch', JSON.stringify(historySearch));
+    setHistorySearch(JSON.parse(localStorage.getItem('historySearch') || ''));
   };
   return (
     <div className={styles.search}>
@@ -158,12 +215,39 @@ const index = (props: any) => {
                     <span>历史搜索</span>
                     <span
                       className="iconfont icon-delete"
-                      onClick={clearHistory}
+                      onClick={showModal}
                     ></span>
+                  </div>
+                  <div className={styles.itemList}>
+                    {historySearch.length > 0 ? (
+                      historySearch.map((item: string, index: number) => {
+                        return (
+                          <p
+                            key={index}
+                            className={styles.item}
+                            onClick={() => {
+                              searchItem(item);
+                            }}
+                          >
+                            <span>{item}</span>
+                          </p>
+                        );
+                      })
+                    ) : (
+                      <p className={styles.noResult}>暂无历史搜索</p>
+                    )}
                   </div>
                 </div>
               </div>
-            ) : resultList.songs.length > 0 ? (
+            ) : showload ? (
+              <div className={styles.result_load}>
+                <Spin tip="Loading..."></Spin>
+              </div>
+            ) : empetyResult ? (
+              <div className={styles.searchResult}>
+                <p className={styles.noResult}>暂无搜素结果</p>
+              </div>
+            ) : (
               <div className={styles.searchResult}>
                 <div className={styles.search_title}>
                   <span className={styles.searchMore}>更多搜索</span>
@@ -302,10 +386,6 @@ const index = (props: any) => {
                   )}
                 </div>
               </div>
-            ) : (
-              <div className={styles.result_load}>
-                <Spin tip="Loading..."></Spin>
-              </div>
             )}
           </>
         }
@@ -325,6 +405,14 @@ const index = (props: any) => {
           }}
         />
       </Dropdown>
+      <Confirm
+        text="确定清空所有历史记录么???"
+        showConfirm={showConfirm}
+        onCloseConfirm={closeConfirm}
+        onClear={clearHistory}
+        cancelText="取消"
+        okText="确定"
+      ></Confirm>
     </div>
   );
 };
