@@ -1,5 +1,6 @@
 import React from 'react';
 import { history } from 'umi';
+import { Image } from 'antd';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
 import { SongListItem } from '../../tsType/index';
@@ -21,9 +22,9 @@ const Index = (props: { songList: [] }) => {
             }}
           >
             {item.picUrl ? (
-              <img src={item.picUrl} />
+              <Image src={item.picUrl} />
             ) : (
-              <img src={item.coverImgUrl} />
+              <Image src={item.coverImgUrl} />
             )}
             <div className={styles.shade}>
               <span className="iconfont icon-MusicAcc"></span>

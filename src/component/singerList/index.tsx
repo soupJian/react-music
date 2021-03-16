@@ -1,5 +1,6 @@
 import React from 'react';
 import { history } from 'umi';
+import { Image } from 'antd';
 import styles from './index.less';
 import { singerType } from '@/tsType/index';
 const index = (props: { singerlist: [] }) => {
@@ -18,7 +19,7 @@ const index = (props: { singerlist: [] }) => {
               toSinger(item);
             }}
           >
-            <img src={item.picUrl} />
+            <Image src={item.picUrl} />
             <p>{item.name}</p>
           </div>
         );

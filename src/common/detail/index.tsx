@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Image } from 'antd';
 import { connect, MusicModelState } from 'umi';
 import { songItemType } from '@/tsType/index';
 import { formatTime, shuffle } from '@/common/common_ts';
@@ -52,7 +52,7 @@ const Index = (props: any) => {
   return (
     <div className={styles.rank_detail}>
       <div className={styles.detial_title}>
-        <img src={detailObj.coverImgUrl} alt="" />
+        <Image src={detailObj.coverImgUrl} />
         <div className={styles.title_des}>
           <div className={styles.title_header}>
             <p className={styles.title_name}>{detailObj.name}</p>

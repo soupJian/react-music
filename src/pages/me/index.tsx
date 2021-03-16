@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Image } from 'antd';
 import { Link, connect, IndexModelState } from 'umi';
 import { propsType } from '../../tsType/index';
 import SongList from '@/component/songList/index';
@@ -32,7 +33,7 @@ const index = (props: propsType) => {
   return (
     <div>
       <div className={styles.me_header}>
-        <img src={user_detail.avatarUrl} alt="" />
+        <Image src={user_detail.avatarUrl} />
         <div className={styles.user_detail}>
           <p className={styles.nickname}>{user_detail.nickname}</p>
           {/* <p className={styles.tabItem}>
