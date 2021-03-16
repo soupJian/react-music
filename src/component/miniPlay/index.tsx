@@ -5,7 +5,7 @@ import { shuffle } from '../../common/common_ts/index';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import './modal.less';
-import { request, requestCookie } from '../../api/index';
+import { request } from '../../api/index';
 import {
   formatTime,
   formatCurrentTime,
@@ -18,9 +18,8 @@ const Index = (props: any) => {
   const randowList = JSON.parse(JSON.stringify(props.music.randowList));
   const currentIndex = props.music.currentIndex;
   const mode = props.music.mode;
-  const music = randowList[currentIndex];
+  const currentSong = props.music.currentSong;
   const playing = props.music.playing;
-  const id: number = currentIndex == -1 ? 0 : music.id;
   const audioRef = useRef<HTMLAudioElement>(null);
   const audio = audioRef.current || null;
   const [currentTime, setCurrentTime] = useState(0);
@@ -29,16 +28,23 @@ const Index = (props: any) => {
   const [songReady, setSongReady] = useState(false);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
+    if (!currentSong.id) {
+      return;
+    }
     getMusicUrl();
-  }, [id]);
+  }, [currentSong.id]);
   // 获取歌曲播放地址
   const getMusicUrl = async () => {
-    if (currentIndex == -1) {
+    if (!currentSong.id) {
       return;
     }
     const result = await request({
-      url: `/song/url?id=${id}`,
+      url: `/song/url?id=${currentSong.id}`,
     });
+    if (!result.data.data[0].url) {
+      message.warning('暂无播放地址，自动切换下一首');
+      changeMusic(1);
+    }
     // 设置歌曲播放地址
     setMusicUrl(result.data.data[0].url);
     // 切换歌曲的时候，播放与暂停按钮禁用
@@ -78,11 +84,11 @@ const Index = (props: any) => {
     if (audio) {
       setCurrentTime(audio.currentTime);
     }
-    formatPrecent(currentTime, music.dt);
+    formatPrecent(currentTime, currentSong.dt);
   };
   // endMusic 歌曲结束
   const endMusic = () => {
-    if (mode == 'loop' || playList.length == 1) {
+    if (mode == 'loop' || randowList.length == 1) {
       loop();
     } else {
       changeMusic(1);
@@ -97,12 +103,12 @@ const Index = (props: any) => {
   const setDispatch = (index: number) => {
     props.dispatch({
       type: 'music/setCurrentIndex',
-      payload: { currentIndex: index },
+      currentIndex: index,
     });
   };
   // 上一首  下一首
   const changeMusic = (action: number) => {
-    if (mode == 'loop' || playList.lengt == 1) {
+    if (mode == 'loop' || randowList.length == 1) {
       loop();
       return;
     }
@@ -111,12 +117,12 @@ const Index = (props: any) => {
       // 上一首
       index = currentIndex - 1;
       if (index < 0) {
-        index = playList.length - 1;
+        index = randowList.length - 1;
       }
     } else {
       // 下一首
       index = currentIndex + 1;
-      if (index == playList.length) {
+      if (index == randowList.length) {
         index = 0;
       }
     }
@@ -128,14 +134,14 @@ const Index = (props: any) => {
     switch (mode) {
       case 'sequence':
         playmode = 'randow';
-        changePlayList(shuffle(playList));
+        changePlayList(shuffle(randowList));
         break;
       case 'randow':
         playmode = 'loop';
         break;
       case 'loop':
         playmode = 'sequence';
-        changePlayList(playList);
+        changePlayList(randowList);
         break;
     }
     props.dispatch({
@@ -151,17 +157,17 @@ const Index = (props: any) => {
   };
   // 随机播放
   const changePlayList = (arr: any) => {
-    const index = arr.findIndex((item: any) => {
-      return item.id == music.id;
-    });
-    props.dispatch({
-      type: 'music/setCurrentIndex',
-      payload: { currentIndex: index },
-    });
     // 设置随机播放列表
     props.dispatch({
       type: 'music/setRandowList',
-      payload: { randowList: JSON.parse(JSON.stringify(arr)) },
+      randowList: JSON.parse(JSON.stringify(arr)),
+    });
+    const index = arr.findIndex((item: any) => {
+      return item.id == currentSong.id;
+    });
+    props.dispatch({
+      type: 'music/setCurrentIndex',
+      currentIndex: index,
     });
   };
   // 设置展示播放列表
@@ -173,14 +179,14 @@ const Index = (props: any) => {
     setVisible(false);
   };
   const toggleLove = () => {
-    const index = loveIds.indexOf(id);
+    const index = loveIds.indexOf(currentSong.id);
     if (index >= 0) {
       // 存在则取消删除
       loveIds.splice(index, 1);
       message.warning('接口限制，请转至网易云进行操作');
     } else {
       // 不存在添加到我喜欢
-      loveIds.unshift(id);
+      loveIds.unshift(currentSong.id);
       message.warning('接口限制，请转至网易云进行操作');
     }
     props.dispatch({
@@ -196,7 +202,7 @@ const Index = (props: any) => {
         <>
           <div className={styles.mimi_play}>
             <img
-              src={music.al.picUrl}
+              src={currentSong.al.picUrl}
               onClick={showPlayList}
               className={
                 playing ? styles.play : `${styles.play} ${styles.pause}`
@@ -204,11 +210,13 @@ const Index = (props: any) => {
             />
             <div className={styles.des}>
               <p className={styles.des_title}>
-                <span className={styles.music_name}>{music.name}</span>
+                <span className={styles.music_name}>{currentSong.name}</span>
                 <span className={styles.music_singer}>
-                  {music.singer.map((item: { name: string; id: number }) => {
-                    return <span key={item.id}>{item.name}</span>;
-                  })}
+                  {currentSong.singer.map(
+                    (item: { name: string; id: number }) => {
+                      return <span key={item.id}>{item.name}</span>;
+                    },
+                  )}
                 </span>
               </p>
               <div className={styles.des_progress}>
@@ -218,10 +226,10 @@ const Index = (props: any) => {
                     '0%': ' #ffcd32',
                     '100%': '#87d068',
                   }}
-                  percent={formatPrecent(currentTime, music.dt)}
+                  percent={formatPrecent(currentTime, currentSong.dt)}
                   showInfo={false}
                 />
-                <span>{formatTime(music.dt)}</span>
+                <span>{formatTime(currentSong.dt)}</span>
               </div>
             </div>
             <div className={styles.action}>
@@ -237,11 +245,16 @@ const Index = (props: any) => {
               ></span>
               <span
                 className={`iconfont ${
-                  loveIds.indexOf(id) >= 0 ? 'icon-love' : 'icon-aixin-xian'
+                  loveIds.indexOf(currentSong.id) >= 0
+                    ? 'icon-love'
+                    : 'icon-aixin-xian'
                 }`}
                 onClick={toggleLove}
                 style={{
-                  color: loveIds.indexOf(id) >= 0 ? '#FF4D4F' : '#ffcd32',
+                  color:
+                    loveIds.indexOf(currentSong.id) >= 0
+                      ? '#FF4D4F'
+                      : '#ffcd32',
                 }}
               ></span>
               <span

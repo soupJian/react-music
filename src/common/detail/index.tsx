@@ -37,16 +37,16 @@ const Index = (props: any) => {
     });
     props.dispatch({
       type: 'music/setPlayList',
-      payload: { playList: JSON.parse(JSON.stringify(dataSource)) },
+      playlist: JSON.parse(JSON.stringify(dataSource)),
     });
     // 设置随机播放列表
     props.dispatch({
       type: 'music/setRandowList',
-      payload: { randowList: JSON.parse(JSON.stringify(shuffle(dataSource))) },
+      randowList: JSON.parse(JSON.stringify(shuffle(dataSource))),
     });
     props.dispatch({
       type: 'music/setCurrentIndex',
-      payload: { currentIndex: 0 },
+      currentIndex: 0,
     });
   };
   return (

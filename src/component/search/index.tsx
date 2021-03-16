@@ -132,18 +132,22 @@ const index = (props: any) => {
       })
       .then(() => {
         props.dispatch({
+          type: 'music/setCurrentSong',
+          currentSong: song,
+        });
+        props.dispatch({
           type: 'music/setPlayList',
-          payload: { playList: JSON.parse(JSON.stringify([song])) },
+          playList: JSON.parse(JSON.stringify([song])),
         });
         // 设置随机播放列表
         props.dispatch({
           type: 'music/setRandowList',
-          payload: { randowList: JSON.parse(JSON.stringify([song])) },
+          randowList: JSON.parse(JSON.stringify([song])),
         });
         const index = 0;
         props.dispatch({
           type: 'music/setCurrentIndex',
-          payload: { currentIndex: index },
+          currentIndex: index,
         });
         handleVisibleChange(false);
       });

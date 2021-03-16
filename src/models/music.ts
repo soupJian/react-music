@@ -3,6 +3,7 @@ export interface MusicModelState {
   playList: Array<any>;
   randowList: Array<any>;
   currentIndex: number;
+  currentSong: object;
   playing: boolean;
   mode: string;
 }
@@ -15,6 +16,7 @@ export interface MusicModelType {
     setMode: ImmerReducer<MusicModelState>;
     setPlayList: ImmerReducer<MusicModelState>;
     setCurrentIndex: ImmerReducer<MusicModelState>;
+    setCurrentSong: ImmerReducer<MusicModelState>;
   };
 }
 const IndexModel: MusicModelType = {
@@ -23,21 +25,35 @@ const IndexModel: MusicModelType = {
     playList: [],
     randowList: [], // 随即播放列表
     currentIndex: -1,
+    currentSong: {}, // 当前播放的歌曲
     playing: false, // 设置播放状态
     mode: 'sequence', // sequence 顺序播放 loop 循环播放 randow 随机播放
   },
   reducers: {
     // 设置播放列表
     setPlayList(state, action) {
-      return { ...state, ...action.payload };
+      return {
+        ...state,
+        playList: action.playList,
+      };
     },
     // 设置随机播放列表
     setRandowList(state, action) {
-      return { ...state, ...action.payload };
+      return {
+        ...state,
+        randowList: action.randowList,
+      };
     },
     // 当前歌曲播放索引
     setCurrentIndex(state, action) {
-      return { ...state, ...action.payload };
+      return {
+        ...state,
+        currentIndex: action.currentIndex,
+        currentSong: state.randowList[action.currentIndex],
+      };
+    },
+    setCurrentSong(state, action) {
+      return { ...state, currentSong: action.currentSong };
     },
     // 设置播放状态
     setPlaying(state, action) {

@@ -11,9 +11,8 @@ const Index = (props: any) => {
   const songReady = props.songReady;
   const playing = props.playing;
   const mode = props.music.mode;
-  const currentIndex = props.music.currentIndex;
-  const music = randowList[currentIndex];
   const currentTime = props.currentTime;
+  const currentSong = props.music.currentSong;
   const lyric_wrap = useRef<HTMLDivElement>(null);
   const [scrollFlag, setScrollFlag] = useState(false); // 是否允许手动滚动
   const [lyric, setLyric] = useState('');
@@ -29,7 +28,7 @@ const Index = (props: any) => {
     }
     props.dispatch({
       type: 'music/setCurrentIndex',
-      payload: { currentIndex: chooseIndex },
+      currentIndex: chooseIndex,
     });
   };
   const changeMusic = (index: number) => {
@@ -41,10 +40,10 @@ const Index = (props: any) => {
   useEffect(() => {
     getLyric();
     scrollTop(0);
-  }, [music.id]);
+  }, [currentSong.id]);
   const getLyric = async () => {
     const result = await request({
-      url: `/lyric?id=${music.id}`,
+      url: `/lyric?id=${currentSong.id}`,
     });
     if (result.data.nolyric) {
     } else {
@@ -140,7 +139,9 @@ const Index = (props: any) => {
                 <div className={styles.left}>
                   <span
                     className={`iconfont ${
-                      item.id == music.id ? 'icon-Pause' : `${styles.empty}`
+                      item.id == currentSong.id
+                        ? 'icon-Pause'
+                        : `${styles.empty}`
                     }`}
                   ></span>
                   <span
@@ -163,16 +164,16 @@ const Index = (props: any) => {
       <div className={styles.music_detail}>
         <div className={styles.detail_wrap}>
           <div className={styles.title}>
-            <p className={styles.name}>{music.name}</p>
+            <p className={styles.name}>{currentSong.name}</p>
             <p className={styles.singer}>
-              {music.singer.map((item: { id: number; name: string }) => {
+              {currentSong.singer.map((item: { id: number; name: string }) => {
                 return <span key={item.id}>{item.name}</span>;
               })}
             </p>
           </div>
           <div className={styles.img_wrap}>
             <img
-              src={music.al.picUrl}
+              src={currentSong.al.picUrl}
               className={
                 playing ? styles.play : `${styles.play} ${styles.pause}`
               }

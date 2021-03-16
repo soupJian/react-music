@@ -82,17 +82,17 @@ const Index = (props: any) => {
       return item.id == data.id;
     });
     props.dispatch({
-      type: 'music/setCurrentIndex',
-      payload: { currentIndex: index },
-    });
-    props.dispatch({
       type: 'music/setPlayList',
-      payload: { playList: JSON.parse(JSON.stringify(dataSource)) },
+      playList: JSON.parse(JSON.stringify(dataSource)),
     });
     // 设置随机播放列表
     props.dispatch({
       type: 'music/setRandowList',
-      payload: { randowList: JSON.parse(JSON.stringify(dataSource)) },
+      randowList: JSON.parse(JSON.stringify(dataSource)),
+    });
+    props.dispatch({
+      type: 'music/setCurrentIndex',
+      currentIndex: index,
     });
   };
   const dataSource = props.songitemlist.map((item: songItemType) => {
