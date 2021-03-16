@@ -5,7 +5,6 @@ import { FormInstance } from 'antd/lib/form';
 import { UserOutlined, LockOutlined, PhoneOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import { request } from '@/api/index';
-import Axios from 'axios';
 
 const { TabPane } = Tabs;
 const { Search } = Input;
@@ -73,7 +72,7 @@ const Index = (props: any) => {
       }
     } else {
       // 手机号未注册
-      message.warning('手机号暂未注册，清洗注册');
+      message.warning('手机号暂未注册，清洗前往网易云注册');
     }
   };
   // 修改密码

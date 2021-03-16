@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect, Link, connect, IndexModelState } from 'umi';
 import { Layout, Menu, Input, Dropdown, Button } from 'antd';
+import { requestCookie } from '@/api/index';
 import { propsType } from '../tsType/index';
 import MiniPlay from '@/component/miniPlay/index';
 import SearchInput from '@/component/search/index';
@@ -11,9 +12,17 @@ const { Header, Sider, Content, Footer } = Layout;
 
 function index(props: propsType) {
   const user = JSON.parse(JSON.stringify(props.user));
+  const id = user.user_detail.userId;
+  const cookie = localStorage.getItem('cookie');
   if (props.location.pathname === '/me' && user.token == '') {
     return <Redirect to="/login"></Redirect>;
   }
+  useEffect(() => {
+    if (!cookie) {
+      return;
+    }
+    getLove(id);
+  }, [id, cookie]);
   // 退出登录
   const loginOut = () => {
     const user = {
@@ -31,6 +40,10 @@ function index(props: propsType) {
       type: 'user/setToken',
       payload: '',
     });
+    props.dispatch({
+      type: 'user/setUserLoveIds',
+      loveIds: [],
+    });
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
     localStorage.removeItem('token');
@@ -38,6 +51,17 @@ function index(props: propsType) {
     localStorage.removeItem('token');
     localStorage.removeItem('cookie');
     props.history.replace('/recommend');
+  };
+  // 用户登录成功后 获取 喜欢的音乐
+  const getLove = async (id: number) => {
+    const result = await requestCookie({
+      url: '/likelist',
+      data: `id=${id}`,
+    });
+    props.dispatch({
+      type: 'user/setUserLoveIds',
+      loveIds: result.data.ids,
+    });
   };
   const menu = (
     <Menu>

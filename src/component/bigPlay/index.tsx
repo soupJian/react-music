@@ -129,7 +129,7 @@ const Index = (props: any) => {
           <div>
             <span
               className="iconfont icon-delete"
-              style={{ marginRight: '5px' }}
+              style={{ marginRight: '10px' }}
             ></span>
           </div>
         </div>
@@ -152,8 +152,7 @@ const Index = (props: any) => {
                     {item.name}
                   </span>
                 </div>
-                <div>
-                  <span className="iconfont icon-aixin-xian"></span>
+                <div style={{ paddingRight: '5px' }}>
                   <span className="iconfont icon-iconset0127"></span>
                 </div>
               </div>

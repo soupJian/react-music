@@ -20,7 +20,7 @@ const index = (props:propsType) => {
     getsongDetail()
     getSimi()
   }, [id]);
-  // 获取歌单详情
+  // 获取歌单/专辑详情
   const getsongDetail = async() => {
     if(arr[1] == 'song'){
       const result =  await requestCookie({

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Progress, Modal } from 'antd';
-import { connect, MusicModelState } from 'umi';
+import { Progress, Modal, message } from 'antd';
+import { connect, MusicModelState, IndexModelState } from 'umi';
 import { shuffle } from '../../common/common_ts/index';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import './modal.less';
-import { request } from '../../api/index';
+import { request, requestCookie } from '../../api/index';
 import {
   formatTime,
   formatCurrentTime,
@@ -13,6 +13,7 @@ import {
 } from '../../common/common_ts/index';
 import BigPlay from '../bigPlay/index';
 const Index = (props: any) => {
+  const loveIds = JSON.parse(JSON.stringify(props.user.loveIds));
   const playList = JSON.parse(JSON.stringify(props.music.playList));
   const randowList = JSON.parse(JSON.stringify(props.music.randowList));
   const currentIndex = props.music.currentIndex;
@@ -171,6 +172,22 @@ const Index = (props: any) => {
   const handleCancel = () => {
     setVisible(false);
   };
+  const toggleLove = () => {
+    const index = loveIds.indexOf(id);
+    if (index >= 0) {
+      // 存在则取消删除
+      loveIds.splice(index, 1);
+      message.warning('接口限制，请转至网易云进行操作');
+    } else {
+      // 不存在添加到我喜欢
+      loveIds.unshift(id);
+      message.warning('接口限制，请转至网易云进行操作');
+    }
+    props.dispatch({
+      type: 'user/setUserLoveIds',
+      loveIds,
+    });
+  };
   return (
     <>
       {currentIndex == -1 ? (
@@ -218,7 +235,15 @@ const Index = (props: any) => {
                 }`}
                 onClick={changeMode}
               ></span>
-              <span className="iconfont icon-aixin-xian"></span>
+              <span
+                className={`iconfont ${
+                  loveIds.indexOf(id) >= 0 ? 'icon-love' : 'icon-aixin-xian'
+                }`}
+                onClick={toggleLove}
+                style={{
+                  color: loveIds.indexOf(id) >= 0 ? '#FF4D4F' : '#ffcd32',
+                }}
+              ></span>
               <span
                 className="iconfont icon-previous"
                 onClick={() => {
@@ -277,6 +302,9 @@ const Index = (props: any) => {
   );
 };
 
-export default connect(({ music }: { music: MusicModelState }) => ({
-  music,
-}))(Index);
+export default connect(
+  ({ music, user }: { music: MusicModelState; user: IndexModelState }) => ({
+    music,
+    user,
+  }),
+)(Index);
