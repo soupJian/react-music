@@ -8,6 +8,13 @@ export default defineConfig({
     immer: true,
     hmr: false,
   },
+  proxy: {
+    '/api': {
+      target: 'http://www.soupjian.work:3000',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
+  },
   routes: [
     {
       path: '/',

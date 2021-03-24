@@ -4,7 +4,7 @@ interface paramsObj {
   data?: string;
 }
 export const request = (params: paramsObj) => {
-  const baseUrl: string = 'http://www.soupjian.work:3000';
+  const baseUrl: string = '/api';
   let url: string = '';
   if (params.data) {
     url = `${baseUrl}${params.url}?${params.data}`;
@@ -14,7 +14,7 @@ export const request = (params: paramsObj) => {
   return axios.get(url);
 };
 export const requestCookie = (params: paramsObj) => {
-  const baseUrl: string = 'http://www.soupjian.work:3000';
+  const baseUrl: string = '/api';
   const cookie = localStorage.getItem('cookie');
   let url: string = '';
   if (params.data) {

@@ -46,10 +46,16 @@ const IndexModel: MusicModelType = {
     },
     // 当前歌曲播放索引
     setCurrentIndex(state, action) {
+      let currentSong;
+      if (action.currentIndex == -1) {
+        currentSong = {};
+      } else {
+        currentSong = state.randowList[action.currentIndex];
+      }
       return {
         ...state,
         currentIndex: action.currentIndex,
-        currentSong: state.randowList[action.currentIndex],
+        currentSong,
       };
     },
     setCurrentSong(state, action) {

@@ -37,7 +37,7 @@ const Index = (props: any) => {
     });
     props.dispatch({
       type: 'music/setPlayList',
-      playlist: JSON.parse(JSON.stringify(dataSource)),
+      playList: JSON.parse(JSON.stringify(dataSource)),
     });
     // 设置随机播放列表
     props.dispatch({
