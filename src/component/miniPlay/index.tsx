@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Progress, Modal, message } from 'antd';
+import { Slider, Modal, message } from 'antd';
 import { connect, MusicModelState, IndexModelState } from 'umi';
 import { shuffle } from '../../common/common_ts/index';
 import styles from './index.less';
@@ -25,8 +25,12 @@ const Index = (props: any) => {
   const [currentTime, setCurrentTime] = useState(0);
   // 获取歌曲url,watch id来处理事务
   const [musicUrl, setMusicUrl] = useState<string>('');
+  // 判断歌曲是否可以准备播放
   const [songReady, setSongReady] = useState(false);
+  // 是否展示大小播放器
   const [visible, setVisible] = useState(false);
+  // 设置当前歌曲播放进度
+  const [precent, setPrecent] = useState(0);
   useEffect(() => {
     if (!currentSong.id) {
       return;
@@ -83,8 +87,8 @@ const Index = (props: any) => {
   const timeUpdate = (e: any) => {
     if (audio) {
       setCurrentTime(audio.currentTime);
+      setPrecent(formatPrecent(audio.currentTime, currentSong.dt));
     }
-    formatPrecent(currentTime, currentSong.dt);
   };
   // endMusic 歌曲结束
   const endMusic = () => {
@@ -194,6 +198,13 @@ const Index = (props: any) => {
       loveIds,
     });
   };
+  const slideChange = (value: number) => {
+    const time = (currentSong.dt * value) / 100;
+    // setCurrentTime(time/1000)
+    if (audio) {
+      audio.currentTime = time / 1000;
+    }
+  };
   return (
     <>
       {currentIndex == -1 ? (
@@ -219,15 +230,13 @@ const Index = (props: any) => {
                   )}
                 </span>
               </p>
-              <div className={styles.des_progress}>
+              <div className={styles.des_slider}>
                 <span>{formatCurrentTime(currentTime)}</span>
-                <Progress
-                  strokeColor={{
-                    '0%': ' #ffcd32',
-                    '100%': '#87d068',
-                  }}
-                  percent={formatPrecent(currentTime, currentSong.dt)}
-                  showInfo={false}
+                <Slider
+                  value={precent}
+                  onChange={slideChange}
+                  onAfterChange={slideChange}
+                  tipFormatter={null}
                 />
                 <span>{formatTime(currentSong.dt)}</span>
               </div>
