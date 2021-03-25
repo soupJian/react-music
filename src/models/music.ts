@@ -25,7 +25,9 @@ const IndexModel: MusicModelType = {
     playList: [],
     randowList: [], // 随即播放列表
     currentIndex: -1,
-    currentSong: {}, // 当前播放的歌曲
+    currentSong: {
+      id: -1,
+    }, // 当前播放的歌曲
     playing: false, // 设置播放状态
     mode: 'sequence', // sequence 顺序播放 loop 循环播放 randow 随机播放
   },
@@ -48,7 +50,9 @@ const IndexModel: MusicModelType = {
     setCurrentIndex(state, action) {
       let currentSong;
       if (action.currentIndex == -1) {
-        currentSong = {};
+        currentSong = {
+          id: -1,
+        };
       } else {
         currentSong = state.randowList[action.currentIndex];
       }
@@ -65,7 +69,7 @@ const IndexModel: MusicModelType = {
     setPlaying(state, action) {
       return { ...state, playing: action.playing };
     },
-    // 谁知播放模式
+    // 设置播放模式
     setMode(state, action) {
       return { ...state, mode: action.payload };
     },

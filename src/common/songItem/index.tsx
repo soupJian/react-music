@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'antd';
 import styles from './index.less';
 import { connect, MusicModelState } from 'umi';
-import { formatTime } from '../common_ts/index';
+import { formatTime, shuffle } from '../common_ts/index';
 import { propsType, songItemType } from '@/tsType/index';
 // 获取Body对象高度
 let height = document.body.clientHeight;
@@ -16,6 +16,7 @@ if (pageSize > 8) {
   pageSize = 8;
 }
 const Index = (props: any) => {
+  const mode = props.music.mode;
   const columns = [
     {
       title: '标题',
@@ -86,13 +87,24 @@ const Index = (props: any) => {
       playList: JSON.parse(JSON.stringify(dataSource)),
     });
     // 设置随机播放列表
-    props.dispatch({
-      type: 'music/setRandowList',
-      randowList: JSON.parse(JSON.stringify(dataSource)),
+    const arr = shuffle(dataSource);
+    if (mode == 'randow') {
+      props.dispatch({
+        type: 'music/setRandowList',
+        randowList: JSON.parse(JSON.stringify(arr)),
+      });
+    } else {
+      props.dispatch({
+        type: 'music/setRandowList',
+        randowList: JSON.parse(JSON.stringify(dataSource)),
+      });
+    }
+    const currentIndex = arr.findIndex((item: { id: number }) => {
+      return item.id == data.id;
     });
     props.dispatch({
       type: 'music/setCurrentIndex',
-      currentIndex: index,
+      currentIndex,
     });
   };
   const dataSource = props.songitemlist.map((item: songItemType) => {

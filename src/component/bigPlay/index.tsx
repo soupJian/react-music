@@ -6,8 +6,9 @@ import { songItemType } from '../../tsType/index';
 import { request } from '../../api/index';
 import { parseLyric } from '../../common/common_ts/index';
 const Index = (props: any) => {
-  const playList = props.music.playList;
-  const randowList = props.music.randowList;
+  const playList = JSON.parse(JSON.stringify(props.music.playList));
+  const randowList = JSON.parse(JSON.stringify(props.music.randowList));
+  const currentIndex = props.music.currentIndex;
   const songReady = props.songReady;
   const playing = props.playing;
   const mode = props.music.mode;
@@ -19,13 +20,10 @@ const Index = (props: any) => {
   const changeMode = () => {
     props.changeMode();
   };
-  const chooseMusic = (item: songItemType, index: number) => {
-    let chooseIndex = index;
-    if (mode != 'sequence') {
-      chooseIndex = randowList.findIndex((i: songItemType) => {
-        return i.id == item.id;
-      });
-    }
+  const chooseMusic = (item: songItemType) => {
+    const chooseIndex = randowList.findIndex((i: songItemType) => {
+      return i.id == item.id;
+    });
     props.dispatch({
       type: 'music/setCurrentIndex',
       currentIndex: chooseIndex,
@@ -102,6 +100,63 @@ const Index = (props: any) => {
     // console.log("滚动");
     setScrollFlag(true);
   };
+  const deleteOne = (song: songItemType) => {
+    // 1.先删除播放列表中对应数据
+    let index;
+    index = randowList.findIndex((item: { id: number }) => {
+      return item.id === song.id;
+    });
+    // 如果删除的是最后一首歌
+    if (randowList.length == 1) {
+      deleteAll();
+      return;
+    }
+    randowList.splice(index, 1);
+    props.dispatch({
+      type: 'music/setRandowList',
+      randowList,
+    });
+    if (index <= currentIndex) {
+      let current;
+      if (currentIndex > randowList.length - 1) {
+        current = randowList.length - 1;
+      } else {
+        current = currentIndex;
+      }
+      props.dispatch({
+        type: 'music/setCurrentIndex',
+        currentIndex: current,
+      });
+    }
+    // 景天列表也要删除对应歌曲
+    index = playList.findIndex((item: { id: number }) => {
+      return item.id === song.id;
+    });
+    playList.splice(index, 1);
+    props.dispatch({
+      type: 'music/setPlayList',
+      playList,
+    });
+  };
+  const deleteAll = () => {
+    props.closeModal();
+    props.dispatch({
+      type: 'music/setPlaying',
+      playing: false,
+    });
+    props.dispatch({
+      type: 'music/setPlayList',
+      playList: [],
+    });
+    props.dispatch({
+      type: 'music/setRandowList',
+      randowList: [],
+    });
+    props.dispatch({
+      type: 'music/setCurrentIndex',
+      currentIndex: -1,
+    });
+  };
   return (
     <div className={styles.big_playlist}>
       <div className={styles.music_playlist}>
@@ -129,6 +184,7 @@ const Index = (props: any) => {
             <span
               className="iconfont icon-delete"
               style={{ marginRight: '10px' }}
+              onClick={deleteAll}
             ></span>
           </div>
         </div>
@@ -147,14 +203,19 @@ const Index = (props: any) => {
                   <span
                     className={styles.name}
                     onClick={() => {
-                      chooseMusic(item, index);
+                      chooseMusic(item);
                     }}
                   >
                     {item.name}
                   </span>
                 </div>
                 <div style={{ paddingRight: '5px' }}>
-                  <span className="iconfont icon-iconset0127"></span>
+                  <span
+                    className="iconfont icon-iconset0127"
+                    onClick={() => {
+                      deleteOne(item);
+                    }}
+                  ></span>
                 </div>
               </div>
             );
@@ -219,10 +280,10 @@ const Index = (props: any) => {
           onWheel={lyricWheel}
         >
           {lyricObj.map(
-            (item: { line: string; time: string; currentLine: boolean }) => {
+            (item: { line: string; currentLine: boolean }, index: number) => {
               return (
                 <p
-                  key={item.time}
+                  key={index}
                   style={{
                     color: item.currentLine
                       ? '#fff'

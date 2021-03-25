@@ -19,6 +19,7 @@ const Index = (props: any) => {
   const currentIndex = props.music.currentIndex;
   const mode = props.music.mode;
   const currentSong = props.music.currentSong;
+  const id = currentSong.id;
   const playing = props.music.playing;
   const audioRef = useRef<HTMLAudioElement>(null);
   const audio = audioRef.current || null;
@@ -32,18 +33,18 @@ const Index = (props: any) => {
   // 设置当前歌曲播放进度
   const [precent, setPrecent] = useState(0);
   useEffect(() => {
-    if (!currentSong.id) {
+    if (id == -1) {
       return;
     }
     getMusicUrl();
-  }, [currentSong.id]);
+  }, [id]);
   // 获取歌曲播放地址
   const getMusicUrl = async () => {
-    if (!currentSong.id) {
+    if (id == -1) {
       return;
     }
     const result = await request({
-      url: `/song/url?id=${currentSong.id}`,
+      url: `/song/url?id=${id}`,
     });
     if (!result.data.data[0].url) {
       message.warning('暂无播放地址，自动切换下一首');
@@ -126,7 +127,7 @@ const Index = (props: any) => {
     } else {
       // 下一首
       index = currentIndex + 1;
-      if (index == randowList.length) {
+      if (index >= randowList.length) {
         index = 0;
       }
     }
@@ -167,7 +168,7 @@ const Index = (props: any) => {
       randowList: JSON.parse(JSON.stringify(arr)),
     });
     const index = arr.findIndex((item: any) => {
-      return item.id == currentSong.id;
+      return item.id == id;
     });
     props.dispatch({
       type: 'music/setCurrentIndex',
@@ -183,14 +184,14 @@ const Index = (props: any) => {
     setVisible(false);
   };
   const toggleLove = () => {
-    const index = loveIds.indexOf(currentSong.id);
+    const index = loveIds.indexOf(id);
     if (index >= 0) {
       // 存在则取消删除
       loveIds.splice(index, 1);
       message.warning('接口限制，请转至网易云进行操作');
     } else {
       // 不存在添加到我喜欢
-      loveIds.unshift(currentSong.id);
+      loveIds.unshift(id);
       message.warning('接口限制，请转至网易云进行操作');
     }
     props.dispatch({
@@ -254,16 +255,11 @@ const Index = (props: any) => {
               ></span>
               <span
                 className={`iconfont ${
-                  loveIds.indexOf(currentSong.id) >= 0
-                    ? 'icon-love'
-                    : 'icon-aixin-xian'
+                  loveIds.indexOf(id) >= 0 ? 'icon-love' : 'icon-aixin-xian'
                 }`}
                 onClick={toggleLove}
                 style={{
-                  color:
-                    loveIds.indexOf(currentSong.id) >= 0
-                      ? '#FF4D4F'
-                      : '#ffcd32',
+                  color: loveIds.indexOf(id) >= 0 ? '#FF4D4F' : '#ffcd32',
                 }}
               ></span>
               <span
@@ -304,6 +300,7 @@ const Index = (props: any) => {
               changeMusic={changeMusic}
               playing={playing}
               togglePlay={togglePlay}
+              closeModal={handleCancel}
               songReady={songReady}
               currentTime={currentTime}
             ></BigPlay>
