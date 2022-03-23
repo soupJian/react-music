@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Link, connect, IndexModelState } from 'umi';
+import { Redirect, Link, connect, IndexModelState, history } from 'umi';
 import { Layout, Menu, Input, Dropdown, Button } from 'antd';
 import { requestCookie } from '@/api/index';
 import { propsType } from '../tsType/index';
@@ -15,7 +15,8 @@ function index(props: propsType) {
   const id = user.user_detail.userId;
   const cookie = localStorage.getItem('cookie');
   if (props.location.pathname === '/me' && user.token == '') {
-    return <Redirect to="/login"></Redirect>;
+    history.replace('/login');
+    // return <Redirect to="/login"></Redirect>;
   }
   useEffect(() => {
     if (!cookie) {
