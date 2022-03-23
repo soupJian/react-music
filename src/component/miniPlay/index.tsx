@@ -236,7 +236,7 @@ const Index = (props: any) => {
                 <Slider
                   value={precent}
                   onChange={slideChange}
-                  onAfterChange={slideChange}
+                  // onAfterChange={slideChange}
                   tipFormatter={null}
                 />
                 <span>{formatTime(currentSong.dt)}</span>
