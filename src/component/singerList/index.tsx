@@ -1,6 +1,6 @@
 import React from 'react';
 import { history } from 'umi';
-import { Image } from 'antd';
+import { Row, Col, Image } from 'antd';
 import styles from './index.less';
 import { singerType } from '@/tsType/index';
 const index = (props: { singerlist: [] }) => {
@@ -9,22 +9,22 @@ const index = (props: { singerlist: [] }) => {
   };
   const singerlist = props.singerlist;
   return (
-    <div className={styles.singerlist}>
+    <Row gutter={[30, 10]} className={styles.singerlist}>
       {singerlist.map((item: singerType) => {
         return (
-          <div
+          <Col
+            span={4}
             key={item.id}
-            className={styles.singer_item}
             onClick={() => {
               toSinger(item);
             }}
           >
             <Image src={item.picUrl} />
             <p>{item.name}</p>
-          </div>
+          </Col>
         );
       })}
-    </div>
+    </Row>
   );
 };
 

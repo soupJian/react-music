@@ -1,20 +1,24 @@
 @import '../../asset/base/index.less';
-.singer{
-    .tag{
-        padding: 0 20px;
-        .tag_area,.tag_type{
-            display: flex;
-            .tag_item{
-                padding: 10px 20px;
-                border-radius: 17px;
-                cursor: pointer;
-                margin: 10px 10px 0 0;
-                background-color: @color-dialog-background;
-                color: @color-text;
-            }
-            .tag_item:hover{
-                color: @color-theme;
-            }
+.singer {
+  .tag {
+    padding: 0 20px;
+    .tag_area,
+    .tag_type {
+      display: flex;
+      .tag_item {
+        padding: 10px 20px;
+        border-radius: 17px;
+        cursor: pointer;
+        margin: 10px 10px 0 0;
+        color: @color-text;
+        &.active {
+          background-color: @color-dialog-background;
+          color: @color-theme;
         }
+      }
+      .tag_item:hover {
+        color: @color-theme;
+      }
     }
+  }
 }

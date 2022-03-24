@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SingerList from '@/component/singerList';
 
 import { request } from '../../api/index';
-import './index.less';
+import styles from './index.less';
 
 const areaList = [
   { title: '全部', key: -1 },
@@ -41,15 +41,16 @@ const index = () => {
     setSingerlist(result.data.artists);
   };
   return (
-    <div className="singer">
-      <div className="tag">
-        <div className="tag_area">
+    <div className={styles.singer}>
+      <div className={styles.tag}>
+        <div className={styles.tag_area}>
           {areaList.map((item: { title: string; key: number }) => {
             return (
               <div
                 key={item.key}
-                className="tag_item"
-                style={{ color: item.key === data.area ? '#ffcd32' : '#fff' }}
+                className={`${styles.tag_item} ${
+                  item.key === data.area ? styles.active : ''
+                }`}
                 onClick={() => {
                   checkArea(item.key);
                 }}
@@ -59,13 +60,14 @@ const index = () => {
             );
           })}
         </div>
-        <div className="tag_type">
+        <div className={styles.tag_type}>
           {typeList.map((item: { title: string; key: number }) => {
             return (
               <div
                 key={item.key}
-                className="tag_item"
-                style={{ color: item.key === data.type ? '#ffcd32' : '#fff' }}
+                className={`${styles.tag_item} ${
+                  item.key === data.type ? styles.active : ''
+                }`}
                 onClick={() => {
                   checkType(item.key);
                 }}
