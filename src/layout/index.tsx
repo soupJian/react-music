@@ -9,6 +9,7 @@ import styles from './index.less';
 import '../asset/font/iconfont.css';
 
 const { Header, Sider, Content, Footer } = Layout;
+const unloginImg = require('../asset/img/unlogin.png');
 
 function index(props: propsType) {
   const user = JSON.parse(JSON.stringify(props.user));
@@ -85,58 +86,59 @@ function index(props: propsType) {
     return selectKeys;
   };
   return (
-    <Layout style={{ minHeight: '100vh' }} className={styles.layout_wrap}>
-      <Sider className={styles.sider}>
+    <Layout className={styles.layout_wrap}>
+      <Header className={styles.commonHeader}>
         <div className={styles.logo} onClick={toSelf}>
-          <span className="iconfont icon-MusicAcc"></span>
+          <span
+            className="iconfont icon-MusicAcc"
+            style={{ fontSize: '24px', marginRight: '10px' }}
+          ></span>
           soupJian
         </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={getMenuSelect(props.location.pathname)}
-        >
-          <Menu.Item key="/recommend">
-            <Link to="/recommend">热门推荐</Link>
-          </Menu.Item>
-          <Menu.Item key="/singer">
-            <Link to="/singer">分类歌手</Link>
-          </Menu.Item>
-          <Menu.Item key="/rank">
-            <Link to="/rank">排行榜单</Link>
-          </Menu.Item>
-          <Menu.Item key="/me">
-            <Link to="/me">个人中心</Link>
-          </Menu.Item>
-        </Menu>
-      </Sider>
-      <Layout className={styles.content}>
-        <Header className={styles.content_header}>
+        <div className={styles.headeRight}>
           <SearchInput></SearchInput>
+          <img src={props.user.user_detail.avatarUrl || unloginImg} alt="" />
           {user.token === 'true' ? (
-            <div className={styles.login}>
-              <img src={props.user.user_detail.avatarUrl} alt="" />
-              <Dropdown
-                overlay={menu}
-                placement="bottomCenter"
-                arrow
-                overlayClassName={styles.dropdownSelect}
-              >
-                <a onClick={e => e.preventDefault()} className={styles.drop_a}>
-                  {props.user.user_detail.nickname}
-                </a>
-              </Dropdown>
-            </div>
+            <Dropdown
+              overlay={menu}
+              placement="bottomCenter"
+              arrow
+              overlayClassName={styles.dropdownSelect}
+            >
+              <a onClick={e => e.preventDefault()} className={styles.userName}>
+                {props.user.user_detail.nickname}
+              </a>
+            </Dropdown>
           ) : (
-            <div className={styles.login}>
+            <div className={styles.userName}>
               <Link to="/login">登录</Link>
             </div>
           )}
-        </Header>
-        <Content>
-          <div>{props.children}</div>
-        </Content>
-        <Footer className={styles.content_footer}>
+        </div>
+      </Header>
+      <Layout>
+        <Sider className={styles.sider} collapsible>
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={getMenuSelect(props.location.pathname)}
+          >
+            <Menu.Item key="/recommend">
+              <Link to="/recommend">热门推荐</Link>
+            </Menu.Item>
+            <Menu.Item key="/singer">
+              <Link to="/singer">分类歌手</Link>
+            </Menu.Item>
+            <Menu.Item key="/rank">
+              <Link to="/rank">排行榜单</Link>
+            </Menu.Item>
+            <Menu.Item key="/me">
+              <Link to="/me">个人中心</Link>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Content className={styles.content}>{props.children}</Content>
+        <Footer className={styles.footer}>
           <MiniPlay></MiniPlay>
         </Footer>
       </Layout>

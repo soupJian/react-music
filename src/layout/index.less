@@ -1,22 +1,36 @@
 @import '../asset/base/index.less';
 .layout_wrap {
-  width: 1100px;
-  max-width: 1100px;
-  min-width: 1100px;
-  margin: 0 auto;
-  .sider {
+  padding-top: 64px;
+  .commonHeader {
     position: fixed;
     top: 0;
-    width: 150px !important;
-    max-width: 150px !important;
-    min-width: 150px !important;
-    bottom: 0;
-    z-index: 1;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    z-index: 999;
     .logo {
-      text-align: left;
-      padding-left: 6px;
-      cursor: pointer;
+      line-height: 64px;
+      color: @color-theme;
+      text-align: center;
+      font-size: @font-size-large-xx;
+      font-weight: 600;
     }
+    .headeRight {
+      display: flex;
+      align-items: center;
+      img {
+        width: 40px;
+        height: 40px;
+        margin: 0 10px 0 30px;
+        border-radius: 50%;
+      }
+      .userName {
+        color: @color-theme;
+      }
+    }
+  }
+  .sider {
     :global {
       .ant-menu-dark .ant-menu-item-selected > a,
       .ant-menu-dark .ant-menu-item-active > a {
@@ -29,77 +43,13 @@
     }
   }
   .content {
-    padding-left: 150px;
-    padding-bottom: 60px;
     background-color: @color-background;
-    position: relative;
-    .content_header {
-      padding: 0;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      .login {
-        padding: 0 20px;
-        color: @color-text-d;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        &:hover {
-          color: @color-theme;
-        }
-        img {
-          width: 40px;
-          margin-right: 5px;
-          border-radius: 50%;
-        }
-        .drop_a {
-          color: @color-theme;
-        }
-      }
-    }
-    .content_footer {
-      background-color: @color-background;
-      padding: 10px;
-      width: 100%;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      z-index: 10;
-    }
   }
-}
-.logo {
-  margin: 16px;
-  height: 32px;
-  background: @color-background;
-  color: @color-theme;
-  text-align: center;
-  font-size: @font-size-large;
-  font-weight: 600;
-  line-height: 32px;
-}
-:global {
-  .ant-dropdown {
-    top: 45px !important;
-  }
-  .ant-dropdown-menu {
+  .footer {
     background-color: @color-background;
-    .ant-dropdown-menu-item {
-      &:hover {
-        a,
-        span {
-          color: @color-text-b;
-        }
-      }
-      a,
-      span {
-        color: @color-text;
-      }
-    }
-  }
-  .ant-dropdown-arrow {
-    border-left-color: @color-theme !important;
-    border-top-color: @color-theme !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }
