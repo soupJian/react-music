@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Image } from 'antd';
+import { Button, Image, Tooltip } from 'antd';
 import { connect, MusicModelState } from 'umi';
 import { songItemType } from '@/tsType/index';
 import { formatTime, shuffle } from '@/common/common_ts';
@@ -56,7 +56,15 @@ const Index = (props: any) => {
         <div className={styles.title_des}>
           <div className={styles.title_header}>
             <p className={styles.title_name}>{detailObj.name}</p>
-            <p className={styles.title_description}>{detailObj.description}</p>
+            <Tooltip
+              placement="bottom"
+              title={detailObj.description}
+              overlayStyle={{ maxWidth: '500px' }}
+            >
+              <p className={styles.title_description}>
+                {detailObj.description}
+              </p>
+            </Tooltip>
           </div>
           <div className={styles.title_aciton}>
             <Button

@@ -6,15 +6,6 @@ import { formatTime, shuffle } from '../common_ts/index';
 import { propsType, songItemType } from '@/tsType/index';
 // 获取Body对象高度
 let height = document.body.clientHeight;
-// 左侧列表区域
-let tableHeight = height - 64 - 120 - 10 - 64 - 60; // 64 header高度，120图片高度，10margin-top,32底部分页 60 底部footer
-let pageSize = tableHeight / 33;
-if (pageSize < 6) {
-  pageSize = 6;
-}
-if (pageSize > 8) {
-  pageSize = 8;
-}
 const Index = (props: any) => {
   const mode = props.music.mode;
   const columns = [
@@ -22,7 +13,6 @@ const Index = (props: any) => {
       title: '标题',
       dataIndex: 'name',
       key: 'name',
-      width: 250,
       // ellipsis: true,
       render: (name: string, data: any) => (
         <p
@@ -50,7 +40,6 @@ const Index = (props: any) => {
       title: '歌手',
       dataIndex: 'singer',
       key: 'singer',
-      width: 200,
       ellipsis: true,
       render: (singer: any) => (
         <>
@@ -70,10 +59,10 @@ const Index = (props: any) => {
       key: 'action',
       render: () => (
         <>
-          <span>播放</span>
-          <span>播放</span>
-          <span>播放</span>
-          <span>播放</span>
+          <span style={{ marginRight: '20px' }}>播放</span>
+          <span>下一首</span>
+          <span style={{ margin: '0 20px' }}>收藏</span>
+          <span>添加到歌单</span>
         </>
       ),
     },
@@ -122,7 +111,7 @@ const Index = (props: any) => {
       <Table
         className={styles.table_item}
         pagination={{
-          pageSize: pageSize,
+          pageSize: 10,
           showSizeChanger: false,
           showTitle: true,
           showQuickJumper: true,
