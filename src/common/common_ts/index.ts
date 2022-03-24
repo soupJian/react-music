@@ -30,14 +30,22 @@ export const shuffle = (arr: any) => {
   }
   return arr;
 };
+export interface lyricItem {
+  time: number;
+  line: string;
+  currentLine: boolean;
+  next: number | null;
+  before: number | null;
+}
+
 export const parseLyric = (lyric: string) => {
   let lines = lyric.split('\n'), //将文本按行分隔，存入数组
     pattern = /\[\d*:\d*((\.|\:)\d*)*\]/g, //正则表达式
-    result: any[] = []; //保存最终结果的数组
+    result: lyricItem[] = []; //保存最终结果的数组
   lines.forEach((item: any) => {
     let time = item.match(pattern), //返回与正则匹配的字符串的数组，正则中有/g，为全部
-      value = item.replace(pattern, ''); //提取歌词
-    if (time) {
+      value: string = item.replace(pattern, ''); //提取歌词
+    if (time && value != '') {
       let t = time[0].slice(1, -1).split(':'); //去掉时间里的中括号并分割
       if (t.length === 3) {
         //[00:00:00]
@@ -46,14 +54,28 @@ export const parseLyric = (lyric: string) => {
             parseInt(t[0], 10) * 60 + parseInt(t[1]) + parseFloat('0.' + t[2]),
           line: value,
           currentLine: false,
+          next: null,
+          before: null,
         }); //最终数组
       } else {
         result.push({
           time: parseInt(t[0], 10) * 60 + parseFloat(t[1]),
           line: value,
           currentLine: false,
+          next: null,
+          before: null,
         });
       }
+    }
+  });
+  result.forEach((item, index) => {
+    if (index == 0) {
+      item.next = result[index + 1].time;
+    } else if (index == result.length - 1) {
+      item.before = result[index - 1].time;
+    } else {
+      item.before = result[index - 1].time;
+      item.next = result[index + 1].time;
     }
   });
   return result;

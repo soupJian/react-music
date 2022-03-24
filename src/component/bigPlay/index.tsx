@@ -4,7 +4,7 @@ import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import { songItemType } from '../../tsType/index';
 import { request } from '../../api/index';
-import { parseLyric } from '../../common/common_ts/index';
+import { parseLyric, lyricItem } from '../../common/common_ts/index';
 const Index = (props: any) => {
   const playList = JSON.parse(JSON.stringify(props.music.playList));
   const randowList = JSON.parse(JSON.stringify(props.music.randowList));
@@ -59,34 +59,21 @@ const Index = (props: any) => {
     }
   };
   // 解析歌词为歌词和时间的对象
-  const lyricObj = parseLyric(lyric);
-
-  // 防止歌词中出现空，导致滚动出乱
-  lyricObj.forEach((item: { line: String }, index) => {
-    if (item.line == '') {
-      lyricObj.splice(index, 1);
-    }
-  });
-  if (lyricObj.length > 0) {
-    for (let i = 0; i <= lyricObj.length - 1; i++) {
-      if (
-        i != lyricObj.length - 1 &&
-        lyricObj[i + 1].time == lyricObj[i].time
-      ) {
-        lyricObj[i + 1].time += 0.0000001;
-      }
-      if (
-        i != lyricObj.length - 1 &&
-        lyricObj[i].time <= currentTime &&
-        lyricObj[i + 1].time > currentTime
-      ) {
+  const lyricArr: lyricItem[] = parseLyric(lyric);
+  if (lyricArr.length > 0) {
+    for (let i = 0; i <= lyricArr.length - 1; i++) {
+      const item: lyricItem = lyricArr[i];
+      if (item.next && item.time <= currentTime && item.next > currentTime) {
         // 设置当前播放歌词
-        lyricObj[i].currentLine = true;
+        item.currentLine = true;
         if (i > 5) {
           scrollTop(i);
         }
+      } else if (!item.next && item.time <= currentTime) {
+        // 最后一行
+        item.currentLine = true;
       } else {
-        lyricObj[i].currentLine = false;
+        lyricArr[i].currentLine = false;
       }
     }
   }
@@ -279,7 +266,7 @@ const Index = (props: any) => {
           onMouseLeave={continueScroll}
           onWheel={lyricWheel}
         >
-          {lyricObj.map(
+          {lyricArr.map(
             (item: { line: string; currentLine: boolean }, index: number) => {
               return (
                 <p
