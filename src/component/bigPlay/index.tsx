@@ -55,7 +55,7 @@ const Index = (props: any) => {
     }
     if (lyric_wrap.current) {
       const lyric_Div = lyric_wrap.current;
-      lyric_Div.scrollTop = (i - 5) * 22; // 22 是每一个p的高度
+      lyric_Div.scrollTop = (i - 5) * 30; // 30 是每一个p的高度
     }
   };
   // 解析歌词为歌词和时间的对象
