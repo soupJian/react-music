@@ -118,7 +118,7 @@ const Index = (props: any) => {
         }}
         dataSource={dataSource}
         columns={columns}
-        rowKey={(dataSource: { id: number }) => dataSource.id}
+        rowKey={'id'}
       />
     </div>
   );

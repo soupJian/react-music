@@ -36,11 +36,6 @@ const index = (props: propsType) => {
         <Image src={user_detail.avatarUrl} />
         <div className={styles.user_detail}>
           <p className={styles.nickname}>{user_detail.nickname}</p>
-          {/* <p className={styles.tabItem}>
-                        <Link to="#">歌单()</Link>
-                        <Link to="#">关注()</Link>
-                        <Link to="#">粉丝()</Link>
-                    </p> */}
           <p>{user_detail.signature}</p>
         </div>
       </div>

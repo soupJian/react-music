@@ -20,7 +20,7 @@ const Index = (props: { list: []; id: number; onChangeId: any }) => {
     <div className={styles.list} style={{ height: `${simiHeight}px` }}>
       {list.map((item: similist) => {
         return (
-          <Tooltip placement="bottom" title={item.name}>
+          <Tooltip placement="bottom" title={item.name} key={item.id}>
             <div
               className={
                 item.id === id ? styles.item_active : styles.item_default

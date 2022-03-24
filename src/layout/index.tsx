@@ -101,7 +101,7 @@ function index(props: propsType) {
           {user.token === 'true' ? (
             <Dropdown
               overlay={menu}
-              placement="bottomCenter"
+              placement="bottom"
               arrow
               overlayClassName={styles.dropdownSelect}
             >
