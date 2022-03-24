@@ -1,10 +1,16 @@
 import React from 'react';
 import { Image } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Pagination, Autoplay, Navigation, Lazy } from 'swiper';
+import SwiperCore, {
+  Pagination,
+  Autoplay,
+  Navigation,
+  Lazy,
+  EffectCoverflow,
+} from 'swiper';
 import styles from './index.less';
 import 'swiper/swiper-bundle.css';
-SwiperCore.use([Pagination, Autoplay, Navigation, Lazy]);
+SwiperCore.use([Pagination, Autoplay, Navigation, Lazy, EffectCoverflow]);
 const Index = (props: { bannerList: [] }) => {
   const bannerList = props.bannerList;
   return (
@@ -19,6 +25,15 @@ const Index = (props: { bannerList: [] }) => {
       }}
       lazy={{
         loadPrevNext: true,
+      }}
+      effect={'coverflow'}
+      slidesPerView={3}
+      coverflowEffect={{
+        rotate: 0,
+        stretch: 20,
+        depth: 50,
+        modifier: 1,
+        slideShadows: true,
       }}
     >
       {bannerList.map((item: { imageUrl: string }) => {

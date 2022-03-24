@@ -1,6 +1,6 @@
 import React from 'react';
 import { history } from 'umi';
-import { Image } from 'antd';
+import { Row, Col, Image } from 'antd';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
 import { SongListItem } from '../../tsType/index';
@@ -11,11 +11,12 @@ const Index = (props: { songList: [] }) => {
     history.push('/song/' + item.id);
   };
   return (
-    <div className={styles.songList_wrap}>
+    <Row gutter={[30, 10]} className={styles.songListWrap}>
       {songList.map((item: SongListItem) => {
         return (
-          <div
-            className={styles.songList_item}
+          <Col
+            span={4}
+            // className={styles.songList_item}
             key={item.id}
             onClick={() => {
               toDetail(item);
@@ -31,10 +32,10 @@ const Index = (props: { songList: [] }) => {
               {item.playCount}
             </div>
             <p className={styles.name}>{item.name}</p>
-          </div>
+          </Col>
         );
       })}
-    </div>
+    </Row>
   );
 };
 

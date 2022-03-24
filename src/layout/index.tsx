@@ -117,7 +117,7 @@ function index(props: propsType) {
         </div>
       </Header>
       <Layout>
-        <Sider className={styles.sider} collapsible>
+        <Sider className={styles.sider}>
           <Menu
             theme="dark"
             mode="inline"

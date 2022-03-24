@@ -9,6 +9,7 @@
     display: flex;
     justify-content: space-between;
     z-index: 999;
+    padding: 0 20px;
     .logo {
       line-height: 64px;
       color: @color-theme;
@@ -31,6 +32,13 @@
     }
   }
   .sider {
+    position: fixed;
+    left: 0;
+    top: 64px;
+    bottom: 0;
+    width: 620px !important;
+    min-width: 160px !important;
+    max-width: 160px !important;
     :global {
       .ant-menu-dark .ant-menu-item-selected > a,
       .ant-menu-dark .ant-menu-item-active > a {
@@ -43,6 +51,7 @@
     }
   }
   .content {
+    padding-left: 160px;
     background-color: @color-background;
   }
   .footer {

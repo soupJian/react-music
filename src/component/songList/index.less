@@ -1,35 +1,20 @@
 @import '../../asset/base/index.less';
-.songList_wrap {
-  display: flex;
-  flex-wrap: wrap;
-  .songList_item {
-    margin: 0 20px 20px;
-    width: 180px;
-    cursor: pointer;
-    :global {
-      .ant-image {
-        width: 180px;
-        height: 180px;
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-    .name {
-      margin-top: -27px;
-      line-height: 20px;
-    }
-    .shade {
-      position: relative;
-      bottom: 30px;
-      height: 27px;
-      line-height: 27px;
-      font-size: @font-size-small;
-      color: #ccc;
-      background-color: @color-background-d;
-      opacity: 0.8;
-      padding-left: 10px;
-    }
+.songListWrap {
+  padding: 0 20px;
+  .shade {
+    position: relative;
+    bottom: 27px;
+    height: 27px;
+    line-height: 27px;
+    font-size: @font-size-small;
+    color: #ccc;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
+    padding-left: 10px;
+  }
+  .name {
+    margin-top: -20px;
+    line-height: 20px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
   }
 }
