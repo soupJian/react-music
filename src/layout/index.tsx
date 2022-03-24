@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Link, connect, IndexModelState, history } from 'umi';
+import {
+  Redirect,
+  Link,
+  connect,
+  IndexModelState,
+  MusicModelState,
+  history,
+} from 'umi';
 import { Layout, Menu, Input, Dropdown, Button } from 'antd';
 import { requestCookie } from '@/api/index';
 import { propsType } from '../tsType/index';
@@ -14,6 +21,7 @@ const unloginImg = require('../asset/img/unlogin.png');
 function index(props: propsType) {
   const user = JSON.parse(JSON.stringify(props.user));
   const id = user.user_detail.userId;
+  const currentIndex = props.music.currentIndex;
   const cookie = localStorage.getItem('cookie');
   if (props.location.pathname === '/me' && user.token == '') {
     history.replace('/login');
@@ -137,15 +145,20 @@ function index(props: propsType) {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Content className={styles.content}>{props.children}</Content>
-        <Footer className={styles.footer}>
-          <MiniPlay></MiniPlay>
-        </Footer>
+        <Content className={styles.content}>
+          <div className={styles.container}>{props.children}</div>
+        </Content>
       </Layout>
+      <Footer className={styles.footer}>
+        <MiniPlay></MiniPlay>
+      </Footer>
     </Layout>
   );
 }
 
-export default connect(({ user }: { user: IndexModelState }) => ({
-  user,
-}))(index);
+export default connect(
+  ({ music, user }: { music: MusicModelState; user: IndexModelState }) => ({
+    music,
+    user,
+  }),
+)(index);

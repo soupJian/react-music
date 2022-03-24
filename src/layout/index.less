@@ -36,9 +36,9 @@
     left: 0;
     top: 64px;
     bottom: 0;
-    width: 620px !important;
-    min-width: 160px !important;
-    max-width: 160px !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
     :global {
       .ant-menu-dark .ant-menu-item-selected > a,
       .ant-menu-dark .ant-menu-item-active > a {
@@ -51,9 +51,15 @@
     }
   }
   .content {
-    padding-left: 160px;
+    padding-left: 200px;
     padding-bottom: 44px;
     background-color: @color-background;
+    .container {
+      width: 1000px;
+      min-width: 1000px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
   }
   .footer {
     background-color: @color-background;

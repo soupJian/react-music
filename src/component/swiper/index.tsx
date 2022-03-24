@@ -1,21 +1,15 @@
 import React from 'react';
 import { Image } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, {
-  Pagination,
-  Autoplay,
-  Navigation,
-  Lazy,
-  EffectCoverflow,
-} from 'swiper';
-import styles from './index.less';
+import SwiperCore, { Pagination, Autoplay, Navigation, Lazy } from 'swiper';
+import './index.less';
 import 'swiper/swiper-bundle.css';
-SwiperCore.use([Pagination, Autoplay, Navigation, Lazy, EffectCoverflow]);
+SwiperCore.use([Pagination, Navigation, Lazy]);
 const Index = (props: { bannerList: [] }) => {
   const bannerList = props.bannerList;
   return (
     <Swiper
-      className={styles.swiper_banner}
+      className="swiperContainer"
       loop
       pagination={{ clickable: true }}
       autoplay={{ disableOnInteraction: false }}
@@ -27,18 +21,13 @@ const Index = (props: { bannerList: [] }) => {
         loadPrevNext: true,
       }}
       effect={'coverflow'}
-      slidesPerView={3}
-      coverflowEffect={{
-        rotate: 0,
-        stretch: 20,
-        depth: 50,
-        modifier: 1,
-        slideShadows: true,
-      }}
+      slidesPerView={1.5}
+      spaceBetween={0}
+      centeredSlides={true}
     >
       {bannerList.map((item: { imageUrl: string }) => {
         return (
-          <SwiperSlide key={item.imageUrl} className={styles.swiper_item}>
+          <SwiperSlide key={item.imageUrl} className="swiperSlide">
             <Image src={item.imageUrl} />
           </SwiperSlide>
         );
