@@ -4,12 +4,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination, Autoplay, Navigation, Lazy } from 'swiper';
 import './index.less';
 import 'swiper/swiper-bundle.css';
-SwiperCore.use([Pagination, Navigation, Lazy]);
+SwiperCore.use([Pagination, Navigation, Autoplay, Lazy]);
 const Index = (props: { bannerList: [] }) => {
   const bannerList = props.bannerList;
   return (
     <Swiper
-      className="swiperContainer"
+      className="swiper-container"
       loop
       pagination={{ clickable: true }}
       autoplay={{ disableOnInteraction: false }}
@@ -22,12 +22,12 @@ const Index = (props: { bannerList: [] }) => {
       }}
       effect={'coverflow'}
       slidesPerView={1.5}
-      spaceBetween={0}
+      spaceBetween={-180}
       centeredSlides={true}
     >
       {bannerList.map((item: { imageUrl: string }) => {
         return (
-          <SwiperSlide key={item.imageUrl} className="swiperSlide">
+          <SwiperSlide key={item.imageUrl} className="swiper-slide">
             <Image src={item.imageUrl} />
           </SwiperSlide>
         );
