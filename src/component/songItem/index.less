@@ -2,8 +2,10 @@
 .songlist_item {
   .table_item {
     :global {
-      .ant-table,
-      .ant-table-cell {
+      .ant-table-thead .ant-table-cell {
+        background-color: @color-dialog-background;
+      }
+      .ant-table-tbody .ant-table-cell {
         background-color: @color-background;
         color: @color-text-l;
       }
@@ -12,86 +14,6 @@
       }
       .ant-table-tbody > tr.ant-table-row:hover > td {
         background-color: @color-dialog-background;
-      }
-      .ant-table-thead > tr > th,
-      .ant-table-tbody > tr > td {
-        border-bottom: 1px solid @color-text-l;
-      }
-      .ant-table-thead > tr > th,
-      .ant-table-tbody > tr > td,
-      .ant-table tfoot > tr > th,
-      .ant-table tfoot > tr > td {
-        padding: 4px;
-      }
-      .ant-select
-        .ant-pagination-options-size-changer
-        .ant-select-single
-        .ant-select-show-arrow {
-        &:hover {
-          border-color: @color-theme;
-        }
-      }
-      .ant-table-pagination.ant-pagination {
-        margin: 15px 0;
-      }
-
-      .ant-pagination-item-link,
-      .ant-pagination-item,
-      .ant-select-selector {
-        background-color: @color-dialog-background;
-      }
-      .ant-pagination-item-link,
-      .ant-pagination-item {
-        &:hover {
-          border-color: @color-theme;
-          a {
-            color: @color-theme;
-          }
-        }
-      }
-      .ant-pagination-next,
-      .ant-pagination-prev {
-        &:hover {
-          .ant-pagination-item-link {
-            color: @color-theme;
-          }
-        }
-      }
-      .ant-select-focused {
-        border-color: @color-dialog-background !important;
-      }
-      .ant-pagination-item-active {
-        font-weight: 500;
-        color: @color-theme;
-        border-color: @color-theme;
-        a {
-          color: @color-theme;
-        }
-      }
-      // 省略号颜色
-      .ant-pagination-item-ellipsis {
-        color: @color-text-l;
-      }
-      // 左右双箭头颜色
-      .anticon-double-right,
-      .anticon-double-left {
-        color: @color-theme;
-      }
-      // 跳转发分页
-      .ant-pagination-options {
-        .ant-pagination-options-quick-jumper {
-          color: @color-text-l;
-          input {
-            background-color: @color-dialog-background;
-            &:hover {
-              border-color: @color-theme;
-            }
-            &:focus {
-              border-color: @color-theme;
-              color: @color-theme;
-            }
-          }
-        }
       }
     }
   }

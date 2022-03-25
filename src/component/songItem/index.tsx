@@ -1,20 +1,24 @@
 import React from 'react';
 import { Table } from 'antd';
-import styles from './index.less';
 import { connect, MusicModelState } from 'umi';
 import { formatTime, shuffle } from '../common_ts/index';
-import { propsType, songItemType } from '@/tsType/index';
-// 获取Body对象高度
-let height = document.body.clientHeight;
-const Index = (props: any) => {
+import { songArray, singerArray } from '@/type/music';
+import styles from './index.less';
+interface props {
+  songArray: songArray[];
+  music: MusicModelState;
+  dispatch: Function;
+}
+const Index = (props: props) => {
+  const dataSource: songArray[] = props.songArray;
   const mode = props.music.mode;
-  const columns = [
+  const columns: any = [
     {
-      title: '标题',
+      title: '歌名',
       dataIndex: 'name',
       key: 'name',
-      // ellipsis: true,
-      render: (name: string, data: any) => (
+      align: 'center',
+      render: (name: string, data: songArray) => (
         <p
           style={{
             textOverflow: 'ellipsis',
@@ -23,7 +27,7 @@ const Index = (props: any) => {
           }}
           onClick={() => {
             // 点击播放
-            playThis(data);
+            // playThis(data);
           }}
         >
           {name}
@@ -32,18 +36,23 @@ const Index = (props: any) => {
     },
     {
       title: '时长',
-      dataIndex: 'duration',
-      key: 'duration',
+      dataIndex: 'dt',
+      key: 'dt',
       width: 60,
+      align: 'center',
+      render: (dt: number) => {
+        return formatTime(dt);
+      },
     },
     {
       title: '歌手',
       dataIndex: 'singer',
       key: 'singer',
+      align: 'center',
       ellipsis: true,
-      render: (singer: any) => (
+      render: (singer: singerArray[]) => (
         <>
-          {singer.map((item: { id: number; name: string }) => {
+          {singer.map((item: singerArray) => {
             return (
               <span style={{ marginRight: '5px' }} key={item.id}>
                 {item.name}
@@ -57,20 +66,17 @@ const Index = (props: any) => {
       title: '操作',
       dataIndex: 'action',
       key: 'action',
+      align: 'center',
       render: () => (
         <>
-          <span style={{ marginRight: '20px' }}>播放</span>
           <span>下一首</span>
-          <span style={{ margin: '0 20px' }}>收藏</span>
           <span>添加到歌单</span>
+          <span style={{ marginLeft: '10px' }}>下载</span>
         </>
       ),
     },
   ];
-  const playThis = (data: any) => {
-    const index = dataSource.findIndex((item: any) => {
-      return item.id == data.id;
-    });
+  const playThis = (data: songArray) => {
     props.dispatch({
       type: 'music/setPlayList',
       playList: JSON.parse(JSON.stringify(dataSource)),
@@ -96,26 +102,11 @@ const Index = (props: any) => {
       currentIndex,
     });
   };
-  const dataSource = props.songitemlist.map((item: songItemType) => {
-    return {
-      name: item.name,
-      duration: formatTime(item.dt),
-      id: item.id,
-      singer: item.ar,
-      al: item.al, // 专辑
-      dt: item.dt, // 播放时长
-    };
-  });
   return (
     <div className={styles.songlist_item}>
       <Table
+        pagination={false}
         className={styles.table_item}
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: false,
-          showTitle: true,
-          showQuickJumper: true,
-        }}
         dataSource={dataSource}
         columns={columns}
         rowKey={'id'}
