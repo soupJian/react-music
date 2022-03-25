@@ -26,15 +26,9 @@ export default defineConfig({
         { path: '/rank', component: '@/pages/rank/index' },
         { path: '/me', component: '@/pages/me/index' },
         { path: '/login', component: '@/pages/login/index' },
-        { path: '/song/:id', component: '@/component/detail/song_detail/[id]' }, // 歌单
-        {
-          path: '/album/:id',
-          component: '@/component/detail/song_detail/[id]',
-        }, // 专辑
-        {
-          path: '/singer/:id',
-          component: '@/component/detail/singer_detail/[id]',
-        },
+        { path: '/song/:id', component: '@/pages/detail/song_detail/[id]' }, // 歌单详情
+        { path: '/album/:id', component: '@/pages/detail/song_detail/[id]' }, // 专辑详情
+        { path: '/singer/:id', component: '@/pages/detail/singer_detail/[id]' }, // 歌手详情
       ],
     },
   ],

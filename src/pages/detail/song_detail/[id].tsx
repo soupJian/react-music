@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {history} from 'umi'
 import {propsType,playlistType} from '@/tsType/index'
 import { request,requestCookie } from '@/api/index';
-import SongDetail from '@/common/detail/index'
-import SimiList from '@/common/simi/index'
+import SongDetail from '@/component/detail/index'
+import SimiList from '@/component/simi/index'
 import styles from './index.less'
 const index = (props:propsType) => {
   let arr = props.location.pathname.split('/')

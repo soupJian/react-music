@@ -4,7 +4,7 @@ import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import { songItemType } from '../../tsType/index';
 import { request } from '../../api/index';
-import { parseLyric, lyricItem } from '../../common/common_ts/index';
+import { parseLyric, lyricItem } from '@/component/common_ts/index';
 const Index = (props: any) => {
   const playList = JSON.parse(JSON.stringify(props.music.playList));
   const randowList = JSON.parse(JSON.stringify(props.music.randowList));

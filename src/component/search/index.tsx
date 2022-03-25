@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect, MusicModelState, history } from 'umi';
-import { formatTime } from '../../common/common_ts';
+import { formatTime } from '@/component/common_ts';
 import { Input, Dropdown, Spin } from 'antd';
 import { request } from '../../api/index';
 import { singerType, SongListItem } from '@/tsType/index';

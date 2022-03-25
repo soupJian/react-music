@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Image, Tooltip } from 'antd';
 import { connect, MusicModelState } from 'umi';
 import { songItemType } from '@/tsType/index';
-import { formatTime, shuffle } from '@/common/common_ts';
+import { formatTime, shuffle } from '@/component/common_ts';
 import styles from './index.less';
 import SongItem from '../songItem/index';
 import '@/asset/font/iconfont.css';

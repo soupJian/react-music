@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Slider, Modal, message } from 'antd';
 import { connect, MusicModelState, IndexModelState } from 'umi';
-import { shuffle } from '../../common/common_ts/index';
+import { shuffle } from '@/component/common_ts/index';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import './modal.less';
@@ -10,7 +10,7 @@ import {
   formatTime,
   formatCurrentTime,
   formatPrecent,
-} from '../../common/common_ts/index';
+} from '@/component/common_ts/index';
 import BigPlay from '../bigPlay/index';
 const Index = (props: any) => {
   const loveIds = JSON.parse(JSON.stringify(props.user.loveIds));

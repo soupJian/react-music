@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import RankList from '@/common/simi/index';
-import RankDetail from '@/common/detail/index';
+import RankList from '@/component/simi/index';
+import RankDetail from '@/component/detail/index';
 import { request } from '@/api/index';
 import styles from './index.less';
 import { playlistType } from '@/tsType/index';
