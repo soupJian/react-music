@@ -1,20 +1,21 @@
+@import '../../../asset//base/index.less';
 :global {
   .ant-tabs-content {
-    color: rgba(255, 255, 255, 0.8);
+    color: @text-color;
   }
   .ant-tabs-ink-bar {
-    background: #ffcd32;
+    background: @text-color-theme;
   }
   .ant-tabs-tab-btn {
-    color: rgba(255, 255, 255, 0.8);
+    color: @text-color;
   }
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-    color: #ffcd32;
+    color: @text-color-theme;
   }
   .ant-tabs-tab-btn:focus,
   .ant-tabs-tab-remove:focus,
   .ant-tabs-tab-btn:active,
   .ant-tabs-tab-remove:active {
-    color: #ffcd32;
+    color: @text-color-theme;
   }
 }

@@ -2,7 +2,7 @@
 .list {
   overflow-y: auto;
   .item_active {
-    background-color: @color-dialog-background;
+    background-color: @background-high;
   }
   .item_active,
   .item_default {
@@ -10,7 +10,7 @@
     padding: 10px 0 10px 10px;
     cursor: pointer;
     &:hover {
-      background-color: @color-dialog-background;
+      background-color: @background-high;
     }
     img {
       width: 40px;
@@ -22,14 +22,14 @@
       flex: 1;
       flex-direction: column;
       justify-content: center;
-      color: @color-text-l;
+      color: @background-high;
       .des_name {
         width: 166px;
         .ellipse();
       }
       .des_update {
         font-size: 12px;
-        color: @color-text-d;
+        color: @text-color-light;
         margin-top: 5px;
       }
     }

@@ -18,16 +18,16 @@
     animation-play-state: paused;
   }
   .des {
-    font-size: @font-size-small;
+    font-size: 12px;
     .des_title {
       width: 400px;
       margin-left: 10px;
       .music_name {
-        color: @color-text;
+        color: @text-color;
       }
       .music_singer {
         margin-left: 5px;
-        color: @color-text-l;
+        color: @background-high;
       }
     }
     .des_slider {
@@ -36,7 +36,7 @@
       margin-left: 5px;
       align-items: center;
       span {
-        color: @color-text;
+        color: @text-color;
         margin: 0 5px;
       }
       :global {
@@ -50,15 +50,15 @@
     flex: 1;
     display: flex;
     align-items: center;
-    color: @color-theme;
+    color: @text-color-theme;
     justify-content: flex-end;
     span {
       margin: 0 5px;
-      font-size: @font-size-large-xx;
+      font-size: 20px;
       font-size: 22px;
       cursor: pointer;
       &.disabled {
-        color: @color-theme-d;
+        color: @text-color-theme;
       }
     }
   }

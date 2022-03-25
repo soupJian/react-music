@@ -1,6 +1,6 @@
 @import '../../asset/base/index.less';
 .big_playlist {
-  color: @color-text-d;
+  color: @text-color-light;
   height: 450px;
   display: flex;
   .music_playlist {
@@ -10,14 +10,14 @@
       cursor: pointer;
     }
     .title {
-      color: @color-text;
+      color: @text-color;
     }
     .playlist {
       height: calc(100% - 47px);
       overflow-y: auto;
     }
     .list {
-      color: @color-theme;
+      color: @text-color-theme;
       display: flex;
       justify-content: space-between;
       .left {
@@ -30,7 +30,7 @@
         .name {
           flex: 1;
           margin-left: 5px;
-          color: @color-text-l;
+          color: @background-high;
           .ellipse();
         }
       }
@@ -46,7 +46,7 @@
       max-width: 400px;
       .title {
         .name {
-          font-size: @font-size-medium-x;
+          font-size: 16px;
           font-weight: 500;
           line-height: 30px;
           .ellipse();
@@ -76,15 +76,15 @@
         margin-top: 30px;
         display: flex;
         align-items: center;
-        color: @color-theme;
+        color: @text-color-theme;
         justify-content: center;
         span {
           margin: 0 5px;
-          font-size: @font-size-large-xx;
+          font-size: 20px;
           font-size: 22px;
           cursor: pointer;
           &.disabled {
-            color: @color-theme-d;
+            color: @text-color-theme;
           }
         }
       }
