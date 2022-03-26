@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { request } from '../../api/index';
 import Swiper from '@/component/swiper/index';
-import SongList from '@/component/songList';
+import SongList from '@/component/songList/index';
 import styles from './index.less';
 const index = () => {
   const [banners, setBanners] = useState([] as []);

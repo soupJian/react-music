@@ -4,7 +4,7 @@ import { connect, MusicModelState } from 'umi';
 import { songItemType } from '@/tsType/index';
 import { formatTime, shuffle } from '@/component/common_ts';
 import styles from './index.less';
-import SongItem from '../songItem/index';
+import SongTable from '../songTable/index';
 import '@/asset/font/iconfont.css';
 interface playlistType {
   name: string;
@@ -86,7 +86,7 @@ const Index = (props: any) => {
         </div>
       </div>
       <div className={styles.detail_content}>
-        <SongItem songitemlist={detailObj.tracks}></SongItem>
+        <SongTable songitemlist={detailObj.tracks}></SongTable>
       </div>
     </div>
   );

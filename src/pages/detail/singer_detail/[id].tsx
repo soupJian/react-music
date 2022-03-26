@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 import SingerInfo from './singerInfo' // 头部信息
-import HotSong from '@/component/songItem/index' // 热门歌曲
+import SongTable from '@/component/songTable/index' // 热门歌曲
 // import {propsType,playlistType} from '@/tsType/index'
 import { request } from '@/api/index';
 import styles from  './index.less'
@@ -93,7 +93,7 @@ const index = (props:props) => {
       <SingerInfo singer={singer}></SingerInfo>
       <Tabs defaultActiveKey="1" style={{marginTop: '20px'}}>
         <TabPane tab="热门歌曲" key="1">
-          <HotSong songArray={hotSongs}/>
+          <SongTable songArray={hotSongs}/>
         </TabPane>
         <TabPane tab="专辑" key="2">
           Content of Tab Pane 2
