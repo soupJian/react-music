@@ -1,5 +1,12 @@
 @import '../../../asset//base/index.less';
 :global {
+  // 修改tabs底部边框色
+  .ant-tabs-top > .ant-tabs-nav::before,
+  .ant-tabs-bottom > .ant-tabs-nav::before,
+  .ant-tabs-top > div > .ant-tabs-nav::before,
+  .ant-tabs-bottom > div > .ant-tabs-nav::before {
+    border-bottom: none;
+  }
   .ant-tabs-content {
     color: @text-color;
   }

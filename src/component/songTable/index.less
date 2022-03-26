@@ -3,17 +3,20 @@
   .table_item {
     :global {
       .ant-table-thead .ant-table-cell {
-        background-color: @background-high;
+        background-color: @background-hover;
+        color: @text-color;
       }
       .ant-table-tbody .ant-table-cell {
-        background-color: @background;
-        color: @background-high;
-      }
-      .ant-table-row:hover {
         background-color: @background-high;
+        color: @text-color;
       }
-      .ant-table-tbody > tr.ant-table-row:hover > td {
-        background-color: @background-high;
+      .ant-table-row:hover .ant-table-cell {
+        background-color: @background-hover;
+      }
+      // 表格边框色
+      .ant-table-thead > tr > th,
+      .ant-table-tbody > tr > td {
+        border-bottom: 1px solid @border-color;
       }
     }
   }

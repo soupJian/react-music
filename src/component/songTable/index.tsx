@@ -70,8 +70,8 @@ const Index = (props: props) => {
       render: () => (
         <>
           <span>下一首</span>
-          <span>添加到歌单</span>
-          <span style={{ marginLeft: '10px' }}>下载</span>
+          <span style={{ margin: '0 10px' }}>添加到歌单</span>
+          <span>下载</span>
         </>
       ),
     },
