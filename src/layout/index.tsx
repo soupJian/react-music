@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, connect, IndexModelState, MusicModelState, history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { getLoveList, userLoginout } from '@/api/api';
+import { userType } from '@/api/interface';
 import MiniPlay from '@/component/miniPlay/index';
 import SearchInput from '@/component/search/index';
 import styles from './index.less';
@@ -19,23 +20,22 @@ interface props {
   children: React.ReactElement;
 }
 function index(props: props) {
-  const user = JSON.parse(JSON.stringify(props.user));
-  const id = user.user_detail.userId;
-  const cookie = localStorage.getItem('cookie');
-  if (props.location.pathname === '/me' && user.id == '') {
+  const user: IndexModelState = JSON.parse(JSON.stringify(props.user));
+  if (props.location.pathname === '/me' && !user.user_detail) {
     history.replace('/login');
   }
   // 获取用户收藏的歌曲id列表
-  // useEffect(() => {
-  //   if (!cookie) {
-  //     return;
-  //   }
-  //   getLove(id);
-  // }, [id]);
+  useEffect(() => {
+    if (!user.user_detail) {
+      return;
+    }
+    getLove(user.user_detail.userId);
+  }, [user.user_detail]);
   // 退出登录
   const loginOut = async () => {
     await userLoginout();
     localStorage.clear();
+    sessionStorage.clear();
     props.dispatch({
       type: 'user/loginout',
     });
@@ -85,10 +85,10 @@ function index(props: props) {
         <div className={styles.headeRight}>
           <SearchInput></SearchInput>
           <img
-            src={(user && user.user_detail.avatarUrl) || unloginImg}
+            src={(user.user_detail && user.user_detail.avatarUrl) || unloginImg}
             alt=""
           />
-          {user ? (
+          {user.user_detail ? (
             <Dropdown
               overlay={menu}
               placement="bottom"
