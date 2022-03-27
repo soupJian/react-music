@@ -4,16 +4,29 @@ import { songItemType, lycType } from '@/api/interface';
 import { getLyric } from '@/api/api';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
-import { parseLyric, lyricItem } from '@/component/common_ts/index';
-const Index = (props: any) => {
+import { parseLyric, lyricItem } from '@/utils/common';
+interface props {
+  music: MusicModelState;
+  songReady: boolean;
+  playing: boolean;
+  currentTime: number;
+  changeMode: Function;
+  dispatch: Function;
+  changeMusic: Function;
+  togglePlay: Function;
+  closeModal: Function;
+}
+const Index = (props: props) => {
   const playList = JSON.parse(JSON.stringify(props.music.playList));
-  const randowList = JSON.parse(JSON.stringify(props.music.randowList));
-  const currentIndex = props.music.currentIndex;
-  const songReady = props.songReady;
-  const playing = props.playing;
-  const mode = props.music.mode;
-  const currentTime = props.currentTime;
-  const currentSong = props.music.currentSong;
+  const randowList: songItemType[] = JSON.parse(
+    JSON.stringify(props.music.randowList),
+  );
+  const currentIndex: number = props.music.currentIndex;
+  const songReady: boolean = props.songReady;
+  const playing: boolean = props.playing;
+  const mode: string = props.music.mode;
+  const currentTime: number = props.currentTime;
+  const currentSong: songItemType | null = props.music.currentSong;
   const lyric_wrap = useRef<HTMLDivElement>(null);
   const [scrollFlag, setScrollFlag] = useState(false); // 是否允许手动滚动
   const [lyric, setLyric] = useState('');
@@ -36,10 +49,16 @@ const Index = (props: any) => {
     props.togglePlay();
   };
   useEffect(() => {
+    if (!currentSong) {
+      return;
+    }
     getSongLyric();
     scrollTop(0);
-  }, [currentSong.id]);
+  }, [currentSong && currentSong.id]);
   const getSongLyric = async () => {
+    if (!currentSong) {
+      return;
+    }
     const result = await getLyric(currentSong.id);
     if (result.nolyric) {
     } else {
@@ -145,146 +164,153 @@ const Index = (props: any) => {
     });
   };
   return (
-    <div className={styles.big_playlist}>
-      <div className={styles.music_playlist}>
-        <div className={styles.title}>当前播放( {playList.length} )</div>
-        <div className={styles.list}>
-          <div onClick={changeMode}>
-            <span
-              className={`iconfont ${
-                mode == 'sequence'
-                  ? 'icon-sequence'
-                  : mode == 'randow'
-                  ? 'icon-suiji'
-                  : 'icon-xunhuan02'
-              }`}
-            ></span>
-            <span style={{ marginLeft: '5px' }}>
-              {mode == 'sequence'
-                ? '顺序播放'
-                : mode == 'randow'
-                ? '随机播放'
-                : '循环播放'}
-            </span>
-          </div>
-          <div>
-            <span
-              className="iconfont icon-delete"
-              style={{ marginRight: '10px' }}
-              onClick={deleteAll}
-            ></span>
-          </div>
-        </div>
-        <div className={styles.playlist}>
-          {playList.map((item: songItemType, index: number) => {
-            return (
-              <div className={styles.list} key={item.id}>
-                <div className={styles.left}>
-                  <span
-                    className={`iconfont ${
-                      item.id == currentSong.id
-                        ? 'icon-Pause'
-                        : `${styles.empty}`
-                    }`}
-                  ></span>
-                  <span
-                    className={styles.name}
-                    onClick={() => {
-                      chooseMusic(item);
-                    }}
-                  >
-                    {item.name}
-                  </span>
-                </div>
-                <div style={{ paddingRight: '5px' }}>
-                  <span
-                    className="iconfont icon-iconset0127"
-                    onClick={() => {
-                      deleteOne(item);
-                    }}
-                  ></span>
-                </div>
+    <>
+      {currentSong ? (
+        <div className={styles.big_playlist}>
+          <div className={styles.music_playlist}>
+            <div className={styles.title}>当前播放( {playList.length} )</div>
+            <div className={styles.list}>
+              <div onClick={changeMode}>
+                <span
+                  className={`iconfont ${
+                    mode == 'sequence'
+                      ? 'icon-sequence'
+                      : mode == 'randow'
+                      ? 'icon-suiji'
+                      : 'icon-xunhuan02'
+                  }`}
+                ></span>
+                <span style={{ marginLeft: '5px' }}>
+                  {mode == 'sequence'
+                    ? '顺序播放'
+                    : mode == 'randow'
+                    ? '随机播放'
+                    : '循环播放'}
+                </span>
               </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className={styles.music_detail}>
-        <div className={styles.detail_wrap}>
-          <div className={styles.title}>
-            <p className={styles.name}>{currentSong.name}</p>
-            <p className={styles.singer}>
-              {currentSong.ar.map((item: { id: number; name: string }) => {
-                return <span key={item.id}>{item.name}</span>;
+              <div>
+                <span
+                  className="iconfont icon-delete"
+                  style={{ marginRight: '10px' }}
+                  onClick={deleteAll}
+                ></span>
+              </div>
+            </div>
+            <div className={styles.playlist}>
+              {playList.map((item: songItemType, index: number) => {
+                return (
+                  <div className={styles.list} key={item.id}>
+                    <div className={styles.left}>
+                      <span
+                        className={`iconfont ${
+                          item.id == currentSong.id
+                            ? 'icon-Pause'
+                            : `${styles.empty}`
+                        }`}
+                      ></span>
+                      <span
+                        className={styles.name}
+                        onClick={() => {
+                          chooseMusic(item);
+                        }}
+                      >
+                        {item.name}
+                      </span>
+                    </div>
+                    <div style={{ paddingRight: '5px' }}>
+                      <span
+                        className="iconfont icon-iconset0127"
+                        onClick={() => {
+                          deleteOne(item);
+                        }}
+                      ></span>
+                    </div>
+                  </div>
+                );
               })}
-            </p>
+            </div>
           </div>
-          <div className={styles.img_wrap}>
-            <img
-              src={currentSong.al.picUrl}
-              className={
-                playing ? styles.play : `${styles.play} ${styles.pause}`
-              }
-            />
-          </div>
-          <div className={styles.action}>
-            <span
-              className={`iconfont ${
-                mode == 'sequence'
-                  ? 'icon-sequence'
-                  : mode == 'randow'
-                  ? 'icon-suiji'
-                  : 'icon-xunhuan02'
-              }`}
-              onClick={changeMode}
-            ></span>
-            <span className="iconfont icon-aixin-xian"></span>
-            <span
-              className="iconfont icon-previous"
-              onClick={() => {
-                changeMusic(-1);
-              }}
-            ></span>
-            <span
-              className={`iconfont ${playing ? 'icon-Pause' : 'icon-play'} ${
-                songReady ? '' : styles.disabled
-              }`}
-              style={{ fontSize: '28px' }}
-              onClick={togglePlay}
-            ></span>
-            <span
-              className="iconfont icon-next"
-              onClick={() => {
-                changeMusic(1);
-              }}
-            ></span>
-          </div>
-        </div>
-        <div
-          className={styles.lyric}
-          ref={lyric_wrap}
-          onMouseLeave={continueScroll}
-          onWheel={lyricWheel}
-        >
-          {lyricArr.map(
-            (item: { line: string; currentLine: boolean }, index: number) => {
-              return (
-                <p
-                  key={index}
-                  style={{
-                    color: item.currentLine
-                      ? '#fff'
-                      : ' rgba(255, 255, 255, 0.5)',
-                  }}
-                >
-                  {item.line}
+          <div className={styles.music_detail}>
+            <div className={styles.detail_wrap}>
+              <div className={styles.title}>
+                <p className={styles.name}>{currentSong.name}</p>
+                <p className={styles.singer}>
+                  {currentSong.ar.map((item: { id: number; name: string }) => {
+                    return <span key={item.id}>{item.name}</span>;
+                  })}
                 </p>
-              );
-            },
-          )}
+              </div>
+              <div className={styles.img_wrap}>
+                <img
+                  src={currentSong.al.picUrl}
+                  className={
+                    playing ? styles.play : `${styles.play} ${styles.pause}`
+                  }
+                />
+              </div>
+              <div className={styles.action}>
+                <span
+                  className={`iconfont ${
+                    mode == 'sequence'
+                      ? 'icon-sequence'
+                      : mode == 'randow'
+                      ? 'icon-suiji'
+                      : 'icon-xunhuan02'
+                  }`}
+                  onClick={changeMode}
+                ></span>
+                <span className="iconfont icon-aixin-xian"></span>
+                <span
+                  className="iconfont icon-previous"
+                  onClick={() => {
+                    changeMusic(-1);
+                  }}
+                ></span>
+                <span
+                  className={`iconfont ${
+                    playing ? 'icon-Pause' : 'icon-play'
+                  } ${songReady ? '' : styles.disabled}`}
+                  style={{ fontSize: '28px' }}
+                  onClick={togglePlay}
+                ></span>
+                <span
+                  className="iconfont icon-next"
+                  onClick={() => {
+                    changeMusic(1);
+                  }}
+                ></span>
+              </div>
+            </div>
+            <div
+              className={styles.lyric}
+              ref={lyric_wrap}
+              onMouseLeave={continueScroll}
+              onWheel={lyricWheel}
+            >
+              {lyricArr.map(
+                (
+                  item: { line: string; currentLine: boolean },
+                  index: number,
+                ) => {
+                  return (
+                    <p
+                      key={index}
+                      style={{
+                        color: item.currentLine
+                          ? '#fff'
+                          : ' rgba(255, 255, 255, 0.5)',
+                      }}
+                    >
+                      {item.line}
+                    </p>
+                  );
+                },
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      ) : null}
+    </>
   );
 };
 

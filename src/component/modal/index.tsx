@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal } from 'antd';
-
-const index = (props: {
+interface props {
   text: string;
   showConfirm: boolean;
-  onCloseConfirm: any;
-  onClear: any;
+  onCloseConfirm: Function;
+  onClear: Function;
   cancelText: string;
   okText: string;
-}) => {
+}
+const index = (props: props) => {
   const text = props.text;
   const handleOk = () => {
     props.onClear();

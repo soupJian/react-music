@@ -1,4 +1,4 @@
-import request from './index';
+import request from '@/utils/index';
 import {
   bannerItemType, // 轮播图
   playListItemType, // 歌单数组
@@ -251,15 +251,27 @@ export const getChangePassword = async (
     profile: res.profile,
   };
 };
-// /**
-//  * 获取个人喜欢的音乐列表
-//  * @param id
-//  * @returns { ids: number[]}
-//  */
-// export const  getLoveList = async (id:number):Promise<likelistType> => {
-//   return await request<likelistType>({
-//     url: '/likelist',
-//     method: 'get',
-//     params: {id},
-//   });
-// }
+/**
+ * 获取个人喜欢的音乐列表
+ * @param id
+ * @returns { ids: number[]}
+ */
+export const getLoveList = async (id: number): Promise<number[]> => {
+  const res = await request<{ ids: number[] }>({
+    url: '/likelist',
+    method: 'get',
+    params: { id },
+  });
+  return res.ids;
+};
+
+/**
+ * 退出登录
+ * @returns
+ */
+export const userLoginout = async (): Promise<any> => {
+  return await request<any>({
+    url: '/logout',
+    method: 'get',
+  });
+};

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, connect, IndexModelState, MusicModelState, history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
-// import { getLoveList } from '@/api/api';
-// import {likelistType} from '@/type/interface'
+import { getLoveList, userLoginout } from '@/api/api';
 import MiniPlay from '@/component/miniPlay/index';
 import SearchInput from '@/component/search/index';
 import styles from './index.less';
@@ -34,21 +33,24 @@ function index(props: props) {
   //   getLove(id);
   // }, [id]);
   // 退出登录
-  const loginOut = () => {
-    // props.dispatch({
-    //   type: 'user/setUser',
-    //   user,
-    // });
-    // localStorage.clear()
+  const loginOut = async () => {
+    await userLoginout();
+    localStorage.clear();
+    props.dispatch({
+      type: 'user/loginout',
+    });
+    props.dispatch({
+      type: 'music/loginout',
+    });
     history.replace('/recommend');
   };
   // 用户登录成功后 获取 喜欢的音乐
   const getLove = async (id: number) => {
-    // const result:likelistType = await getLoveList(id)
-    // props.dispatch({
-    //   type: 'user/setUserLoveIds',
-    //   loveIds: result.ids,
-    // });
+    const result: number[] = await getLoveList(id);
+    props.dispatch({
+      type: 'user/setUserLoveIds',
+      loveIds: result,
+    });
   };
   const menu = (
     <Menu>
@@ -82,8 +84,11 @@ function index(props: props) {
         </div>
         <div className={styles.headeRight}>
           <SearchInput></SearchInput>
-          <img src={props.user.user_detail.avatarUrl || unloginImg} alt="" />
-          {user && user.id ? (
+          <img
+            src={(user && user.user_detail.avatarUrl) || unloginImg}
+            alt=""
+          />
+          {user ? (
             <Dropdown
               overlay={menu}
               placement="bottom"
@@ -91,7 +96,7 @@ function index(props: props) {
               overlayClassName={styles.dropdownSelect}
             >
               <a onClick={e => e.preventDefault()} className={styles.userName}>
-                {props.user.user_detail.nickname}
+                {user.user_detail.nickname}
               </a>
             </Dropdown>
           ) : (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 import { connect, MusicModelState } from 'umi';
-import { formatTime, shuffle } from '../common_ts/index';
+import { formatTime, shuffle } from '@/utils/common';
 import { singerDetailType, songItemType, singerArray } from '@/api/interface';
 import styles from './index.less';
 interface props {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image } from 'antd';
 import { getUserPlayList } from '@/api/api';
-import { playListItemType } from '@/api/interface';
+import { playListItemType, userType } from '@/api/interface';
 import { connect, IndexModelState } from 'umi';
 import SongList from '@/component/songList/index';
 import styles from './index.less';
@@ -9,8 +9,7 @@ interface props {
   user: IndexModelState;
 }
 const index = (props: props) => {
-  const user_detail = props.user.user_detail;
-  const uid = user_detail.userId;
+  const user: userType | null = props.user.user_detail;
   const [playlist, setPlaylist] = useState<playListItemType[]>([]);
   // const [follows, setFollows] = useState([] as []);
   useEffect(() => {
@@ -19,7 +18,10 @@ const index = (props: props) => {
   }, []);
   // 获取用户歌单列表
   const getPlaylist = async () => {
-    const res: playListItemType[] = await getUserPlayList(uid);
+    if (!user) {
+      return;
+    }
+    const res: playListItemType[] = await getUserPlayList(user.userId);
     setPlaylist(res);
   };
   // 获取用户关注列表
@@ -31,19 +33,23 @@ const index = (props: props) => {
     // setFollows(result.data.follow);
   };
   return (
-    <div>
-      <div className={styles.me_header}>
-        <Image src={user_detail.avatarUrl} />
-        <div className={styles.user_detail}>
-          <p className={styles.nickname}>{user_detail.nickname}</p>
-          <p>{user_detail.signature}</p>
-        </div>
-      </div>
-      <div className={styles.me_list_header}>我的歌单</div>
-      <div className={styles.me_list}>
-        <SongList songList={playlist}></SongList>
-      </div>
-    </div>
+    <>
+      {user ? (
+        <>
+          <div className={styles.me_header}>
+            <Image src={user.avatarUrl} />
+            <div className={styles.user_detail}>
+              <p className={styles.nickname}>{user.nickname}</p>
+              <p>{user.signature}</p>
+            </div>
+          </div>
+          <div className={styles.me_list_header}>我的歌单</div>
+          <div className={styles.me_list}>
+            <SongList songList={playlist}></SongList>
+          </div>
+        </>
+      ) : null}
+    </>
   );
 };
 

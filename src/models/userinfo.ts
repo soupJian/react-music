@@ -1,10 +1,9 @@
 import { ImmerReducer } from 'umi';
-import { userType } from '../tsType/index';
+import { userType } from '@/api/interface';
 
 export interface IndexModelState {
-  token: string;
-  user_detail: userType;
-  loveIds: [];
+  user_detail: userType | null;
+  loveIds: number[];
 }
 export interface IndexModelType {
   namespace: 'user';
@@ -13,25 +12,16 @@ export interface IndexModelType {
     setToken: ImmerReducer<IndexModelState>;
     setUser: ImmerReducer<IndexModelState>;
     setUserLoveIds: ImmerReducer<IndexModelState>;
+    loginout: ImmerReducer<IndexModelState>;
   };
 }
-const user_detail: userType = {
-  nickname: '',
-  userId: 0,
-  avatarUrl: '',
-  backgroundUrl: '',
-  signature: '',
-};
+const defaultUser: string | null =
+  sessionStorage.getItem('user') || sessionStorage.getItem('user') || null;
+
 const IndexModel: IndexModelType = {
   namespace: 'user',
   state: {
-    token:
-      sessionStorage.getItem('token') || localStorage.getItem('token') || '',
-    user_detail: JSON.parse(
-      sessionStorage.getItem('user') ||
-        localStorage.getItem('user') ||
-        JSON.stringify(user_detail),
-    ),
+    user_detail: defaultUser ? JSON.parse(defaultUser) : null,
     loveIds: [],
   },
   reducers: {
@@ -44,6 +34,13 @@ const IndexModel: IndexModelType = {
     },
     setUserLoveIds(state, action) {
       return { ...state, loveIds: action.loveIds };
+    },
+    loginout(state) {
+      return {
+        ...state,
+        user_detail: null,
+        loveIds: [],
+      };
     },
   },
 };

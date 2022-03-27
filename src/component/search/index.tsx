@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect, MusicModelState, history } from 'umi';
-import { formatTime } from '@/component/common_ts';
+import { formatTime } from '@/utils/common';
 import { Input, Dropdown, Spin } from 'antd';
-import { singerType, SongListItem } from '@/tsType/index';
+import { singerListItemType, songItemType } from '@/api/interface';
 import Confirm from '@/component/modal/index';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
@@ -153,14 +153,14 @@ const index = (props: any) => {
     local();
   };
   // 点击歌手进入歌手详情
-  const toSinger = (item: singerType) => {
+  const toSinger = (item: singerListItemType) => {
     history.push(`/singer/${item.id}`);
     handleVisibleChange(false);
     local();
     setVisible(false);
   };
   // 点击歌单进入歌单详情
-  const toSong = (item: SongListItem) => {
+  const toSong = (item: songItemType) => {
     history.replace('/song/' + item.id);
     local();
     setVisible(false);
@@ -333,7 +333,7 @@ const index = (props: any) => {
                     <div className={styles.result_wrap}>
                       <div className={styles.result_title}>歌单</div>
                       <div className={styles.result_container}>
-                        {resultList.playlists.map((item: SongListItem) => {
+                        {resultList.playlists.map((item: songItemType) => {
                           return (
                             <div
                               key={item.id}
@@ -343,7 +343,7 @@ const index = (props: any) => {
                               }}
                             >
                               <img
-                                src={item.coverImgUrl}
+                                src={item.al.picUrl}
                                 className={styles.resultImg}
                               />
                               {item.name}

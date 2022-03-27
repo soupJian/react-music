@@ -1,50 +1,51 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Slider, Modal, message } from 'antd';
+import { songItemType } from '@/api/interface';
 import { connect, MusicModelState, IndexModelState } from 'umi';
-import { shuffle } from '@/component/common_ts/index';
+import { shuffle } from '@/utils/common';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import './modal.less';
 import { getMusicUrl } from '@/api/api';
 import { musicUrl } from '@/api/interface';
-import {
-  formatTime,
-  formatCurrentTime,
-  formatPrecent,
-} from '@/component/common_ts/index';
+import { formatTime, formatCurrentTime, formatPrecent } from '@/utils/common';
 import BigPlay from '../bigPlay/index';
-const Index = (props: any) => {
+interface props {
+  user: IndexModelState;
+  music: MusicModelState;
+  dispatch: Function;
+}
+const Index = (props: props) => {
   const loveIds = JSON.parse(JSON.stringify(props.user.loveIds));
-  const playList = JSON.parse(JSON.stringify(props.music.playList));
-  const randowList = JSON.parse(JSON.stringify(props.music.randowList));
-  const currentIndex = props.music.currentIndex;
-  const mode = props.music.mode;
-  const currentSong = props.music.currentSong;
-  const id: number = currentSong.id;
-  const playing = props.music.playing;
+  const randowList: songItemType[] = JSON.parse(
+    JSON.stringify(props.music.randowList),
+  );
+  const currentIndex: number = props.music.currentIndex;
+  const mode: string = props.music.mode;
+  const currentSong: songItemType | null = props.music.currentSong;
+  const playing: boolean = props.music.playing;
   const audioRef = useRef<HTMLAudioElement>(null);
   const audio = audioRef.current || null;
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
   // 获取歌曲url,watch id来处理事务
   const [musicUrl, setMusicUrl] = useState<string>('');
   // 判断歌曲是否可以准备播放
-  const [songReady, setSongReady] = useState(false);
+  const [songReady, setSongReady] = useState<boolean>(false);
   // 是否展示大小播放器
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState<boolean>(false);
   // 设置当前歌曲播放进度
-  const [precent, setPrecent] = useState(0);
+  const [precent, setPrecent] = useState<number>(0);
   useEffect(() => {
-    if (id == -1) {
-      return;
+    if (currentSong) {
+      getMusicSrc();
     }
-    getMusicSrc();
-  }, [id]);
+  }, [currentSong && currentSong.id]);
   // 获取歌曲播放地址
   const getMusicSrc = async () => {
-    if (id == -1) {
+    if (!currentSong) {
       return;
     }
-    const result: musicUrl[] = await getMusicUrl(id);
+    const result: musicUrl[] = await getMusicUrl(currentSong.id);
     if (!result[0].url) {
       message.warning('暂无播放地址，自动切换下一首');
       changeMusic(1);
@@ -84,8 +85,8 @@ const Index = (props: any) => {
     }
   };
   // timeUpdate 歌曲时间片更新
-  const timeUpdate = (e: any) => {
-    if (audio) {
+  const timeUpdate = () => {
+    if (audio && currentSong) {
       setCurrentTime(audio.currentTime);
       setPrecent(formatPrecent(audio.currentTime, currentSong.dt));
     }
@@ -160,14 +161,17 @@ const Index = (props: any) => {
     }
   };
   // 随机播放
-  const changePlayList = (arr: any) => {
+  const changePlayList = (arr: songItemType[]) => {
+    if (!currentSong) {
+      return;
+    }
     // 设置随机播放列表
     props.dispatch({
       type: 'music/setRandowList',
       randowList: JSON.parse(JSON.stringify(arr)),
     });
-    const index = arr.findIndex((item: any) => {
-      return item.id == id;
+    const index = arr.findIndex((item: songItemType) => {
+      return item.id == currentSong.id;
     });
     props.dispatch({
       type: 'music/setCurrentIndex',
@@ -183,14 +187,17 @@ const Index = (props: any) => {
     setVisible(false);
   };
   const toggleLove = () => {
-    const index = loveIds.indexOf(id);
+    if (!currentSong) {
+      return;
+    }
+    const index = loveIds.indexOf(currentSong.id);
     if (index >= 0) {
       // 存在则取消删除
       loveIds.splice(index, 1);
       message.warning('接口限制，请转至网易云进行操作');
     } else {
       // 不存在添加到我喜欢
-      loveIds.unshift(id);
+      loveIds.unshift(currentSong.id);
       message.warning('接口限制，请转至网易云进行操作');
     }
     props.dispatch({
@@ -199,17 +206,17 @@ const Index = (props: any) => {
     });
   };
   const slideChange = (value: number) => {
+    if (!currentSong) {
+      return;
+    }
     const time = (currentSong.dt * value) / 100;
-    // setCurrentTime(time/1000)
     if (audio) {
       audio.currentTime = time / 1000;
     }
   };
   return (
     <>
-      {currentIndex == -1 ? (
-        <></>
-      ) : (
+      {currentSong ? (
         <>
           <div className={styles.mimi_play}>
             <img
@@ -252,11 +259,16 @@ const Index = (props: any) => {
               ></span>
               <span
                 className={`iconfont ${
-                  loveIds.indexOf(id) >= 0 ? 'icon-love' : 'icon-aixin-xian'
+                  loveIds.indexOf(currentSong.id) >= 0
+                    ? 'icon-love'
+                    : 'icon-aixin-xian'
                 }`}
                 onClick={toggleLove}
                 style={{
-                  color: loveIds.indexOf(id) >= 0 ? '#FF4D4F' : '#ea8011',
+                  color:
+                    loveIds.indexOf(currentSong.id) >= 0
+                      ? '#FF4D4F'
+                      : '#ea8011',
                 }}
               ></span>
               <span
@@ -313,7 +325,7 @@ const Index = (props: any) => {
             ></audio>
           </div>
         </>
-      )}
+      ) : null}
     </>
   );
 };
