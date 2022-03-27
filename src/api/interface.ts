@@ -62,3 +62,9 @@ export interface rankListItemType {
   description: string;
   name: string;
 }
+export interface songDetailType extends rankListItemType {
+  tags: string[];
+  shareCount: number; // 芬妮像次数
+  playCount: number; // 播放次数
+  subscribedCount: number; // 订阅次数
+}

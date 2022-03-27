@@ -7,6 +7,7 @@ import {
   songItemType, // 歌单列表每首歌
   userPlayListItemType, // 用户自己创建的歌单
   rankListItemType, // 排行榜信息及摘要
+  songDetailType, // 歌单详情
 } from './interface';
 
 /**
@@ -86,34 +87,38 @@ export const getTopList = async (): Promise<rankListItemType[]> => {
   return res.list;
 };
 
-// /**
-//  * 获取歌单详情
-//  * @param id
-//  * @returns
-//  */
-// export const  getPlayListDetail = async (id:string):Promise<playListDetailType> => {
-//   return await request<playListDetailType>({
-//     url: '/playlist/detail',
-//     params: {
-//       id
-//     },
-//     method: 'get'
-//   });
-// }
-// /**
-//  * 获取专辑详情
-//  * @param id
-//  * @returns
-//  */
-// export const  getAlbumDetail = async (id:string):Promise<{playList:playListDetailType}> => {
-//   return await request<{playList:playListDetailType}>({
-//     url: '/album',
-//     params: {
-//       id
-//     },
-//     method: 'get'
-//   });
-// }
+/**
+ * 获取歌单详情
+ * @param id
+ * @returns
+ */
+export const getPlayListDetail = async (
+  id: string,
+): Promise<songDetailType> => {
+  const res = await request<{ playlist: songDetailType }>({
+    url: '/playlist/detail',
+    params: {
+      id,
+    },
+    method: 'get',
+  });
+  return res.playlist;
+};
+/**
+ * 获取专辑详情
+ * @param id
+ * @returns
+ */
+export const getAlbumDetail = async (id: string): Promise<rankListItemType> => {
+  const res = await request<{ playlist: rankListItemType }>({
+    url: '/album',
+    params: {
+      id,
+    },
+    method: 'get',
+  });
+  return res.playlist;
+};
 
 /**
  *

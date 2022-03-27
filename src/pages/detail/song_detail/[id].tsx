@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import {history} from 'umi'
-import {propsType,playlistType} from '@/tsType/index'
+import { Tabs } from 'antd';
+import SongTable from '@/component/songTable/index' // 热门歌曲
 import { getPlayListDetail,getAlbumDetail } from '@/api/api';
-// import {playListDetailType} from '@/type/interface'
-import SongDetail from '@/component/detail/index'
-import SimiList from '@/component/simi/index'
+import {songDetailType} from '@/api/interface'
+import SongInfo from './SongInfo'
 import styles from './index.less'
-const index = (props:propsType) => {
+const { TabPane } = Tabs;
+interface props{
+  location:{
+    pathname: string
+  },
+  match:{
+    params:{
+      id: string
+    }
+  }
+}
+const index = (props:props) => {
   let arr = props.location.pathname.split('/')
   let id = props.match.params.id
-  // const [id,setId] = useState(props.match.params.id)
-  // const [similist, setSimilist] = useState<[]>([]);
-  const [songdetail, setSongdetail] = useState<playlistType>({
-    name: '',
-    coverImgUrl: '',
-    description: '',
-    tracks: [],
-  });
+  const [songdetail, setSongdetail] = useState<songDetailType|null>(null)
   useEffect(() => {
     getsongDetail()
-    // getSimi()
   }, [id]);
   // 获取歌单/专辑详情
   const getsongDetail = async() => {
     if(arr[1] == 'song'){
-      // const result:playListDetailType =  await getPlayListDetail(id)
-      // setSongdetail(result.playlist);
+      const result:songDetailType =  await getPlayListDetail(id)
+      setSongdetail(result);
     }
     // if(arr[1] == 'album'){
     //   const result =  await getAlbumDetail(id)
@@ -51,23 +54,21 @@ const index = (props:propsType) => {
     history.replace(`/song/${id}`)    
   }
   return (
-    <div className={styles.song}>
-      <div className={styles.song_detail}>
-        <SongDetail detailObj={songdetail}></SongDetail>
-      </div>
-      {/* {
-        similist.length > 0 ?
-          <div className={styles.song_list}>
-            <SimiList
-              list={similist}
-              id={id}
-              onChangeId={(id: number) => {
-                changeId(id);
-              }}
-            ></SimiList>
-          </div>
-        : ''
-      } */}
+    <div className={styles.singerDetail}>
+      <SongInfo songdetail={songdetail}></SongInfo>
+      <Tabs defaultActiveKey="1" style={{marginTop: '20px'}}>
+      <TabPane tab="歌曲" key="1">
+        {
+          songdetail && <SongTable songArray={songdetail.tracks}/>
+        }
+      </TabPane>
+      <TabPane tab="评论" key="2">
+        Content of Tab Pane 2
+      </TabPane>
+      <TabPane tab="相似歌单" key="3">
+        Content of Tab Pane 3
+      </TabPane>
+    </Tabs>
   </div>
   );
 };
