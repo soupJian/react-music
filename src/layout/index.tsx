@@ -127,13 +127,18 @@ function index(props: props) {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Content className={styles.content}>
+        <Content
+          className={styles.content}
+          style={{ bottom: `${props.music.currentSong ? '44px' : '0'}` }}
+        >
           <div className={styles.container}>{props.children}</div>
         </Content>
       </Layout>
-      <Footer className={styles.footer}>
-        <MiniPlay></MiniPlay>
-      </Footer>
+      {props.music.currentSong ? (
+        <Footer className={styles.footer}>
+          <MiniPlay></MiniPlay>
+        </Footer>
+      ) : null}
     </Layout>
   );
 }
