@@ -1,0 +1,32 @@
+@import url('../../asset//base/base.less');
+.ranklist {
+  margin: 0 !important;
+  .rankItem {
+    height: 150px;
+    position: relative;
+    p {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+    }
+  }
+  .trackWrap {
+    background-color: @background-high;
+    line-height: 30px;
+    padding-top: 10px;
+    p {
+      display: flex;
+      padding: 0 10px;
+      justify-content: space-between;
+      font-size: 12px;
+      span {
+        width: 50%;
+        max-width: 50%;
+        .ellipse();
+      }
+      .right {
+        text-align: right;
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import {
   singerDetailType, // 歌手详情
   songItemType, // 歌单列表每首歌
   userPlayListItemType, // 用户自己创建的歌单
+  rankListItemType, // 排行榜信息及摘要
 } from './interface';
 
 /**
@@ -73,16 +74,17 @@ export const getArticDetail = async (
   };
 };
 
-// /**
-//  * 获取排行榜信息
-//  * @returns
-//  */
-// export const  getTopList = async ():Promise<topList> => {
-//   return await request<topList>({
-//     url: `toplist`,
-//     method: 'get'
-//   });
-// }
+/**
+ * 获取排行榜信息
+ * @returns
+ */
+export const getTopList = async (): Promise<rankListItemType[]> => {
+  const res = await request<{ list: rankListItemType[] }>({
+    url: '/toplist/detail',
+    method: 'get',
+  });
+  return res.list;
+};
 
 // /**
 //  * 获取歌单详情

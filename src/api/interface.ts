@@ -47,3 +47,18 @@ export interface userPlayListItemType {
   coverImgUrl: string;
   playCount: number;
 }
+
+export interface rankTrackItem {
+  first: string;
+  second: string;
+}
+
+export interface rankListItemType {
+  id: number;
+  tracks: rankTrackItem[];
+  updateFrequency: string;
+  coverImgUrl: string;
+  trackCount: number;
+  description: string;
+  name: string;
+}
