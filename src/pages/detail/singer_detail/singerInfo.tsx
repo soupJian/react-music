@@ -1,12 +1,12 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import { singer } from '@/type/music';
+import { singerDetailType } from '@/api/interface';
 import styles from './singerInfo.less';
 interface propsType {
-  singer: singer | null; // 歌手信息
+  singer: singerDetailType | null; // 歌手信息
 }
 const index = (props: propsType) => {
-  const singer: singer | null = props.singer;
+  const singer: singerDetailType | null = props.singer;
   return (
     <>
       {singer ? (

@@ -2,15 +2,19 @@ import React from 'react';
 import { history } from 'umi';
 import { Row, Col, Image } from 'antd';
 import styles from './index.less';
-import { singerType } from '@/tsType/index';
-const index = (props: { singerlist: [] }) => {
-  const toSinger = (item: singerType) => {
+import { singerListItemType } from '@/api/interface';
+
+interface props {
+  singerlist: singerListItemType[];
+}
+const index = (props: props) => {
+  const toSinger = (item: singerListItemType) => {
     history.push(`/singer/${item.id}`);
   };
   const singerlist = props.singerlist;
   return (
     <Row gutter={[30, 10]} className={styles.singerlist}>
-      {singerlist.map((item: singerType) => {
+      {singerlist.map((item: singerListItemType) => {
         return (
           <Col
             span={4}

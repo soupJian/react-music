@@ -1,15 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Redirect,
-  Link,
-  connect,
-  IndexModelState,
-  MusicModelState,
-  history,
-} from 'umi';
-import { Layout, Menu, Input, Dropdown, Button } from 'antd';
-import { requestCookie } from '@/api/index';
-import { propsType } from '../tsType/index';
+import React, { useEffect } from 'react';
+import { Link, connect, IndexModelState, MusicModelState, history } from 'umi';
+import { Layout, Menu, Dropdown } from 'antd';
+// import { getLoveList } from '@/api/api';
+// import {likelistType} from '@/type/interface'
 import MiniPlay from '@/component/miniPlay/index';
 import SearchInput from '@/component/search/index';
 import styles from './index.less';
@@ -17,61 +10,45 @@ import '../asset/font/iconfont.css';
 
 const { Header, Sider, Content, Footer } = Layout;
 const unloginImg = require('../asset/img/unlogin.png');
-
-function index(props: propsType) {
+interface props {
+  location: {
+    pathname: string;
+  };
+  music: MusicModelState;
+  user: IndexModelState;
+  dispatch: Function;
+  children: React.ReactElement;
+}
+function index(props: props) {
   const user = JSON.parse(JSON.stringify(props.user));
   const id = user.user_detail.userId;
-  const currentIndex = props.music.currentIndex;
   const cookie = localStorage.getItem('cookie');
   if (props.location.pathname === '/me' && user.token == '') {
     history.replace('/login');
-    // return <Redirect to="/login"></Redirect>;
   }
-  useEffect(() => {
-    if (!cookie) {
-      return;
-    }
-    getLove(id);
-  }, [id, cookie]);
+  // 获取用户收藏的歌曲id列表
+  // useEffect(() => {
+  //   if (!cookie) {
+  //     return;
+  //   }
+  //   getLove(id);
+  // }, [id]);
   // 退出登录
   const loginOut = () => {
-    const user = {
-      nickname: '',
-      userId: 0,
-      avatarUrl: '',
-      backgroundUrl: '',
-      signature: '',
-    };
-    props.dispatch({
-      type: 'user/setUser',
-      user,
-    });
-    props.dispatch({
-      type: 'user/setToken',
-      payload: '',
-    });
-    props.dispatch({
-      type: 'user/setUserLoveIds',
-      loveIds: [],
-    });
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    localStorage.removeItem('cookie');
-    props.history.replace('/recommend');
+    // props.dispatch({
+    //   type: 'user/setUser',
+    //   user,
+    // });
+    // localStorage.clear()
+    history.replace('/recommend');
   };
   // 用户登录成功后 获取 喜欢的音乐
   const getLove = async (id: number) => {
-    const result = await requestCookie({
-      url: '/likelist',
-      data: `id=${id}`,
-    });
-    props.dispatch({
-      type: 'user/setUserLoveIds',
-      loveIds: result.data.ids,
-    });
+    // const result:likelistType = await getLoveList(id)
+    // props.dispatch({
+    //   type: 'user/setUserLoveIds',
+    //   loveIds: result.ids,
+    // });
   };
   const menu = (
     <Menu>
@@ -85,7 +62,7 @@ function index(props: propsType) {
   );
   // 跳转到个人中心页
   const toSelf = () => {
-    props.history.push('/me');
+    history.push('/me');
   };
   // 登陆成功后，选择下拉菜单
   const getMenuSelect = (pathname: string): string[] => {

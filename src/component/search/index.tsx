@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect, MusicModelState, history } from 'umi';
 import { formatTime } from '@/component/common_ts';
 import { Input, Dropdown, Spin } from 'antd';
-import { request } from '../../api/index';
+// import { request } from '../../api/index';
 import { singerType, SongListItem } from '@/tsType/index';
 import Confirm from '@/component/modal/index';
 import '../../asset/font/iconfont.css';
@@ -36,7 +36,7 @@ const index = (props: any) => {
   const [showConfirm, setShowConfirm] = useState(false);
   // 单曲专辑
   useEffect(() => {
-    getHotSearch();
+    // getHotSearch();
   }, []);
   useEffect(() => {
     clearTimeout(timer);
@@ -44,12 +44,12 @@ const index = (props: any) => {
     // searchValue()
   }, [value]);
   // 获取热门搜索
-  const getHotSearch = async () => {
-    const res = await request({
-      url: '/search/hot/detail',
-    });
-    setHotSearch(res.data.data);
-  };
+  // const getHotSearch = async () => {
+  //   const res = await request({
+  //     url: '/search/hot/detail',
+  //   });
+  //   setHotSearch(res.data.data);
+  // };
   // 点击展示清空搜索弹窗
   const showModal = () => {
     if (historySearch.length == 0) {
@@ -95,17 +95,17 @@ const index = (props: any) => {
       return;
     }
     // 发送请求的时候展示load
-    const res = await request({
-      url: '/search/suggest?keywords=' + value,
-    });
-    setShowload(false);
-    if (res.data.result.order) {
-      // 有搜索结果的时候取消加载load
-      setResultList(res.data.result);
-    } else {
-      // 搜索结果为空的时候战术noresult
-      setEmptyResult(true);
-    }
+    // const res = await request({
+    //   url: '/search/suggest?keywords=' + value,
+    // });
+    // setShowload(false);
+    // if (res.data.result.order) {
+    //   // 有搜索结果的时候取消加载load
+    //   setResultList(res.data.result);
+    // } else {
+    //   // 搜索结果为空的时候战术noresult
+    //   setEmptyResult(true);
+    // }
   };
   // 设置搜索下拉框显示隐藏
   const handleVisibleChange = (flag: boolean) => {
@@ -114,43 +114,43 @@ const index = (props: any) => {
   let song = {};
   // 获取歌曲封面
   const chooseSong = (item: any) => {
-    request({
-      url: '/album?id=' + item.album.id,
-    })
-      .then(data => {
-        song = {
-          name: item.name,
-          id: item.id,
-          singer: item.artists,
-          dt: item.duration, // 播放时长
-          duration: formatTime(item.duration),
-          al: {
-            id: data.data.album.id,
-            picUrl: data.data.album.picUrl,
-          },
-        };
-      })
-      .then(() => {
-        props.dispatch({
-          type: 'music/setCurrentSong',
-          currentSong: song,
-        });
-        props.dispatch({
-          type: 'music/setPlayList',
-          playList: JSON.parse(JSON.stringify([song])),
-        });
-        // 设置随机播放列表
-        props.dispatch({
-          type: 'music/setRandowList',
-          randowList: JSON.parse(JSON.stringify([song])),
-        });
-        const index = 0;
-        props.dispatch({
-          type: 'music/setCurrentIndex',
-          currentIndex: index,
-        });
-        handleVisibleChange(false);
-      });
+    // request({
+    //   url: '/album?id=' + item.album.id,
+    // })
+    //   .then(data => {
+    //     song = {
+    //       name: item.name,
+    //       id: item.id,
+    //       singer: item.artists,
+    //       dt: item.duration, // 播放时长
+    //       duration: formatTime(item.duration),
+    //       al: {
+    //         id: data.data.album.id,
+    //         picUrl: data.data.album.picUrl,
+    //       },
+    //     };
+    //   })
+    //   .then(() => {
+    //     props.dispatch({
+    //       type: 'music/setCurrentSong',
+    //       currentSong: song,
+    //     });
+    //     props.dispatch({
+    //       type: 'music/setPlayList',
+    //       playList: JSON.parse(JSON.stringify([song])),
+    //     });
+    //     // 设置随机播放列表
+    //     props.dispatch({
+    //       type: 'music/setRandowList',
+    //       randowList: JSON.parse(JSON.stringify([song])),
+    //     });
+    //     const index = 0;
+    //     props.dispatch({
+    //       type: 'music/setCurrentIndex',
+    //       currentIndex: index,
+    //     });
+    //     handleVisibleChange(false);
+    //   });
     local();
   };
   // 点击歌手进入歌手详情

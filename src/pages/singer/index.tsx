@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SingerList from '@/component/singerList';
-
-import { request } from '../../api/index';
+import { getArticList } from '../../api/api';
+import { singerListItemType } from '@/api/interface';
 import styles from './index.less';
 
 const areaList = [
@@ -22,7 +22,7 @@ const index = () => {
   const [type, setType] = useState(-1);
   const [area, setArea] = useState(-1);
   const [data, setDate] = useState({ type: type, area: area });
-  const [singerlist, setSingerlist] = useState([] as []);
+  const [singerlist, setSingerlist] = useState<singerListItemType[]>([]);
   const checkType = (key: number) => {
     setType(key);
     setDate({ type: key, area: area });
@@ -35,10 +35,8 @@ const index = () => {
     getSingerList();
   }, [type, area]);
   const getSingerList = async () => {
-    const result = await request({
-      url: `/artist/list?type=${type}&area=${area}`,
-    });
-    setSingerlist(result.data.artists);
+    const result: singerListItemType[] = await getArticList(type, area);
+    setSingerlist(result);
   };
   return (
     <div className={styles.singer}>

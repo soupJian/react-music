@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 import SingerInfo from './singerInfo' // 头部信息
 import SongTable from '@/component/songTable/index' // 热门歌曲
-// import {propsType,playlistType} from '@/tsType/index'
-import { request } from '@/api/index';
+import { getArticDetail } from '@/api/api';
+import {singerDetailType,songItemType} from '@/api/interface'
 import styles from  './index.less'
-// import SingerDetail from '@/component/detail/index'
-import {singer,songArray,singerArray,InterfaceSong} from '@/type/music'
 interface props{
   match:{
     params:{
@@ -17,50 +15,15 @@ interface props{
 const { TabPane } = Tabs;
 const index = (props:props) => {
   const [id,setId] = useState<string>(props.match.params.id)
-  const [singer,setSinger] = useState<singer|null>(null)
-  const [hotSongs,setHotSongs] = useState<songArray[]|null>(null)
-  // const [similist, setSimilist] = useState<[]>([]);
-  // const [singerdetail, setSingerdetail] = useState<playlistType>({
-  //   name: '',
-  //   coverImgUrl: '',
-  //   description: '',
-  //   tracks: [],
-  // });
+  const [singer,setSinger] = useState<singerDetailType|null>(null)
+  const [hotSongs,setHotSongs] = useState<songItemType[]|null>(null)
   useEffect(() => {
     getsingerBase()
   }, [id]);
   // 获取歌手基本信息和热门歌曲
   const getsingerBase = async() => {
-    const result =  await request({
-      url: '/artists',
-      data: `id=${id}`
-    })
-    // 歌手基本信息
-    const singer:singer = {
-      id: result.data.artist.id, // id
-      name: result.data.artist.name, // 昵称
-      briefDesc: result.data.artist.briefDesc, // 基本信息
-      musicSize: result.data.artist.musicSize, // 音乐数
-      albumSize: result.data.artist.albumSize, // 专辑数
-      mvSize: result.data.artist.mvSize, // MV数
-      picUrl: result.data.artist.picUrl // 头像
-    }
-    // 热门歌曲
-    const hotSongs:songArray[] = result.data.hotSongs.map((item:InterfaceSong)=>{
-      return {
-        id: item.id, // 歌曲id
-        name: item.name, // 歌曲名
-        picUrl: item.al.picUrl, // 专辑封面 al.picUrl
-        singer: item.ar.map((i:singerArray)=>{
-          return {
-            id: i.id,
-            name: i.name
-          }
-        }), // 歌手 ar[]
-        dt: item.dt
-      }
-    })
-    setSinger(singer)
+    const {artist,hotSongs} =  await getArticDetail(id)
+    setSinger(artist)
     setHotSongs(hotSongs)
     // setSingerdetail({
     //     name: artist.name,

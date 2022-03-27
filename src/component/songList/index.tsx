@@ -3,30 +3,28 @@ import { history } from 'umi';
 import { Row, Col, Image } from 'antd';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
-import { SongListItem } from '../../tsType/index';
+import { playListType } from '@/type/music';
+interface props {
+  songList: playListType[];
+}
 
-const Index = (props: { songList: [] }) => {
+const Index = (props: props) => {
   const songList = props.songList;
-  const toDetail = (item: SongListItem) => {
+  const toDetail = (item: playListType) => {
     history.push('/song/' + item.id);
   };
   return (
     <Row gutter={[30, 10]} className={styles.songListWrap}>
-      {songList.map((item: SongListItem) => {
+      {songList.map((item: playListType) => {
         return (
           <Col
             span={4}
-            // className={styles.songList_item}
             key={item.id}
             onClick={() => {
               toDetail(item);
             }}
           >
-            {item.picUrl ? (
-              <Image src={item.picUrl} />
-            ) : (
-              <Image src={item.coverImgUrl} />
-            )}
+            <Image src={item.picUrl} />
             <div className={styles.shade}>
               <span className="iconfont icon-MusicAcc"></span>
               {item.playCount}
