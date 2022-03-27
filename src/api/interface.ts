@@ -37,8 +37,8 @@ export interface songItemType {
     picUrl: string;
   };
 }
-// 用户创建的歌单
 /**
+ * 用户创建的歌单
  * 区别月普通个单列表 coverImgUrl和picUrl
  */
 export interface userPlayListItemType {
@@ -67,4 +67,21 @@ export interface songDetailType extends rankListItemType {
   shareCount: number; // 芬妮像次数
   playCount: number; // 播放次数
   subscribedCount: number; // 订阅次数
+}
+export interface musicUrl {
+  id: number;
+  url: string;
+}
+
+export interface lycType {
+  nolyric?: boolean;
+  lrc?: {
+    lyric: string;
+  };
+}
+export interface userType {
+  nickname: string;
+  userId: number;
+  avatarUrl: string;
+  signature: string;
 }

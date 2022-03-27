@@ -27,7 +27,7 @@ const Index = (props: props) => {
           }}
           onClick={() => {
             // 点击播放
-            // playThis(data);
+            playThis(data);
           }}
         >
           {name}

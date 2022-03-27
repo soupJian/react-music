@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect, MusicModelState } from 'umi';
+import { songItemType, lycType } from '@/api/interface';
+import { getLyric } from '@/api/api';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
-import { songItemType } from '../../tsType/index';
-import { request } from '../../api/index';
 import { parseLyric, lyricItem } from '@/component/common_ts/index';
 const Index = (props: any) => {
   const playList = JSON.parse(JSON.stringify(props.music.playList));
@@ -36,16 +36,16 @@ const Index = (props: any) => {
     props.togglePlay();
   };
   useEffect(() => {
-    getLyric();
+    getSongLyric();
     scrollTop(0);
   }, [currentSong.id]);
-  const getLyric = async () => {
-    const result = await request({
-      url: `/lyric?id=${currentSong.id}`,
-    });
-    if (result.data.nolyric) {
+  const getSongLyric = async () => {
+    const result = await getLyric(currentSong.id);
+    if (result.nolyric) {
     } else {
-      setLyric(result.data.lrc.lyric);
+      if (result.lrc && result.lrc.lyric) {
+        setLyric(result.lrc.lyric);
+      }
     }
   };
   // scroll自动滚动距离
@@ -214,7 +214,7 @@ const Index = (props: any) => {
           <div className={styles.title}>
             <p className={styles.name}>{currentSong.name}</p>
             <p className={styles.singer}>
-              {currentSong.singer.map((item: { id: number; name: string }) => {
+              {currentSong.ar.map((item: { id: number; name: string }) => {
                 return <span key={item.id}>{item.name}</span>;
               })}
             </p>

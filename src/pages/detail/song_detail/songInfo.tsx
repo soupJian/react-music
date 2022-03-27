@@ -17,7 +17,7 @@ const index = (props: props) => {
               名称：<span className={styles.name}>{songdetail.name}</span>
             </p>
             <p>
-              播放数<span>{songdetail.shareCount}</span>
+              播放数: <span>{songdetail.shareCount}</span>
             </p>
             <p>
               分享数: <span>{songdetail.playCount}</span>

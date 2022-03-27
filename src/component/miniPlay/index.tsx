@@ -5,7 +5,8 @@ import { shuffle } from '@/component/common_ts/index';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import './modal.less';
-import { request } from '../../api/index';
+import { getMusicUrl } from '@/api/api';
+import { musicUrl } from '@/api/interface';
 import {
   formatTime,
   formatCurrentTime,
@@ -19,7 +20,7 @@ const Index = (props: any) => {
   const currentIndex = props.music.currentIndex;
   const mode = props.music.mode;
   const currentSong = props.music.currentSong;
-  const id = currentSong.id;
+  const id: number = currentSong.id;
   const playing = props.music.playing;
   const audioRef = useRef<HTMLAudioElement>(null);
   const audio = audioRef.current || null;
@@ -36,22 +37,20 @@ const Index = (props: any) => {
     if (id == -1) {
       return;
     }
-    getMusicUrl();
+    getMusicSrc();
   }, [id]);
   // 获取歌曲播放地址
-  const getMusicUrl = async () => {
+  const getMusicSrc = async () => {
     if (id == -1) {
       return;
     }
-    const result = await request({
-      url: `/song/url?id=${id}`,
-    });
-    if (!result.data.data[0].url) {
+    const result: musicUrl[] = await getMusicUrl(id);
+    if (!result[0].url) {
       message.warning('暂无播放地址，自动切换下一首');
       changeMusic(1);
     }
     // 设置歌曲播放地址
-    setMusicUrl(result.data.data[0].url);
+    setMusicUrl(result[0].url);
     // 切换歌曲的时候，播放与暂停按钮禁用
     setSongReady(false);
   };
@@ -224,11 +223,9 @@ const Index = (props: any) => {
               <p className={styles.des_title}>
                 <span className={styles.music_name}>{currentSong.name}</span>
                 <span className={styles.music_singer}>
-                  {currentSong.singer.map(
-                    (item: { name: string; id: number }) => {
-                      return <span key={item.id}>{item.name}</span>;
-                    },
-                  )}
+                  {currentSong.ar.map((item: { name: string; id: number }) => {
+                    return <span key={item.id}>{item.name}</span>;
+                  })}
                 </span>
               </p>
               <div className={styles.des_slider}>
@@ -259,7 +256,7 @@ const Index = (props: any) => {
                 }`}
                 onClick={toggleLove}
                 style={{
-                  color: loveIds.indexOf(id) >= 0 ? '#FF4D4F' : '#ffcd32',
+                  color: loveIds.indexOf(id) >= 0 ? '#FF4D4F' : '#ea8011',
                 }}
               ></span>
               <span

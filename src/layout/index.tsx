@@ -23,7 +23,7 @@ function index(props: props) {
   const user = JSON.parse(JSON.stringify(props.user));
   const id = user.user_detail.userId;
   const cookie = localStorage.getItem('cookie');
-  if (props.location.pathname === '/me' && user.token == '') {
+  if (props.location.pathname === '/me' && user.id == '') {
     history.replace('/login');
   }
   // 获取用户收藏的歌曲id列表
@@ -52,10 +52,10 @@ function index(props: props) {
   };
   const menu = (
     <Menu>
-      <Menu.Item>
+      <Menu.Item key="me">
         <Link to="/me">个人中心</Link>
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item key="out">
         <span onClick={loginOut}>退出登录</span>
       </Menu.Item>
     </Menu>
@@ -83,7 +83,7 @@ function index(props: props) {
         <div className={styles.headeRight}>
           <SearchInput></SearchInput>
           <img src={props.user.user_detail.avatarUrl || unloginImg} alt="" />
-          {user.token === 'true' ? (
+          {user && user.id ? (
             <Dropdown
               overlay={menu}
               placement="bottom"

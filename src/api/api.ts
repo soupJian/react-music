@@ -8,6 +8,9 @@ import {
   userPlayListItemType, // 用户自己创建的歌单
   rankListItemType, // 排行榜信息及摘要
   songDetailType, // 歌单详情
+  musicUrl, // 歌曲地址
+  lycType, //歌词
+  userType, // 用户
 } from './interface';
 
 /**
@@ -144,6 +147,110 @@ export const getUserPlayList = async (
   });
 };
 
+/**
+ *
+ * @param id
+ * @returns
+ */
+export const getMusicUrl = async (id: number): Promise<musicUrl[]> => {
+  const res = await request<{ data: musicUrl[] }>({
+    url: '/song/url',
+    params: {
+      id,
+    },
+    method: 'get',
+  });
+  return res.data;
+};
+
+export const getLyric = async (id: number): Promise<lycType> => {
+  const res = await request<lycType>({
+    url: '/lyric',
+    params: {
+      id,
+    },
+    method: 'get',
+  });
+  return res;
+};
+
+export const getCheckPhone = async (phone: string): Promise<number> => {
+  const res = await request<{ exist: number }>({
+    url: '/cellphone/existence/check',
+    params: {
+      phone,
+    },
+    method: 'get',
+  });
+  return res.exist;
+};
+
+export const getLogin = async (
+  phone: string,
+  password: string,
+): Promise<{ code: number; profile: userType }> => {
+  const res = await request<{ code: number; profile: userType }>({
+    url: '/login/cellphone',
+    params: {
+      phone,
+      password,
+    },
+    method: 'get',
+  });
+  return {
+    code: res.code,
+    profile: res.profile,
+  };
+};
+
+export const getCode = async (phone: string): Promise<{ code: number }> => {
+  const res = await request<{ code: number }>({
+    url: '/login/cellphone',
+    params: {
+      phone,
+    },
+    method: 'get',
+  });
+  return {
+    code: res.code,
+  };
+};
+
+export const getCheckCode = async (
+  phone: string,
+  code: string,
+): Promise<{ data: boolean }> => {
+  const res = await request<{ data: boolean }>({
+    url: '/captcha/verify',
+    params: {
+      phone,
+      captcha: code,
+    },
+    method: 'get',
+  });
+  return {
+    data: res.data,
+  };
+};
+
+export const getChangePassword = async (
+  phone: string,
+  password: string,
+  code: string,
+): Promise<{ profile: userType }> => {
+  const res = await request<{ profile: userType }>({
+    url: '/register/cellphone',
+    params: {
+      phone,
+      password,
+      captcha: code,
+    },
+    method: 'get',
+  });
+  return {
+    profile: res.profile,
+  };
+};
 // /**
 //  * 获取个人喜欢的音乐列表
 //  * @param id
