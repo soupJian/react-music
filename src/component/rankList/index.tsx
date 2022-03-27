@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'antd';
+import { history } from 'umi';
 import { rankTrackItem, rankListItemType } from '@/api/interface';
 import styles from './index.less';
 interface props {
@@ -7,6 +8,9 @@ interface props {
 }
 const index = (props: props) => {
   const rankList = props.ranklist;
+  const toDetail = (item: rankListItemType) => {
+    history.push('/song/' + item.id);
+  };
   return (
     <Row gutter={[30, 20]} className={styles.ranklist}>
       {rankList.map((item: rankListItemType) => {
@@ -19,6 +23,7 @@ const index = (props: props) => {
                 backgroundPosition: '25% 50%',
                 backgroundSize: '100%',
               }}
+              onClick={() => toDetail(item)}
             >
               <p>{item.updateFrequency}</p>
             </div>

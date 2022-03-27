@@ -3,19 +3,19 @@ import { history } from 'umi';
 import { Row, Col, Image } from 'antd';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
-import { playListType } from '@/type/music';
+import { playListItemType } from '@/api/interface';
 interface props {
-  songList: playListType[];
+  songList: playListItemType[];
 }
 
 const Index = (props: props) => {
   const songList = props.songList;
-  const toDetail = (item: playListType) => {
+  const toDetail = (item: playListItemType) => {
     history.push('/song/' + item.id);
   };
   return (
     <Row gutter={[30, 10]} className={styles.songListWrap}>
-      {songList.map((item: playListType) => {
+      {songList.map((item: playListItemType) => {
         return (
           <Col
             span={4}
