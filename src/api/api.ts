@@ -13,6 +13,7 @@ import {
   userType, // 用户
   hotSearchType, // 热门搜索结果
   searchResultType, // 用户搜索结果
+  albumType, // 专辑详情
 } from './interface';
 
 /**
@@ -114,15 +115,20 @@ export const getPlayListDetail = async (
  * @param id
  * @returns
  */
-export const getAlbumDetail = async (id: string): Promise<rankListItemType> => {
-  const res = await request<{ playlist: rankListItemType }>({
+export const getAlbumDetail = async (
+  id: string,
+): Promise<{ album: albumType; songs: songItemType[] }> => {
+  const res = await request<{ album: albumType; songs: songItemType[] }>({
     url: '/album',
     params: {
       id,
     },
     method: 'get',
   });
-  return res.playlist;
+  return {
+    album: res.album,
+    songs: res.songs,
+  };
 };
 
 /**

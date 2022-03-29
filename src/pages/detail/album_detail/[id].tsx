@@ -3,8 +3,8 @@ import {history} from 'umi'
 import { Tabs } from 'antd';
 import SongTable from '@/component/songTable/index' // 热门歌曲
 import { getPlayListDetail,getAlbumDetail } from '@/api/api';
-import {songDetailType} from '@/api/interface'
-import SongInfo from './SongInfo'
+import {albumType,songItemType} from '@/api/interface'
+import AlbumInfo from './albumInfo'
 import styles from './index.less'
 const { TabPane } = Tabs;
 interface props{
@@ -18,15 +18,24 @@ interface props{
   }
 }
 const index = (props:props) => {
-  let id = props.match.params.id
-  const [songdetail, setSongdetail] = useState<songDetailType|null>(null)
+  const id:string = props.match.params.id
+  const [album,setAlbum] = useState<albumType|null>(null)
+  const [songs,setSongs] = useState<songItemType[]>([])
   useEffect(() => {
-    getsongDetail()
+    getAlbum()
   }, [id]);
-  // 获取歌单
-  const getsongDetail = async() => {
-    const result:songDetailType =  await getPlayListDetail(id)
-    setSongdetail(result);
+  // 获取歌单/专辑详情
+  const getAlbum = async() => {
+      const result =  await getAlbumDetail(id)
+      setSongs(result.songs)
+      setAlbum(result.album)
+    //   let list = {
+    //     name: result.album.name,
+    //     coverImgUrl: result.album.picUrl,
+    //     description: '',
+    //     tracks: result.songs
+    //   }
+    //   setSongdetail(list);
   }
   // 获取相似歌单
   const getSimi = async() => {
@@ -42,17 +51,17 @@ const index = (props:props) => {
   }
   return (
     <div className={styles.singerDetail}>
-      <SongInfo songdetail={songdetail}></SongInfo>
+      <AlbumInfo album={album}></AlbumInfo>
       <Tabs defaultActiveKey="1" style={{marginTop: '20px'}}>
       <TabPane tab="歌曲" key="1">
         {
-          songdetail && <SongTable songArray={songdetail.tracks}/>
+          <SongTable songArray={songs}/>
         }
       </TabPane>
       <TabPane tab="评论" key="2">
         Content of Tab Pane 2
       </TabPane>
-      <TabPane tab="相似歌单" key="3">
+      <TabPane tab="相似专辑" key="3">
         Content of Tab Pane 3
       </TabPane>
     </Tabs>

@@ -1,0 +1,22 @@
+@import '../../../asset//base/index.less';
+.album {
+  color: @text-color;
+  display: flex;
+  align-items: center;
+  .picUrl {
+    width: 110px;
+    margin-right: 20px;
+  }
+  .descriptions {
+    flex: 1;
+  }
+  :global {
+    // .ant-descriptions-title{
+    //   color: @text-color-theme;
+    // }
+    .ant-descriptions-item-label,
+    .ant-descriptions-item-content {
+      color: @text-color;
+    }
+  }
+}

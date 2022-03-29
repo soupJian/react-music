@@ -27,7 +27,7 @@ export default defineConfig({
         { path: '/me', component: '@/pages/me/index' },
         { path: '/login', component: '@/pages/login/index' },
         { path: '/song/:id', component: '@/pages/detail/song_detail/[id]' }, // 歌单详情
-        { path: '/album/:id', component: '@/pages/detail/song_detail/[id]' }, // 专辑详情
+        { path: '/album/:id', component: '@/pages/detail/album_detail/[id]' }, // 专辑详情
         { path: '/singer/:id', component: '@/pages/detail/singer_detail/[id]' }, // 歌手详情
       ],
     },
