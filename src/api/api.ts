@@ -11,6 +11,8 @@ import {
   musicUrl, // 歌曲地址
   lycType, //歌词
   userType, // 用户
+  hotSearchType, // 热门搜索结果
+  searchResultType, // 用户搜索结果
 } from './interface';
 
 /**
@@ -274,4 +276,50 @@ export const userLoginout = async (): Promise<any> => {
     url: '/logout',
     method: 'get',
   });
+};
+
+/**
+ * 热门搜索
+ * @returns
+ */
+export const getHotSearch = async (): Promise<hotSearchType[]> => {
+  const res = await request<{ data: hotSearchType[] }>({
+    url: '/search/hot/detail',
+    method: 'get',
+  });
+  return res.data;
+};
+
+/**
+ * 搜索
+ * @param keywords
+ * @returns
+ */
+export const getSeachResult = async (
+  keywords: string,
+): Promise<searchResultType> => {
+  const res = await request<{ result: searchResultType }>({
+    url: '/search/suggest',
+    params: {
+      keywords,
+    },
+    method: 'get',
+  });
+  return res.result;
+};
+
+/**
+ *
+ * @param id 专辑id
+ * @returns
+ */
+export const getAlbumImg = async (id: number): Promise<string> => {
+  const res = await request<{ album: { picUrl: string } }>({
+    url: '/album',
+    params: {
+      id,
+    },
+    method: 'get',
+  });
+  return res.album.picUrl;
 };

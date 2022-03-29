@@ -96,7 +96,14 @@ const Index = (props: props) => {
     if (mode == 'loop' || randowList.length == 1) {
       loop();
     } else {
-      changeMusic(1);
+      if (props.user.user_detail) {
+        changeMusic(1);
+      } else {
+        message.warning('接口限制，登陆后听完整歌曲');
+        setTimeout(() => {
+          changeMusic(1);
+        }, 1000);
+      }
     }
   };
   // error 歌曲加载错误

@@ -1,54 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { connect, MusicModelState, history } from 'umi';
 import { formatTime } from '@/utils/common';
+import { getHotSearch, getSeachResult, getAlbumImg } from '@/api/api';
+import {
+  hotSearchType,
+  searchResultType,
+  searchArtistType,
+  searchAlbumType,
+  searchSongType,
+  userPlayListItemType,
+} from '@/api/interface';
 import { Input, Dropdown, Spin } from 'antd';
 import { singerListItemType, songItemType } from '@/api/interface';
 import Confirm from '@/component/modal/index';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
-
-const index = (props: any) => {
+interface props {
+  dispatch: Function;
+}
+const index = (props: props) => {
   // 热门搜索
-  const [hotSearch, setHotSearch] = useState([] as []);
+  const [hotSearch, setHotSearch] = useState<hotSearchType[]>([]);
   //  历史搜索
-  const [historySearch, setHistorySearch] = useState(
-    JSON.parse(localStorage.getItem('historySearch') || '[]'),
-  );
+  const [historySearch, setHistorySearch] = useState<string[]>([]);
   // 输入框内容
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string>('');
   // 输入框定时器
   const [timer, setTimer] = useState<any>(-1);
   const [visible, setVisible] = useState<boolean>(false);
   // 搜索结果列表
-  const [resultList, setResultList] = useState({
-    songs: [],
-    albums: [],
-    artists: [],
-    playlists: [],
-    order: [],
-  });
+  const [resultList, setResultList] = useState<searchResultType | null>({});
   // 搜索loading
-  const [showload, setShowload] = useState(false);
+  const [showload, setShowload] = useState<boolean>(false);
   // 搜索结果为空
-  const [empetyResult, setEmptyResult] = useState(false);
-  //
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [empetyResult, setEmptyResult] = useState<boolean>(false);
+  // 是否删除本地存储数据弹窗
+  const [showConfirm, setShowConfirm] = useState<boolean>(false);
   // 单曲专辑
   useEffect(() => {
-    // getHotSearch();
+    getHot();
   }, []);
   useEffect(() => {
     clearTimeout(timer);
     setTimer(setTimeout(searchValue, 1000));
-    // searchValue()
+    searchValue();
   }, [value]);
   // 获取热门搜索
-  // const getHotSearch = async () => {
-  //   const res = await request({
-  //     url: '/search/hot/detail',
-  //   });
-  //   setHotSearch(res.data.data);
-  // };
+  const getHot = async () => {
+    const res = await getHotSearch();
+    setHotSearch(res);
+  };
   // 点击展示清空搜索弹窗
   const showModal = () => {
     if (historySearch.length == 0) {
@@ -77,13 +78,7 @@ const index = (props: any) => {
   // 自我输入框的值change事件
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 每次更改输入框的值之前先制空
-    setResultList({
-      songs: [],
-      albums: [],
-      artists: [],
-      playlists: [],
-      order: [],
-    });
+    setResultList(null);
     setShowload(true);
     setEmptyResult(false);
     setValue(e.target.value);
@@ -94,62 +89,59 @@ const index = (props: any) => {
       return;
     }
     // 发送请求的时候展示load
-    // const res = await request({
-    //   url: '/search/suggest?keywords=' + value,
-    // });
-    // setShowload(false);
-    // if (res.data.result.order) {
-    //   // 有搜索结果的时候取消加载load
-    //   setResultList(res.data.result);
-    // } else {
-    //   // 搜索结果为空的时候战术noresult
-    //   setEmptyResult(true);
-    // }
+    const res = await getSeachResult(value);
+    setShowload(false);
+    if (res.order) {
+      // 有搜索结果的时候取消加载load
+      setResultList(res);
+    } else {
+      // 搜索结果为空的时候战术noresult
+      setEmptyResult(true);
+    }
   };
   // 设置搜索下拉框显示隐藏
   const handleVisibleChange = (flag: boolean) => {
+    if (flag) {
+      const localHistorySearch: string | null = localStorage.getItem(
+        'historySearch',
+      );
+      if (localHistorySearch) {
+        setHistorySearch(JSON.parse(localHistorySearch));
+      }
+    }
     setVisible(flag);
   };
-  let song = {};
   // 获取歌曲封面
-  const chooseSong = (item: any) => {
-    // request({
-    //   url: '/album?id=' + item.album.id,
-    // })
-    //   .then(data => {
-    //     song = {
-    //       name: item.name,
-    //       id: item.id,
-    //       singer: item.artists,
-    //       dt: item.duration, // 播放时长
-    //       duration: formatTime(item.duration),
-    //       al: {
-    //         id: data.data.album.id,
-    //         picUrl: data.data.album.picUrl,
-    //       },
-    //     };
-    //   })
-    //   .then(() => {
-    //     props.dispatch({
-    //       type: 'music/setCurrentSong',
-    //       currentSong: song,
-    //     });
-    //     props.dispatch({
-    //       type: 'music/setPlayList',
-    //       playList: JSON.parse(JSON.stringify([song])),
-    //     });
-    //     // 设置随机播放列表
-    //     props.dispatch({
-    //       type: 'music/setRandowList',
-    //       randowList: JSON.parse(JSON.stringify([song])),
-    //     });
-    //     const index = 0;
-    //     props.dispatch({
-    //       type: 'music/setCurrentIndex',
-    //       currentIndex: index,
-    //     });
-    //     handleVisibleChange(false);
-    //   });
+  const chooseSong = async (item: searchSongType) => {
+    const picUrl = await getAlbumImg(item.album.id);
+    const song: songItemType = {
+      name: item.name,
+      dt: item.duration,
+      id: item.id,
+      ar: item.artists,
+      al: {
+        id: item.album.id,
+        picUrl: picUrl,
+      },
+    };
+    props.dispatch({
+      type: 'music/setCurrentSong',
+      currentSong: song,
+    });
+    props.dispatch({
+      type: 'music/setPlayList',
+      playList: JSON.parse(JSON.stringify([song])),
+    });
+    // 设置随机播放列表
+    props.dispatch({
+      type: 'music/setRandowList',
+      randowList: JSON.parse(JSON.stringify([song])),
+    });
+    props.dispatch({
+      type: 'music/setCurrentIndex',
+      currentIndex: 0,
+    });
+    handleVisibleChange(false);
     local();
   };
   // 点击歌手进入歌手详情
@@ -160,7 +152,7 @@ const index = (props: any) => {
     setVisible(false);
   };
   // 点击歌单进入歌单详情
-  const toSong = (item: songItemType) => {
+  const toSong = (item: userPlayListItemType) => {
     history.replace('/song/' + item.id);
     local();
     setVisible(false);
@@ -171,13 +163,15 @@ const index = (props: any) => {
     local();
     setVisible(false);
   };
+  // 进行本地存储
   const local = () => {
-    // 进行本地存储
-    historySearch.forEach((item: string, index: number) => {
+    for (let i = 0; i < historySearch.length; i++) {
+      const item = historySearch[i];
       if (item === value) {
-        historySearch.splice(index, 1);
+        historySearch.splice(i, 1);
+        return;
       }
-    });
+    }
     historySearch.unshift(value);
     localStorage.setItem('historySearch', JSON.stringify(historySearch));
     setHistorySearch(JSON.parse(localStorage.getItem('historySearch') || ''));
@@ -185,6 +179,10 @@ const index = (props: any) => {
   return (
     <div className={styles.search}>
       <Dropdown
+        arrow={true}
+        onVisibleChange={handleVisibleChange}
+        visible={visible}
+        // visible={true}
         overlay={
           <>
             {value == '' ? (
@@ -192,25 +190,25 @@ const index = (props: any) => {
                 <div className={styles.hot_search}>
                   <div className={styles.search_title}>热门搜索</div>
                   <div className={styles.itemList}>
-                    {hotSearch.map(
-                      (
-                        item: { searchWord: string; score: number },
-                        index: number,
-                      ) => {
-                        return (
-                          <p
-                            key={index}
-                            className={styles.item}
-                            onClick={() => {
-                              searchItem(item.searchWord);
-                            }}
-                          >
+                    {hotSearch.map((item: hotSearchType, index: number) => {
+                      return (
+                        <div
+                          key={index}
+                          className={styles.item}
+                          onClick={() => {
+                            searchItem(item.searchWord);
+                          }}
+                        >
+                          <div className={styles.left}>
+                            {item.iconUrl ? (
+                              <img src={item.iconUrl} alt="" />
+                            ) : null}
                             <span>{item.searchWord}</span>
-                            <span>{item.score}</span>
-                          </p>
-                        );
-                      },
-                    )}
+                          </div>
+                          <span>{item.score}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
                 <div className={styles.history_search}>
@@ -257,16 +255,12 @@ const index = (props: any) => {
                   <span>{value}</span>
                 </div>
                 <div className={styles.result}>
-                  {resultList.artists ? (
+                  {resultList && resultList.artists ? (
                     <div className={styles.result_wrap}>
                       <div className={styles.result_title}>歌手</div>
                       <div className={styles.result_container}>
-                        {resultList.artists.map(
-                          (item: {
-                            id: number;
-                            picUrl: string;
-                            name: string;
-                          }) => {
+                        {resultList &&
+                          resultList.artists.map((item: searchArtistType) => {
                             return (
                               <div
                                 key={item.id}
@@ -279,35 +273,28 @@ const index = (props: any) => {
                                   src={item.picUrl}
                                   className={styles.resultImg}
                                 />
-                                {item.name}
+                                <span>{item.name}</span>
                               </div>
                             );
-                          },
-                        )}
+                          })}
                       </div>
                     </div>
-                  ) : (
-                    <></>
-                  )}
-                  {resultList.songs ? (
+                  ) : null}
+                  {resultList && resultList.songs ? (
                     <div className={styles.result_wrap}>
                       <div className={styles.result_title}>单曲</div>
                       <div className={styles.result_container}>
-                        {resultList.songs.map(
-                          (item: {
-                            id: number;
-                            name: string;
-                            artists: any;
-                          }) => {
-                            return (
-                              <div
-                                key={item.id}
-                                className={styles.result_item}
-                                onClick={() => {
-                                  chooseSong(item);
-                                }}
-                              >
-                                {item.name} --
+                        {resultList.songs.map((item: searchSongType) => {
+                          return (
+                            <div
+                              key={item.id}
+                              className={styles.result_item}
+                              onClick={() => {
+                                chooseSong(item);
+                              }}
+                            >
+                              <div className={styles.left}>{item.name}</div>
+                              <div className={styles.right}>
                                 {item.artists.map(
                                   (item: { name: string; id: number }) => {
                                     return (
@@ -321,50 +308,45 @@ const index = (props: any) => {
                                   },
                                 )}
                               </div>
-                            );
-                          },
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                  {resultList.playlists ? (
-                    <div className={styles.result_wrap}>
-                      <div className={styles.result_title}>歌单</div>
-                      <div className={styles.result_container}>
-                        {resultList.playlists.map((item: songItemType) => {
-                          return (
-                            <div
-                              key={item.id}
-                              className={styles.result_item}
-                              onClick={() => {
-                                toSong(item);
-                              }}
-                            >
-                              <img
-                                src={item.al.picUrl}
-                                className={styles.resultImg}
-                              />
-                              {item.name}
                             </div>
                           );
                         })}
                       </div>
                     </div>
-                  ) : (
-                    <></>
-                  )}
-                  {resultList.albums ? (
+                  ) : null}
+                  {resultList && resultList.playlists ? (
+                    <div className={styles.result_wrap}>
+                      <div className={styles.result_title}>歌单</div>
+                      <div className={styles.result_container}>
+                        {resultList &&
+                          resultList.playlists.map(
+                            (item: userPlayListItemType) => {
+                              return (
+                                <div
+                                  key={item.id}
+                                  className={styles.result_item}
+                                  onClick={() => {
+                                    toSong(item);
+                                  }}
+                                >
+                                  <img
+                                    src={item.coverImgUrl}
+                                    className={styles.resultImg}
+                                  />
+                                  {item.name}
+                                </div>
+                              );
+                            },
+                          )}
+                      </div>
+                    </div>
+                  ) : null}
+                  {resultList && resultList.albums ? (
                     <div className={styles.result_wrap}>
                       <div className={styles.result_title}>专辑</div>
                       <div className={styles.result_container}>
-                        {resultList.albums.map(
-                          (item: {
-                            id: number;
-                            name: string;
-                            artist: { picUrl: string };
-                          }) => {
+                        {resultList &&
+                          resultList.albums.map((item: searchAlbumType) => {
                             return (
                               <div
                                 key={item.id}
@@ -380,21 +362,15 @@ const index = (props: any) => {
                                 {item.name}
                               </div>
                             );
-                          },
-                        )}
+                          })}
                       </div>
                     </div>
-                  ) : (
-                    <></>
-                  )}
+                  ) : null}
                 </div>
               </div>
             )}
           </>
         }
-        onVisibleChange={handleVisibleChange}
-        visible={visible}
-        // visible={true}
       >
         <Input
           onClick={e => e.preventDefault()}

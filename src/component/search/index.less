@@ -14,8 +14,9 @@
   left: 0;
   padding: 10px;
   z-index: 1;
-  background-color: @background-high;
+  background-color: @background;
   border-radius: 10px;
+  color: @text-color;
 }
 .search_container {
   width: 450px;
@@ -27,6 +28,7 @@
   }
   .history_search,
   .hot_search {
+    color: @text-color;
     .search_title {
       padding: 0 10px;
       color: @text-color-theme;
@@ -43,8 +45,8 @@
     .itemList {
       height: 300px;
       overflow-y: auto;
+      font-size: 12px;
       .item {
-        font-size: 16px;
         padding: 0 10px;
         height: 30px;
         line-height: 30px;
@@ -54,6 +56,14 @@
         display: flex;
         justify-content: space-between;
         cursor: pointer;
+        .left {
+          display: flex;
+          align-items: center;
+          img {
+            width: 20px;
+            margin-right: 5px;
+          }
+        }
       }
     }
   }
@@ -80,6 +90,8 @@
   }
   .result_wrap {
     display: flex;
+    background-color: @background-high;
+    margin-bottom: 10px;
     .result_title {
       min-width: 50px;
       display: flex;
@@ -88,20 +100,30 @@
     }
     .result_container {
       flex: 1;
+      min-width: 0;
+      font-size: 12px;
       .result_item {
+        width: 100%;
         display: flex;
-        flex-wrap: nowrap;
-        text-overflow: ellipsis;
-        white-space: nowrap;
         align-items: center;
-        overflow: hidden;
         margin-bottom: 5px;
         cursor: pointer;
+        .left,
+        .right {
+          width: 50%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+        .right {
+          width: 50%;
+          text-align: right;
+        }
         .resultImg {
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          margin-right: 5px;
+          margin-right: 10px;
         }
         .result_singer {
           margin-left: 5px;
@@ -116,4 +138,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+:global {
+  .ant-dropdown-placement-bottomLeft > .ant-dropdown-arrow {
+    top: 4px !important;
+  }
+  .ant-dropdown-arrow::before {
+    // @backgrund-hover
+    background: linear-gradient(
+      135deg,
+      transparent 40%,
+      #25252c 40%
+    ) !important;
+  }
 }

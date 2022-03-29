@@ -25,12 +25,12 @@ function index(props: props) {
     history.replace('/login');
   }
   // 获取用户收藏的歌曲id列表
-  useEffect(() => {
-    if (!user.user_detail) {
-      return;
-    }
-    getLove(user.user_detail.userId);
-  }, [user.user_detail]);
+  // useEffect(() => {
+  //   if (!user.user_detail) {
+  //     return;
+  //   }
+  //   getLove(user.user_detail.userId);
+  // }, [user.user_detail]);
   // 退出登录
   const loginOut = async () => {
     await userLoginout();
