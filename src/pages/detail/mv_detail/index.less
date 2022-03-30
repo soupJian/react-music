@@ -6,10 +6,38 @@
   .description {
     line-height: 20px;
     font-size: 12px;
-    div {
-      margin-bottom: 5px;
-      &:nth-last-child {
-        margin-bottom: 0;
+    .info {
+      div {
+        margin-bottom: 5px;
+        .label {
+          margin-right: 5px;
+          color: @text-color-bg;
+        }
+      }
+    }
+    .simi {
+      .simiItem {
+        display: flex;
+        margin-bottom: 10px;
+        .left {
+          flex: 3 0 50%;
+          img {
+            width: 100%;
+          }
+        }
+        .right {
+          flex: 2 0 50%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          flex-wrap: wrap;
+          margin-left: 10px;
+          word-break: break-all;
+          .label {
+            margin-right: 5px;
+            color: @text-color-bg;
+          }
+        }
       }
     }
   }

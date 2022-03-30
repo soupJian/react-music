@@ -44,3 +44,14 @@ export const MvDetail = async (mvid: string): Promise<mvDetail> => {
   });
   return res.data;
 };
+
+export const simiMV = async (mvid: string): Promise<mvType[]> => {
+  const res = await request<{ mvs: mvType[] }>({
+    url: '/simi/mv',
+    params: {
+      mvid,
+    },
+    method: 'get',
+  });
+  return res.mvs;
+};
