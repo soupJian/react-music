@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Link, connect, IndexModelState, MusicModelState, history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { getLoveList, userLoginout } from '@/api/api';
-import { userType } from '@/api/interface';
 import MiniPlay from '@/component/miniPlay/index';
 import SearchInput from '@/component/search/index';
 import styles from './index.less';
@@ -25,12 +24,12 @@ function index(props: props) {
     history.replace('/login');
   }
   // 获取用户收藏的歌曲id列表
-  // useEffect(() => {
-  //   if (!user.user_detail) {
-  //     return;
-  //   }
-  //   getLove(user.user_detail.userId);
-  // }, [user.user_detail]);
+  useEffect(() => {
+    if (!user.user_detail) {
+      return;
+    }
+    getLove(user.user_detail.userId);
+  }, [user.user_detail]);
   // 退出登录
   const loginOut = async () => {
     await userLoginout();
@@ -121,6 +120,9 @@ function index(props: props) {
             </Menu.Item>
             <Menu.Item key="/rank">
               <Link to="/rank">排行榜单</Link>
+            </Menu.Item>
+            <Menu.Item key="/mv">
+              <Link to="/mv">精彩MV</Link>
             </Menu.Item>
             <Menu.Item key="/me">
               <Link to="/me">个人中心</Link>

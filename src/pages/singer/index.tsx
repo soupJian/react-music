@@ -21,15 +21,12 @@ const typeList = [
 const index = () => {
   const [type, setType] = useState(-1);
   const [area, setArea] = useState(-1);
-  const [data, setDate] = useState({ type: type, area: area });
   const [singerlist, setSingerlist] = useState<singerListItemType[]>([]);
   const checkType = (key: number) => {
     setType(key);
-    setDate({ type: key, area: area });
   };
   const checkArea = (key: number) => {
     setArea(key);
-    setDate({ type: type, area: key });
   };
   useEffect(() => {
     getSingerList();
@@ -47,7 +44,7 @@ const index = () => {
               <div
                 key={item.key}
                 className={`${styles.tag_item} ${
-                  item.key === data.area ? styles.active : ''
+                  item.key === area ? styles.active : ''
                 }`}
                 onClick={() => {
                   checkArea(item.key);
@@ -64,7 +61,7 @@ const index = () => {
               <div
                 key={item.key}
                 className={`${styles.tag_item} ${
-                  item.key === data.type ? styles.active : ''
+                  item.key === type ? styles.active : ''
                 }`}
                 onClick={() => {
                   checkType(item.key);

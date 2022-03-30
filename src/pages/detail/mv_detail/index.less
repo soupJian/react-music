@@ -1,0 +1,43 @@
+@import '../../../asset//base/index.less';
+.mvDetail {
+  video {
+    width: 100%;
+  }
+  .description {
+    line-height: 20px;
+    font-size: 12px;
+    div {
+      margin-bottom: 5px;
+      &:nth-last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+:global {
+  // 修改tabs底部边框色
+  .ant-tabs-top > .ant-tabs-nav::before,
+  .ant-tabs-bottom > .ant-tabs-nav::before,
+  .ant-tabs-top > div > .ant-tabs-nav::before,
+  .ant-tabs-bottom > div > .ant-tabs-nav::before {
+    border-bottom: none;
+  }
+  .ant-tabs-content {
+    color: @text-color;
+  }
+  .ant-tabs-ink-bar {
+    background: @text-color-theme;
+  }
+  .ant-tabs-tab-btn {
+    color: @text-color;
+  }
+  .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: @text-color-theme;
+  }
+  .ant-tabs-tab-btn:focus,
+  .ant-tabs-tab-remove:focus,
+  .ant-tabs-tab-btn:active,
+  .ant-tabs-tab-remove:active {
+    color: @text-color-theme;
+  }
+}

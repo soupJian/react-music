@@ -1,0 +1,27 @@
+@import '../../asset/base/index.less';
+.mv {
+  .tag {
+    padding: 0 20px;
+    .tag_area,
+    .tag_type {
+      display: flex;
+      .tag_item {
+        padding: 10px 20px;
+        border-radius: 17px;
+        cursor: pointer;
+        margin: 10px 10px 0 0;
+        color: @text-color;
+        &.active {
+          background-color: @background-high;
+          color: @text-color-theme;
+        }
+      }
+      .tag_item:hover {
+        color: @text-color-theme;
+      }
+    }
+  }
+  .singer_wrap {
+    margin-top: 20px;
+  }
+}

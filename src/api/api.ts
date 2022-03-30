@@ -1,4 +1,4 @@
-import request from '@/utils/index';
+import request from '@/utils/request';
 import {
   bannerItemType, // 轮播图
   playListItemType, // 歌单数组
