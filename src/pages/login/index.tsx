@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import { connect, IndexModelState, Loading, history } from 'umi';
 import { Tabs, Form, Input, Button, Checkbox, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
@@ -28,9 +28,10 @@ interface registerForm {
 interface props {
   dispatch: Function;
 }
+const CODE_MESSAGE = '获取验证码';
 
 const Index = (props: props) => {
-  const [codeMessage, setCodeMessage] = useState<string>('获取验证码');
+  const [codeMessage, setCodeMessage] = useState<string>(CODE_MESSAGE);
   const changeForm = React.createRef<FormInstance>();
   const submitLogin = async (e: formType) => {
     const phone: string = e.phoneNumber; // 登录时候
@@ -82,6 +83,19 @@ const Index = (props: props) => {
       message.error('请输入手机号');
       return;
     }
+    if (codeMessage != CODE_MESSAGE) {
+      return;
+    }
+    let count: number = 60;
+    let timer: NodeJS.Timer;
+    timer = setInterval(() => {
+      count--;
+      setCodeMessage(`${count}s`);
+      if (count == 0) {
+        clearInterval(timer);
+        setCodeMessage(CODE_MESSAGE);
+      }
+    }, 1000);
     const res = await getCode(registerPhone);
     if (res.code) {
       message.success('验证码已发送，请注意查收');
@@ -204,6 +218,7 @@ const Index = (props: props) => {
               <Search
                 placeholder="请输入验证码"
                 enterButton={codeMessage}
+                loading={codeMessage == CODE_MESSAGE ? false : true}
                 onSearch={getPhoneCode}
                 size="large"
               />
