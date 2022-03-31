@@ -4,6 +4,7 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+  title: 'react-music',
   dva: {
     immer: true,
     hmr: false,

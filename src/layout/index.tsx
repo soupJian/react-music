@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, connect, IndexModelState, MusicModelState, history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
 import { LOVE_LIST, LOGIN_OUT } from '@/services/layout/index';
@@ -20,9 +20,16 @@ interface props {
 }
 function index(props: props) {
   const user: IndexModelState = JSON.parse(JSON.stringify(props.user));
+  const [activeKey, setActiveKey] = useState<string>('');
   if (props.location.pathname === '/me' && !user.user_detail) {
     history.replace('/login');
   }
+  const pathArr: string[] = props.location.pathname.split('/');
+  const pathName: string = pathArr[1];
+  useEffect(() => {
+    setActiveKey(pathName);
+  }, [pathName]);
+
   // 获取用户收藏的歌曲id列表
   useEffect(() => {
     if (!user.user_detail) {
@@ -71,6 +78,7 @@ function index(props: props) {
     selectKeys.push(pathname);
     return selectKeys;
   };
+
   return (
     <Layout className={styles.layout_wrap}>
       <Header className={styles.commonHeader}>
@@ -110,21 +118,22 @@ function index(props: props) {
           <Menu
             theme="dark"
             mode="inline"
+            activeKey={activeKey}
             selectedKeys={getMenuSelect(props.location.pathname)}
           >
-            <Menu.Item key="/recommend">
+            <Menu.Item key="recommend">
               <Link to="/recommend">热门推荐</Link>
             </Menu.Item>
-            <Menu.Item key="/singer">
+            <Menu.Item key="singer">
               <Link to="/singer">分类歌手</Link>
             </Menu.Item>
-            <Menu.Item key="/rank">
+            <Menu.Item key="rank">
               <Link to="/rank">排行榜单</Link>
             </Menu.Item>
-            <Menu.Item key="/mv">
+            <Menu.Item key="mv">
               <Link to="/mv">精彩MV</Link>
             </Menu.Item>
-            <Menu.Item key="/me">
+            <Menu.Item key="me">
               <Link to="/me">个人中心</Link>
             </Menu.Item>
           </Menu>
