@@ -15,18 +15,21 @@ export const CHECK_PHONE = async (phone: string): Promise<number> => {
 export const LOGIN = async (
   phone: string,
   password: string,
-): Promise<{ code: number; profile: userType }> => {
-  const res = await request<{ code: number; profile: userType }>({
-    url: '/login/cellphone',
-    params: {
-      phone,
-      password,
+): Promise<{ code: number; profile: userType; token: string }> => {
+  const res = await request<{ code: number; profile: userType; token: string }>(
+    {
+      url: '/login/cellphone',
+      params: {
+        phone,
+        password,
+      },
+      method: 'get',
     },
-    method: 'get',
-  });
+  );
   return {
     code: res.code,
     profile: res.profile,
+    token: res.token,
   };
 };
 

@@ -58,8 +58,10 @@ const Index = (props: props) => {
         if (remember) {
           // 记住密码
           localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('token', JSON.stringify(result.token));
         } else {
           sessionStorage.setItem('user', JSON.stringify(user));
+          sessionStorage.setItem('token', JSON.stringify(result.token));
         }
         message.success('登陆成功');
         history.replace('/me');

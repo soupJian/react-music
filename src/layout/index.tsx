@@ -20,6 +20,7 @@ interface props {
 }
 function index(props: props) {
   const user: IndexModelState = JSON.parse(JSON.stringify(props.user));
+  const userId = user.user_detail?.userId;
   const [activeKey, setActiveKey] = useState<string>('');
   if (props.location.pathname === '/me' && !user.user_detail) {
     history.replace('/login');
@@ -36,7 +37,7 @@ function index(props: props) {
       return;
     }
     getLove(user.user_detail.userId);
-  }, []);
+  }, [userId]);
   // 退出登录
   const loginOut = async () => {
     await LOGIN_OUT();
