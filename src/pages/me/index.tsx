@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Image } from 'antd';
-import { getUserPlayList } from '@/api/api';
-import { playListItemType, userType } from '@/api/interface';
 import { connect, IndexModelState } from 'umi';
+import { USER_PLAYlIST } from '@/services/me/index';
+import { userType } from '@/services/me/type';
+import { playListype } from '@/services/song/type';
 import SongList from '@/component/songList/index';
 import styles from './index.less';
 interface props {
@@ -10,7 +11,7 @@ interface props {
 }
 const index = (props: props) => {
   const user: userType | null = props.user.user_detail;
-  const [playlist, setPlaylist] = useState<playListItemType[]>([]);
+  const [playlist, setPlaylist] = useState<playListype[]>([]);
   // const [follows, setFollows] = useState([] as []);
   useEffect(() => {
     getPlaylist();
@@ -21,7 +22,7 @@ const index = (props: props) => {
     if (!user) {
       return;
     }
-    const res: playListItemType[] = await getUserPlayList(user.userId);
+    const res = await USER_PLAYlIST(user.userId);
     setPlaylist(res);
   };
   // 获取用户关注列表

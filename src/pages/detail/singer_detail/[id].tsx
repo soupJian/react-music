@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 import SingerInfo from './singerInfo' // 头部信息
 import SongTable from '@/component/songTable/index' // 热门歌曲
-import { getArticDetail } from '@/api/api';
 import {singerDetailType,songItemType} from '@/api/interface'
+import {SINGER_DETAIL} from '@/services/singer/index'
+import {singerType} from '@/services/singer/type'
+import {songType} from '@/services/song/type'
 import styles from  './index.less'
 interface props{
   match:{
@@ -15,14 +17,14 @@ interface props{
 const { TabPane } = Tabs;
 const index = (props:props) => {
   const [id,setId] = useState<string>(props.match.params.id)
-  const [singer,setSinger] = useState<singerDetailType|null>(null)
-  const [hotSongs,setHotSongs] = useState<songItemType[]|null>(null)
+  const [singer,setSinger] = useState<singerType|null>(null)
+  const [hotSongs,setHotSongs] = useState<songType[]|null>(null)
   useEffect(() => {
     getsingerBase()
   }, [id]);
   // 获取歌手基本信息和热门歌曲
   const getsingerBase = async() => {
-    const {artist,hotSongs} =  await getArticDetail(id)
+    const {artist,hotSongs} =  await SINGER_DETAIL(id)
     setSinger(artist)
     setHotSongs(hotSongs)
     // setSingerdetail({

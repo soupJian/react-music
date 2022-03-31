@@ -34,6 +34,11 @@ export const MvPlayUrl = async (id: string): Promise<string> => {
   return res.data.url;
 };
 
+/**
+ * 获取mv详情
+ * @param mvid
+ * @returns
+ */
 export const MvDetail = async (mvid: string): Promise<mvDetail> => {
   const res = await request<{ data: mvDetail }>({
     url: '/mv/detail',
@@ -45,6 +50,11 @@ export const MvDetail = async (mvid: string): Promise<mvDetail> => {
   return res.data;
 };
 
+/**
+ * 获取相似Mv
+ * @param mvid
+ * @returns
+ */
 export const simiMV = async (mvid: string): Promise<mvType[]> => {
   const res = await request<{ mvs: mvType[] }>({
     url: '/simi/mv',

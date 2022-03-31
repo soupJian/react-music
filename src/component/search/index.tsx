@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { connect, MusicModelState, history } from 'umi';
-import { formatTime } from '@/utils/common';
-import { getHotSearch, getSeachResult, getAlbumImg } from '@/api/api';
+import {
+  HOT_SEARCH,
+  SEARCH_RESULT,
+  ALBUM_COVER,
+} from '@/services/layout/index';
+
 import {
   hotSearchType,
   searchResultType,
   searchArtistType,
   searchAlbumType,
   searchSongType,
-  userPlayListItemType,
-} from '@/api/interface';
+} from '@/services/layout/type';
+import { userPlayListType } from '@/services/me/type';
 import { Input, Dropdown, Spin } from 'antd';
-import { singerListItemType, songItemType } from '@/api/interface';
+import { singerListType } from '@/services/singer/type';
+import { songType } from '@/services/song/type';
 import Confirm from '@/component/modal/index';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
@@ -47,7 +52,7 @@ const index = (props: props) => {
   }, [value]);
   // 获取热门搜索
   const getHot = async () => {
-    const res = await getHotSearch();
+    const res = await HOT_SEARCH();
     setHotSearch(res);
   };
   // 点击展示清空搜索弹窗
@@ -89,7 +94,7 @@ const index = (props: props) => {
       return;
     }
     // 发送请求的时候展示load
-    const res = await getSeachResult(value);
+    const res = await SEARCH_RESULT(value);
     setShowload(false);
     if (res.order) {
       // 有搜索结果的时候取消加载load
@@ -113,8 +118,8 @@ const index = (props: props) => {
   };
   // 获取歌曲封面
   const chooseSong = async (item: searchSongType) => {
-    const picUrl = await getAlbumImg(item.album.id);
-    const song: songItemType = {
+    const picUrl = await ALBUM_COVER(item.album.id);
+    const song: songType = {
       name: item.name,
       dt: item.duration,
       id: item.id,
@@ -145,14 +150,14 @@ const index = (props: props) => {
     local();
   };
   // 点击歌手进入歌手详情
-  const toSinger = (item: singerListItemType) => {
+  const toSinger = (item: singerListType) => {
     history.push(`/singer/${item.id}`);
     handleVisibleChange(false);
     local();
     setVisible(false);
   };
   // 点击歌单进入歌单详情
-  const toSong = (item: userPlayListItemType) => {
+  const toSong = (item: userPlayListType) => {
     history.replace('/song/' + item.id);
     local();
     setVisible(false);
@@ -319,25 +324,23 @@ const index = (props: props) => {
                       <div className={styles.result_title}>歌单</div>
                       <div className={styles.result_container}>
                         {resultList &&
-                          resultList.playlists.map(
-                            (item: userPlayListItemType) => {
-                              return (
-                                <div
-                                  key={item.id}
-                                  className={styles.result_item}
-                                  onClick={() => {
-                                    toSong(item);
-                                  }}
-                                >
-                                  <img
-                                    src={item.coverImgUrl}
-                                    className={styles.resultImg}
-                                  />
-                                  {item.name}
-                                </div>
-                              );
-                            },
-                          )}
+                          resultList.playlists.map((item: userPlayListType) => {
+                            return (
+                              <div
+                                key={item.id}
+                                className={styles.result_item}
+                                onClick={() => {
+                                  toSong(item);
+                                }}
+                              >
+                                <img
+                                  src={item.coverImgUrl}
+                                  className={styles.resultImg}
+                                />
+                                {item.name}
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   ) : null}

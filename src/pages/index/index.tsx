@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import Swiper from '@/component/swiper/index';
 import SongList from '@/component/songList/index';
-import { getBannerList, getPersionaLized } from '@/api/api';
-import { bannerItemType, playListItemType } from '@/api/interface';
+import { BANNER, PERSONALIZED } from '@/services/index/index';
+import { bannerType } from '@/services/index/type';
+import { playListype } from '@/services/song/type';
+
 import styles from './index.less';
 const index = () => {
-  const [bannerList, setBannerList] = useState<bannerItemType[]>([]);
-  const [hotSongList, setHotSongList] = useState<playListItemType[]>([]);
+  const [bannerList, setBannerList] = useState<bannerType[]>([]);
+  const [hotSongList, setHotSongList] = useState<playListype[]>([]);
   useEffect(() => {
     getBanners();
     getPersionaLizedList();
   }, []);
   // 获取banners
   const getBanners = async () => {
-    const result: bannerItemType[] = await getBannerList();
+    const result = await BANNER();
     setBannerList(result);
   };
   // 获取推荐歌单
   const getPersionaLizedList = async () => {
-    const res: playListItemType[] = await getPersionaLized();
+    const res = await PERSONALIZED();
     setHotSongList(res);
   };
   return (

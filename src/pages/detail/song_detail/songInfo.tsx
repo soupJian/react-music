@@ -1,6 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'antd';
-import { songDetailType } from '@/api/interface';
+import { songDetailType } from '@/services/song/type';
 import styles from './songInfo.less';
 interface props {
   songdetail: songDetailType | null; // 歌手信息

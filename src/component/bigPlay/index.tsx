@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect, MusicModelState } from 'umi';
-import { songItemType, lycType } from '@/api/interface';
-import { getLyric } from '@/api/api';
+import { songType } from '@/services/song/type';
+import { LYRIC } from '@/services/music/index';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import { parseLyric, lyricItem } from '@/utils/common';
@@ -18,7 +18,7 @@ interface props {
 }
 const Index = (props: props) => {
   const playList = JSON.parse(JSON.stringify(props.music.playList));
-  const randowList: songItemType[] = JSON.parse(
+  const randowList: songType[] = JSON.parse(
     JSON.stringify(props.music.randowList),
   );
   const currentIndex: number = props.music.currentIndex;
@@ -26,15 +26,15 @@ const Index = (props: props) => {
   const playing: boolean = props.playing;
   const mode: string = props.music.mode;
   const currentTime: number = props.currentTime;
-  const currentSong: songItemType | null = props.music.currentSong;
+  const currentSong: songType | null = props.music.currentSong;
   const lyric_wrap = useRef<HTMLDivElement>(null);
   const [scrollFlag, setScrollFlag] = useState(false); // 是否允许手动滚动
   const [lyric, setLyric] = useState('');
   const changeMode = () => {
     props.changeMode();
   };
-  const chooseMusic = (item: songItemType) => {
-    const chooseIndex = randowList.findIndex((i: songItemType) => {
+  const chooseMusic = (item: songType) => {
+    const chooseIndex = randowList.findIndex((i: songType) => {
       return i.id == item.id;
     });
     props.dispatch({
@@ -59,7 +59,7 @@ const Index = (props: props) => {
     if (!currentSong) {
       return;
     }
-    const result = await getLyric(currentSong.id);
+    const result = await LYRIC(currentSong.id);
     if (result.nolyric) {
     } else {
       if (result.lrc && result.lrc.lyric) {
@@ -106,7 +106,7 @@ const Index = (props: props) => {
     // console.log("滚动");
     setScrollFlag(true);
   };
-  const deleteOne = (song: songItemType) => {
+  const deleteOne = (song: songType) => {
     // 1.先删除播放列表中对应数据
     let index;
     index = randowList.findIndex((item: { id: number }) => {
@@ -197,7 +197,7 @@ const Index = (props: props) => {
               </div>
             </div>
             <div className={styles.playlist}>
-              {playList.map((item: songItemType, index: number) => {
+              {playList.map((item: songType, index: number) => {
                 return (
                   <div className={styles.list} key={item.id}>
                     <div className={styles.left}>

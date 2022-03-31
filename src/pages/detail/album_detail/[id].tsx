@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {history} from 'umi'
 import { Tabs } from 'antd';
 import SongTable from '@/component/songTable/index' // 热门歌曲
-import { getPlayListDetail,getAlbumDetail } from '@/api/api';
-import {albumType,songItemType} from '@/api/interface'
+import {ALBUM_DETAIL} from '@/services/album/index'
+import {albumType} from '@/services/album/type'
+import {songType} from '@/services/song/type'
 import AlbumInfo from './albumInfo'
 import styles from './index.less'
 const { TabPane } = Tabs;
@@ -20,13 +21,13 @@ interface props{
 const index = (props:props) => {
   const id:string = props.match.params.id
   const [album,setAlbum] = useState<albumType|null>(null)
-  const [songs,setSongs] = useState<songItemType[]>([])
+  const [songs,setSongs] = useState<songType[]>([])
   useEffect(() => {
     getAlbum()
   }, [id]);
   // 获取歌单/专辑详情
   const getAlbum = async() => {
-      const result =  await getAlbumDetail(id)
+      const result =  await ALBUM_DETAIL(id)
       setSongs(result.songs)
       setAlbum(result.album)
     //   let list = {

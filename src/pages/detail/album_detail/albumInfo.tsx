@@ -1,7 +1,7 @@
 import React from 'react';
 import { history } from 'umi';
 import { Descriptions } from 'antd';
-import { albumType } from '@/api/interface';
+import { albumType } from '@/services/album/type';
 import styles from './albumInfo.less';
 interface props {
   album: albumType | null;

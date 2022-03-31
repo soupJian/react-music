@@ -2,12 +2,12 @@ import React from 'react';
 import { Image } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination, Autoplay, Navigation, Lazy } from 'swiper';
-import { bannerList } from '@/type/interfaceType';
+import { bannerType } from '@/services/index/type';
 import './index.less';
 import 'swiper/swiper-bundle.css';
 SwiperCore.use([Pagination, Navigation, Autoplay, Lazy]);
 interface props {
-  bannerList: bannerList[];
+  bannerList: bannerType[];
 }
 const Index = (props: props) => {
   const bannerList = props.bannerList;

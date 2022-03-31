@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, connect, IndexModelState, MusicModelState, history } from 'umi';
 import { Layout, Menu, Dropdown } from 'antd';
-import { getLoveList, userLoginout } from '@/api/api';
+import { LOVE_LIST, LOGIN_OUT } from '@/services/layout/index';
 import MiniPlay from '@/component/miniPlay/index';
 import SearchInput from '@/component/search/index';
 import styles from './index.less';
@@ -32,7 +32,7 @@ function index(props: props) {
   }, [user.user_detail]);
   // 退出登录
   const loginOut = async () => {
-    await userLoginout();
+    await LOGIN_OUT();
     localStorage.clear();
     sessionStorage.clear();
     props.dispatch({
@@ -45,7 +45,7 @@ function index(props: props) {
   };
   // 用户登录成功后 获取 喜欢的音乐
   const getLove = async (id: number) => {
-    const result: number[] = await getLoveList(id);
+    const result: number[] = await LOVE_LIST(id);
     props.dispatch({
       type: 'user/setUserLoveIds',
       loveIds: result,

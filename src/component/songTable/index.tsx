@@ -2,15 +2,17 @@ import React from 'react';
 import { Table } from 'antd';
 import { connect, MusicModelState } from 'umi';
 import { formatTime, shuffle } from '@/utils/common';
-import { singerDetailType, songItemType, singerArray } from '@/api/interface';
+import { songType } from '@/services/song/type';
+import { baseSingerType } from '@/services/singer/type';
+
 import styles from './index.less';
 interface props {
-  songArray: songItemType[];
+  songArray: songType[];
   music: MusicModelState;
   dispatch: Function;
 }
 const Index = (props: props) => {
-  const dataSource: songItemType[] = props.songArray;
+  const dataSource: songType[] = props.songArray;
   const mode = props.music.mode;
   const columns: any = [
     {
@@ -18,7 +20,7 @@ const Index = (props: props) => {
       dataIndex: 'name',
       key: 'name',
       align: 'center',
-      render: (name: string, data: songItemType) => (
+      render: (name: string, data: songType) => (
         <p
           style={{
             textOverflow: 'ellipsis',
@@ -50,9 +52,9 @@ const Index = (props: props) => {
       key: 'qr',
       align: 'center',
       ellipsis: true,
-      render: (ar: singerArray[]) => (
+      render: (ar: baseSingerType[]) => (
         <>
-          {ar.map((item: singerArray) => {
+          {ar.map((item: baseSingerType) => {
             return (
               <span style={{ marginRight: '5px' }} key={item.id}>
                 {item.name}
@@ -76,7 +78,7 @@ const Index = (props: props) => {
       ),
     },
   ];
-  const playThis = (data: songItemType) => {
+  const playThis = (data: songType) => {
     props.dispatch({
       type: 'music/setPlayList',
       playList: JSON.parse(JSON.stringify(dataSource)),

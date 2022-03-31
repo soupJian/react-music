@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SingerList from '@/component/singerList';
-import { getArticList } from '../../api/api';
-import { singerListItemType } from '@/api/interface';
+import { SINGER_LIST } from '@/services/singer/index';
+import { singerListType } from '@/services/singer/type';
 import styles from './index.less';
 
 const areaList = [
@@ -21,7 +21,7 @@ const typeList = [
 const index = () => {
   const [type, setType] = useState(-1);
   const [area, setArea] = useState(-1);
-  const [singerlist, setSingerlist] = useState<singerListItemType[]>([]);
+  const [singerlist, setSingerlist] = useState<singerListType[]>([]);
   const checkType = (key: number) => {
     setType(key);
   };
@@ -32,7 +32,7 @@ const index = () => {
     getSingerList();
   }, [type, area]);
   const getSingerList = async () => {
-    const result: singerListItemType[] = await getArticList(type, area);
+    const result = await SINGER_LIST(type, area);
     setSingerlist(result);
   };
   return (

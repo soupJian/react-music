@@ -4,12 +4,12 @@ import { Tabs, Form, Input, Button, Checkbox, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { UserOutlined, LockOutlined, PhoneOutlined } from '@ant-design/icons';
 import {
-  getCheckPhone,
-  getLogin,
-  getCode,
-  getCheckCode,
-  getChangePassword,
-} from '@/api/api';
+  CHECK_PHONE,
+  LOGIN,
+  CODE,
+  CHECK_CODE,
+  CHANGE_PASSWORD,
+} from '@/services/login/index';
 import styles from './index.less';
 
 const { TabPane } = Tabs;
@@ -38,11 +38,11 @@ const Index = (props: props) => {
     const password: string = e.password;
     const remember: boolean | undefined = e.remember;
     // 1. 检查手机号是否注册
-    const esist: number = await getCheckPhone(phone);
+    const esist: number = await CHECK_PHONE(phone);
     // 手机号已经注册
     if (esist == 1) {
       // 登录
-      const result = await getLogin(phone, password);
+      const result = await LOGIN(phone, password);
       if (result && result.code == 200) {
         const user = {
           nickname: result.profile.nickname,
@@ -96,7 +96,7 @@ const Index = (props: props) => {
         setCodeMessage(CODE_MESSAGE);
       }
     }, 1000);
-    const res = await getCode(registerPhone);
+    const res = await CODE(registerPhone);
     if (res.code) {
       message.success('验证码已发送，请注意查收');
     }
@@ -107,9 +107,9 @@ const Index = (props: props) => {
     const code = e.code;
     const password = e.password;
     const phoneNumber = e.phoneNumber;
-    const res = await getCheckCode(phoneNumber, code);
+    const res = await CHECK_CODE(phoneNumber, code);
     if (res.data) {
-      const res = await getChangePassword(phoneNumber, password, code);
+      const res = await CHANGE_PASSWORD(phoneNumber, password, code);
       message.success('修改密码成功--登录成功');
       changeForm.current!.resetFields();
       const user = {

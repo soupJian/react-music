@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {history} from 'umi'
 import { Tabs } from 'antd';
 import SongTable from '@/component/songTable/index' // 热门歌曲
-import { getPlayListDetail,getAlbumDetail } from '@/api/api';
-import {songDetailType} from '@/api/interface'
+import { SONG_DETAIL } from '@/services/song/index';
+import {songDetailType} from '@/services/song/type'
 import SongInfo from './SongInfo'
 import styles from './index.less'
 const { TabPane } = Tabs;
@@ -25,7 +25,7 @@ const index = (props:props) => {
   }, [id]);
   // 获取歌单
   const getsongDetail = async() => {
-    const result:songDetailType =  await getPlayListDetail(id)
+    const result:songDetailType =  await SONG_DETAIL(id)
     setSongdetail(result);
   }
   // 获取相似歌单

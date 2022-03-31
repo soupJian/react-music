@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Slider, Modal, message } from 'antd';
-import { songItemType } from '@/api/interface';
+import { songType } from '@/services/song/type';
 import { connect, MusicModelState, IndexModelState } from 'umi';
 import { shuffle } from '@/utils/common';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
 import './modal.less';
-import { getMusicUrl } from '@/api/api';
-import { musicUrl } from '@/api/interface';
+import { MUSIC_URL } from '@/services/music';
 import { formatTime, formatCurrentTime, formatPrecent } from '@/utils/common';
 import BigPlay from '../bigPlay/index';
 interface props {
@@ -17,12 +16,12 @@ interface props {
 }
 const Index = (props: props) => {
   const loveIds = JSON.parse(JSON.stringify(props.user.loveIds));
-  const randowList: songItemType[] = JSON.parse(
+  const randowList: songType[] = JSON.parse(
     JSON.stringify(props.music.randowList),
   );
   const currentIndex: number = props.music.currentIndex;
   const mode: string = props.music.mode;
-  const currentSong: songItemType | null = props.music.currentSong;
+  const currentSong: songType | null = props.music.currentSong;
   const playing: boolean = props.music.playing;
   const audioRef = useRef<HTMLAudioElement>(null);
   const audio = audioRef.current || null;
@@ -45,7 +44,7 @@ const Index = (props: props) => {
     if (!currentSong) {
       return;
     }
-    const result: musicUrl[] = await getMusicUrl(currentSong.id);
+    const result = await MUSIC_URL(currentSong.id);
     if (!result[0].url) {
       message.warning('暂无播放地址，自动切换下一首');
       changeMusic(1);
@@ -168,7 +167,7 @@ const Index = (props: props) => {
     }
   };
   // 随机播放
-  const changePlayList = (arr: songItemType[]) => {
+  const changePlayList = (arr: songType[]) => {
     if (!currentSong) {
       return;
     }
@@ -177,7 +176,7 @@ const Index = (props: props) => {
       type: 'music/setRandowList',
       randowList: JSON.parse(JSON.stringify(arr)),
     });
-    const index = arr.findIndex((item: songItemType) => {
+    const index = arr.findIndex((item: songType) => {
       return item.id == currentSong.id;
     });
     props.dispatch({

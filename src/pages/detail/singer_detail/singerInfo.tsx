@@ -1,15 +1,14 @@
 import React from 'react';
-import { Row, Col } from 'antd';
-import { singerDetailType } from '@/api/interface';
+import { singerType } from '@/services/singer/type';
 import styles from './singerInfo.less';
 interface propsType {
-  singer: singerDetailType | null; // 歌手信息
+  singer: singerType | null; // 歌手信息
 }
 const index = (props: propsType) => {
-  const singer: singerDetailType | null = props.singer;
+  const singer: singerType | null = props.singer;
   return (
     <>
-      {singer ? (
+      {singer && (
         <div className={styles.singerHeader}>
           <img src={singer.picUrl} className={styles.singerPic}></img>
           <div className={styles.singerInfo}>
@@ -28,7 +27,7 @@ const index = (props: propsType) => {
             <p className={styles.desc}>简介：{singer.briefDesc}</p>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };
