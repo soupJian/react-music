@@ -8,3 +8,10 @@ export interface lycType {
     lyric: string;
   };
 }
+export interface lyricItem {
+  time: number;
+  line: string;
+  currentLine: boolean;
+  next: number | null;
+  before: number | null;
+}

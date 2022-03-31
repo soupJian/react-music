@@ -8,7 +8,7 @@ export interface albumType {
   size: number;
   type: string;
   subType: string;
-  publishTime: string;
+  publishTime: number;
   company: string;
   artists: baseSingerType[];
 }

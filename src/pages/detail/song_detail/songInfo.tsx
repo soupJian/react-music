@@ -1,33 +1,45 @@
 import React from 'react';
+import { Descriptions } from 'antd';
+import { formatDate } from '@/utils/common';
 import { songDetailType } from '@/services/song/type';
-import styles from './songInfo.less';
+import styles from '../info.less';
 interface props {
   songdetail: songDetailType | null; // 歌手信息
 }
 const index = (props: props) => {
-  const songdetail: songDetailType | null = props.songdetail;
+  const song: songDetailType | null = props.songdetail;
   return (
     <>
-      {songdetail ? (
-        <div className={styles.songHeader}>
-          <img src={songdetail.coverImgUrl} className={styles.songPic}></img>
-          <div className={styles.songInfo}>
-            <p>
-              名称：<span className={styles.name}>{songdetail.name}</span>
-            </p>
-            <p>
-              播放数: <span>{songdetail.shareCount}</span>
-            </p>
-            <p>
-              分享数: <span>{songdetail.playCount}</span>
-            </p>
-            <p>
-              订阅数: <span>{songdetail.subscribedCount}</span>
-            </p>
-            <p className={styles.desc}>简介：{songdetail.description}</p>
-          </div>
+      {song && (
+        <div className={styles.song}>
+          <img src={song.coverImgUrl} className={styles.picUrl}></img>
+          <Descriptions className={styles.descriptions}>
+            <Descriptions.Item label="名称">{song.name}</Descriptions.Item>
+            <Descriptions.Item label="标签">
+              {song.tags.map((item: string) => {
+                return (
+                  <span key={item} style={{ marginRight: '5px' }}>
+                    {item}
+                  </span>
+                );
+              })}
+            </Descriptions.Item>
+            <Descriptions.Item label="更新时间">
+              {formatDate(song.updateTime)}
+            </Descriptions.Item>
+            <Descriptions.Item label="歌曲">
+              {song.commentCount}
+            </Descriptions.Item>
+            <Descriptions.Item label="创建者">
+              {song.creator.nickname}
+            </Descriptions.Item>
+            <Descriptions.Item> </Descriptions.Item>
+            <Descriptions.Item label="描述">
+              {song.description}
+            </Descriptions.Item>
+          </Descriptions>
         </div>
-      ) : null}
+      )}
     </>
   );
 };

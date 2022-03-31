@@ -1,10 +1,10 @@
 import { ImmerReducer } from 'umi';
-import { songItemType } from '@/api/interface';
+import { songType } from '@/services/song/type';
 export interface MusicModelState {
-  playList: songItemType[];
-  randowList: songItemType[];
+  playList: songType[];
+  randowList: songType[];
   currentIndex: number;
-  currentSong: songItemType | null;
+  currentSong: songType | null;
   playing: boolean;
   mode: string;
 }
@@ -48,7 +48,7 @@ const IndexModel: MusicModelType = {
     },
     // 当前歌曲播放索引
     setCurrentIndex(state, action) {
-      let currentSong: songItemType | null;
+      let currentSong: songType | null;
       if (action.currentIndex == -1) {
         currentSong = null;
       } else {

@@ -36,4 +36,11 @@ export interface songDetailType extends rankListType {
   shareCount: number; // 分享次数
   playCount: number; // 播放次数
   subscribedCount: number; // 订阅次数
+  updateTime: number; // 更行时间
+  commentCount: number; // 歌曲书
+  creator: {
+    // 创建者
+    id: number;
+    nickname: string;
+  };
 }

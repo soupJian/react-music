@@ -1,3 +1,4 @@
+import { lyricItem } from '@/services/music/type';
 // 处理歌曲时间问题
 export const formatTime = (time: number) => {
   let minute = Math.floor(time / 1000 / 60);
@@ -30,13 +31,6 @@ export const shuffle = (arr: any) => {
   }
   return arr;
 };
-export interface lyricItem {
-  time: number;
-  line: string;
-  currentLine: boolean;
-  next: number | null;
-  before: number | null;
-}
 
 export const parseLyric = (lyric: string) => {
   let lines = lyric.split('\n'), //将文本按行分隔，存入数组
@@ -79,4 +73,15 @@ export const parseLyric = (lyric: string) => {
     }
   });
   return result;
+};
+
+export const formatNum = (num: number) => {
+  return num > 10 ? num : `0${num}`;
+};
+export const formatDate = (time: number) => {
+  const date = new Date(time);
+  const year = date.getFullYear(); // 年
+  const month = date.getMonth() + 1; // 月
+  const day = date.getDate(); // 日 获取日是 getDate()方法 区别于 getDay()是星期
+  return `${year}-${formatNum(month)}-${formatNum(day)}`;
 };

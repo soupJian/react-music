@@ -1,5 +1,5 @@
 import { ImmerReducer } from 'umi';
-import { userType } from '@/api/interface';
+import { userType } from '@/services/me/type';
 
 export interface IndexModelState {
   user_detail: userType | null;
@@ -16,7 +16,7 @@ export interface IndexModelType {
   };
 }
 const defaultUser: string | null =
-  sessionStorage.getItem('user') || sessionStorage.getItem('user') || null;
+  sessionStorage.getItem('user') || localStorage.getItem('user') || null;
 
 const IndexModel: IndexModelType = {
   namespace: 'user',

@@ -13,4 +13,6 @@ export interface singerType extends singerListType {
   mvSize: number;
   musicSize: number;
   briefDesc: string;
+  alias: string[];
+  publishTime: number;
 }

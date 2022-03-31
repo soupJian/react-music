@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 import SingerInfo from './singerInfo' // 头部信息
 import SongTable from '@/component/songTable/index' // 热门歌曲
-import {singerDetailType,songItemType} from '@/api/interface'
 import {SINGER_DETAIL} from '@/services/singer/index'
 import {singerType} from '@/services/singer/type'
 import {songType} from '@/services/song/type'

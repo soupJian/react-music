@@ -29,7 +29,7 @@ function index(props: props) {
       return;
     }
     getLove(user.user_detail.userId);
-  }, [user.user_detail]);
+  }, []);
   // 退出登录
   const loginOut = async () => {
     await LOGIN_OUT();

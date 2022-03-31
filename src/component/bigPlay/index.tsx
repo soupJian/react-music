@@ -4,7 +4,8 @@ import { songType } from '@/services/song/type';
 import { LYRIC } from '@/services/music/index';
 import styles from './index.less';
 import '../../asset/font/iconfont.css';
-import { parseLyric, lyricItem } from '@/utils/common';
+import { parseLyric } from '@/utils/common';
+import { lyricItem } from '@/services/music/type';
 interface props {
   music: MusicModelState;
   songReady: boolean;
