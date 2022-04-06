@@ -1,6 +1,6 @@
 import React from 'react';
 import { history } from 'umi';
-import { Descriptions } from 'antd';
+import { Descriptions, Skeleton } from 'antd';
 import { albumType } from '@/services/album/type';
 import { formatDate } from '@/utils/common';
 import styles from '../info.less';
@@ -14,7 +14,7 @@ const index = (props: props) => {
   };
   return (
     <>
-      {album && (
+      {album ? (
         <div className={styles.album}>
           <img src={album.picUrl} className={styles.picUrl}></img>
           <Descriptions className={styles.descriptions}>
@@ -43,6 +43,8 @@ const index = (props: props) => {
             </Descriptions.Item>
           </Descriptions>
         </div>
+      ) : (
+        <Skeleton avatar paragraph={{ rows: 4 }} />
       )}
     </>
   );

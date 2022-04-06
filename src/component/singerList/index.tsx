@@ -1,6 +1,6 @@
 import React from 'react';
 import { history } from 'umi';
-import { Row, Col, Image } from 'antd';
+import { Row, Col } from 'antd';
 import styles from './index.less';
 import { singerListType } from '@/services/singer/type';
 
@@ -23,7 +23,7 @@ const index = (props: props) => {
               toSinger(item);
             }}
           >
-            <Image src={item.picUrl} />
+            <img src={item.picUrl} />
             <p>{item.name}</p>
           </Col>
         );

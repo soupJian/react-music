@@ -1,6 +1,6 @@
 import React from 'react';
 import { history } from 'umi';
-import { Row, Col, Image } from 'antd';
+import { Row, Col } from 'antd';
 import { mvType } from '@/services/mv/type';
 import styles from './index.less';
 interface props {
@@ -22,7 +22,7 @@ const inex = (props: props) => {
               toDetail(item.id);
             }}
           >
-            <Image src={item.cover} />
+            <img src={item.cover} />
             <div className={styles.shade}>
               <span
                 className="iconfont icon-play"

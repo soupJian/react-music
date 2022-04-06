@@ -1,5 +1,5 @@
 import React from 'react';
-import { Descriptions } from 'antd';
+import { Descriptions, Skeleton } from 'antd';
 import { singerType } from '@/services/singer/type';
 import { formatDate } from '@/utils/common';
 import styles from '../info.less';
@@ -10,7 +10,7 @@ const index = (props: propsType) => {
   const singer: singerType | null = props.singer;
   return (
     <>
-      {singer && (
+      {singer ? (
         <div className={styles.singer}>
           <img src={singer.picUrl} className={styles.picUrl}></img>
           <Descriptions className={styles.descriptions}>
@@ -36,6 +36,8 @@ const index = (props: propsType) => {
             </Descriptions.Item>
           </Descriptions>
         </div>
+      ) : (
+        <Skeleton avatar paragraph={{ rows: 4 }} />
       )}
     </>
   );

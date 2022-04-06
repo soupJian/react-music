@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useRef } from 'react';
 import {history} from 'umi'
-import { Tabs,Row,Col,Image } from 'antd';
+import { Tabs,Row,Col,Skeleton } from 'antd';
 import {MvPlayUrl,MvDetail,simiMV} from '@/services/mv/index'
 import styles from './index.less'
 import {mvDetail,mvType} from '@/services/mv/type'
@@ -59,38 +59,47 @@ const index = (props:props) => {
           </Tabs>
         </Col>
         <Col span={8} className={styles.description}>
-          <div className={styles.info}>
-            <div>
-              <span className={styles.label}>名称：</span>{detail && detail.name}
-            </div>
-            <div>
-            <span className={styles.label}>作者：</span>{detail && detail.artistName}
-            </div>
-            <div>
-            <span className={styles.label}>发布时间：</span>{detail && detail.publishTime}
-            </div>
-            <div>
-            <span className={styles.label}>播放次数：</span> {detail && detail.playCount}
-            </div>
-            <div>
-            <span className={styles.label}>简介：</span>{detail && detail.desc == '' ? '暂无简介信息' : detail?.desc}
-            </div>
-          </div>
-          <div className={styles.simi}>
             {
-              simi.map((item:mvType)=>{
-                return <div key={item.id} className={styles.simiItem}>
-                  <div className={styles.left}>
-                    <Image src={item.cover}></Image>
-                  </div>
-                  <div className={styles.right}>
-                    <p><span className={styles.label}>名称：</span>  {item.name}</p>
-                    <p><span className={styles.label}>播放次数：</span>  {item.playCount}</p>
-                  </div>
+              detail ? 
+              <div className={styles.info}>
+                <div>
+                  <span className={styles.label}>名称：</span>{detail && detail.name}
                 </div>
-              })
+                <div>
+                <span className={styles.label}>作者：</span>{detail && detail.artistName}
+                </div>
+                <div>
+                <span className={styles.label}>发布时间：</span>{detail && detail.publishTime}
+                </div>
+                <div>
+                <span className={styles.label}>播放次数：</span> {detail && detail.playCount}
+                </div>
+                <div>
+                <span className={styles.label}>简介：</span>{detail && detail.desc == '' ? '暂无简介信息' : detail?.desc}
+                </div>
+              </div>:
+              <Skeleton avatar paragraph={{ rows: 4 }}/>
             }
-          </div>
+            <div style={{height: '10px'}}></div>
+            {
+              simi.length > 0 ?
+              <div className={styles.simi}>
+                {
+                  simi.map((item:mvType)=>{
+                    return <div key={item.id} className={styles.simiItem}>
+                      <div className={styles.left}>
+                        <img src={item.cover}></img>
+                      </div>
+                      <div className={styles.right}>
+                        <p><span className={styles.label}>名称：</span>  {item.name}</p>
+                        <p><span className={styles.label}>播放次数：</span>  {item.playCount}</p>
+                      </div>
+                    </div>
+                  })
+                }
+              </div>
+              : <Skeleton avatar paragraph={{ rows: 8 }}/>
+            }
         </Col>
       </Row>
   </div>
