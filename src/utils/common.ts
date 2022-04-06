@@ -76,7 +76,7 @@ export const parseLyric = (lyric: string) => {
 };
 
 export const formatNum = (num: number) => {
-  return num > 10 ? num : `0${num}`;
+  return num >= 10 ? num : `0${num}`;
 };
 export const formatDate = (time: number) => {
   const date = new Date(time);
