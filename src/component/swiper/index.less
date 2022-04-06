@@ -1,22 +1,23 @@
-.swiper-container {
+.swiperWrap {
   width: 100%;
-  height: 100%;
+  height: 0;
+  padding-bottom: 27%;
 }
-.swiper-slide {
-  text-align: center;
-  height: 86%;
-  background: #cccdce;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.swiperSlide {
+  height: 0 !important;
   transition: 300ms;
   transform: scale(0.6);
+  padding-bottom: 27%;
+  img {
+    width: 100%;
+  }
 }
-
-.swiper-slide-active,
-.swiper-slide-duplicate-active {
-  transform: scale(1);
-}
-.swiper-slide-active {
-  z-index: 999 !important;
+:global {
+  .swiper-slide-active,
+  .swiper-slide-duplicate-active {
+    transform: scale(1);
+  }
+  .swiper-slide-active {
+    z-index: 999 !important;
+  }
 }

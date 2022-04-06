@@ -31,7 +31,7 @@ const index = (props: props) => {
   // 输入框内容
   const [value, setValue] = useState<string>('');
   // 输入框定时器
-  const [timer, setTimer] = useState<any>(-1);
+  // const [timer, setTimer] = useState<any>(-1);
   const [visible, setVisible] = useState<boolean>(false);
   // 搜索结果列表
   const [resultList, setResultList] = useState<searchResultType | null>({});
@@ -46,8 +46,8 @@ const index = (props: props) => {
     getHot();
   }, []);
   useEffect(() => {
-    clearTimeout(timer);
-    setTimer(setTimeout(searchValue, 1000));
+    // clearTimeout(timer);
+    // setTimer(setTimeout(searchValue, 1000));
     searchValue();
   }, [value]);
   // 获取热门搜索
