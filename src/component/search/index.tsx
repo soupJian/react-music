@@ -5,7 +5,6 @@ import {
   SEARCH_RESULT,
   ALBUM_COVER,
 } from '@/services/layout/index';
-
 import {
   hotSearchType,
   searchResultType,
@@ -30,8 +29,6 @@ const index = (props: props) => {
   const [historySearch, setHistorySearch] = useState<string[]>([]);
   // 输入框内容
   const [value, setValue] = useState<string>('');
-  // 输入框定时器
-  // const [timer, setTimer] = useState<any>(-1);
   const [visible, setVisible] = useState<boolean>(false);
   // 搜索结果列表
   const [resultList, setResultList] = useState<searchResultType | null>({});
@@ -41,14 +38,18 @@ const index = (props: props) => {
   const [empetyResult, setEmptyResult] = useState<boolean>(false);
   // 是否删除本地存储数据弹窗
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
-  // 单曲专辑
   useEffect(() => {
     getHot();
   }, []);
   useEffect(() => {
-    // clearTimeout(timer);
-    // setTimer(setTimeout(searchValue, 1000));
-    searchValue();
+    const timer: NodeJS.Timeout = setTimeout(() => {
+      searchValue();
+    }, 1000);
+    return () => {
+      if (timer) {
+        clearInterval(timer); // 取消定时器；
+      }
+    };
   }, [value]);
   // 获取热门搜索
   const getHot = async () => {
@@ -93,6 +94,7 @@ const index = (props: props) => {
     if (!value.trim()) {
       return;
     }
+    console.log(value);
     // 发送请求的时候展示load
     const res = await SEARCH_RESULT(value);
     setShowload(false);
@@ -186,8 +188,8 @@ const index = (props: props) => {
       <Dropdown
         arrow={true}
         onVisibleChange={handleVisibleChange}
-        visible={visible}
-        // visible={true}
+        // visible={visible}
+        visible={true}
         overlay={
           <>
             {value == '' ? (
