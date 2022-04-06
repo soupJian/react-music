@@ -188,8 +188,8 @@ const index = (props: props) => {
       <Dropdown
         arrow={true}
         onVisibleChange={handleVisibleChange}
-        // visible={visible}
-        visible={true}
+        visible={visible}
+        // visible={true}
         overlay={
           <>
             {value == '' ? (
