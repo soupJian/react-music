@@ -17,7 +17,7 @@ const index = (props: props) => {
       {singerlist.map((item: singerListType) => {
         return (
           <Col
-            span={4}
+            span={6}
             key={item.id}
             onClick={() => {
               toSinger(item);

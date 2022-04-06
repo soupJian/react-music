@@ -73,7 +73,7 @@ const index = () => {
           })}
         </div>
       </div>
-      <div className="singer_wrap">
+      <div className={styles.singer_wrap}>
         <SingerList singerlist={singerlist}></SingerList>
       </div>
     </div>
