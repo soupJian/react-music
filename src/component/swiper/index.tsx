@@ -1,5 +1,4 @@
 import React from 'react';
-import { Image } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination, Autoplay, Navigation, Lazy } from 'swiper';
 import { bannerType } from '@/services/index/type';

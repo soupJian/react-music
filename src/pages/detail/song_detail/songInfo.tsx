@@ -35,7 +35,7 @@ const index = (props: props) => {
             </Descriptions.Item>
             <Descriptions.Item> </Descriptions.Item>
             <Descriptions.Item label="描述">
-              {song.description}
+              <p className={styles.briefDesc}>{song.description}</p>
             </Descriptions.Item>
           </Descriptions>
         </div>

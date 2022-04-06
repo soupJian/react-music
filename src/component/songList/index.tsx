@@ -1,6 +1,6 @@
 import React from 'react';
 import { history } from 'umi';
-import { Row, Col, Image } from 'antd';
+import { Row, Col } from 'antd';
 import '../../asset/font/iconfont.css';
 import styles from './index.less';
 import { playListype } from '@/services/song/type';
@@ -24,7 +24,7 @@ const Index = (props: props) => {
               toDetail(item);
             }}
           >
-            <Image src={item.picUrl} />
+            <img src={item.picUrl} />
             <div className={styles.shade}>
               <span className="iconfont icon-MusicAcc"></span>
               {item.playCount}
