@@ -19,7 +19,7 @@ const index = (props: props) => {
             <div
               className={styles.rankItem}
               style={{
-                background: `url(${item.coverImgUrl})`,
+                background: `url(${item.coverImgUrl}) no-repeat`,
                 backgroundPosition: '25% 50%',
                 backgroundSize: '100%',
               }}
@@ -27,9 +27,9 @@ const index = (props: props) => {
             >
               <p>{item.updateFrequency}</p>
             </div>
-            <div className={styles.trackWrap}>
-              {item.tracks.length > 0 &&
-                item.tracks.map((item: track, index: number) => {
+            {item.tracks.length > 0 && (
+              <div className={styles.trackWrap}>
+                {item.tracks.map((item: track, index: number) => {
                   return (
                     <p key={item.first + item.second}>
                       <span className={styles.left}>
@@ -40,7 +40,8 @@ const index = (props: props) => {
                     </p>
                   );
                 })}
-            </div>
+              </div>
+            )}
           </Col>
         );
       })}
