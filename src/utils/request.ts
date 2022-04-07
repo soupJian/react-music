@@ -1,60 +1,58 @@
-import axios from 'axios'
-import type { AxiosInstance,AxiosRequestConfig } from 'axios'
+import axios from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 class service {
-  instance: AxiosInstance
-  // constructor(config: AxiosRequestConfig) { //替换为扩展后的LYRequestConfig
+  instance: AxiosInstance;
   constructor(config: AxiosRequestConfig) {
-    this.instance = axios.create(config)
+    this.instance = axios.create(config);
     // 请求拦截
     this.instance.interceptors.request.use(
-      (config) => {
+      config => {
         config.params = {
           ...config.params,
-          realIP: '116.25.146.177'
-        }
-        return config
+          realIP: '116.25.146.177',
+        };
+        return config;
       },
-      (err) => {
-        return err
-      }
-    )
+      err => {
+        return err;
+      },
+    );
     // 响应拦截
     this.instance.interceptors.response.use(
-      (res) => {
-        return res.data
+      res => {
+        return res.data;
       },
-      (err) => {
-        return err
-      }
-    )
+      err => {
+        return err;
+      },
+    );
   }
-  // 针对单个请求的处理、拦截
+  // 响应拦截
   request<T>(config: AxiosRequestConfig): Promise<T> {
     return new Promise((resolve, reject) => {
-      // this.instance.request(config)
       this.instance
         .request<any, T>(config)
-        .then((res) => {
-          resolve(res)
+        .then(res => {
+          resolve(res);
         })
-        .catch((err) => {
-          reject(err)
-          return err
-        })
-    })
+        .catch(err => {
+          reject(err);
+          return err;
+        });
+    });
   }
   get<T>(config: AxiosRequestConfig): Promise<T> {
-    return this.request<T>({ ...config, method: 'GET' })
+    return this.request<T>({ ...config, method: 'GET' });
   }
   post<T>(config: AxiosRequestConfig): Promise<T> {
-    return this.request<T>({ ...config, method: 'POST' })
+    return this.request<T>({ ...config, method: 'POST' });
   }
   delete<T>(config: AxiosRequestConfig): Promise<T> {
-    return this.request<T>({ ...config, method: 'DELETE' })
+    return this.request<T>({ ...config, method: 'DELETE' });
   }
   patch<T>(config: AxiosRequestConfig): Promise<T> {
-    return this.request<T>({ ...config, method: 'PATCH' })
+    return this.request<T>({ ...config, method: 'PATCH' });
   }
 }
 
@@ -64,5 +62,5 @@ const baseURL = 'https://music-soupjian.vercel.app';
 const request = new service({
   baseURL,
   withCredentials: true, // vercel 跨域 添加表示才可调用
-})
-export default request
+});
+export default request;
