@@ -8,13 +8,12 @@ export const personalizedMv = async (
   area: string,
   type: string,
 ): Promise<mvType[]> => {
-  const res = await request<{ data: mvType[] }>({
+  const res = await request.get<{ data: mvType[] }>({
     url: '/mv/all',
     params: {
       area,
       type,
-    },
-    method: 'get',
+    }
   });
   return res.data;
 };
@@ -24,12 +23,11 @@ export const personalizedMv = async (
  * @returns
  */
 export const MvPlayUrl = async (id: string): Promise<string> => {
-  const res = await request<{ data: { url: string } }>({
+  const res = await request.get<{ data: { url: string } }>({
     url: '/mv/url',
     params: {
       id,
-    },
-    method: 'get',
+    }
   });
   return res.data.url;
 };
@@ -40,12 +38,11 @@ export const MvPlayUrl = async (id: string): Promise<string> => {
  * @returns
  */
 export const MvDetail = async (mvid: string): Promise<mvDetail> => {
-  const res = await request<{ data: mvDetail }>({
+  const res = await request.get<{ data: mvDetail }>({
     url: '/mv/detail',
     params: {
       mvid,
-    },
-    method: 'get',
+    }
   });
   return res.data;
 };
@@ -56,12 +53,11 @@ export const MvDetail = async (mvid: string): Promise<mvDetail> => {
  * @returns
  */
 export const simiMV = async (mvid: string): Promise<mvType[]> => {
-  const res = await request<{ mvs: mvType[] }>({
+  const res = await request.get<{ mvs: mvType[] }>({
     url: '/simi/mv',
     params: {
       mvid,
-    },
-    method: 'get',
+    }
   });
   return res.mvs;
 };

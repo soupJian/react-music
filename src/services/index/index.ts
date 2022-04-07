@@ -8,9 +8,8 @@ import { playListype } from '@/services/song/type';
  */
 
 export const BANNER = async (): Promise<bannerType[]> => {
-  const res = await request<{ banners: bannerType[] }>({
+  const res = await request.get<{ banners: bannerType[] }>({
     url: '/banner',
-    method: 'get',
   });
   return res.banners;
 };
@@ -20,9 +19,8 @@ export const BANNER = async (): Promise<bannerType[]> => {
  * @returns
  */
 export const PERSONALIZED = async (): Promise<playListype[]> => {
-  const res = await request<{ result: playListype[] }>({
-    url: '/personalized',
-    method: 'get',
+  const res = await request.get<{ result: playListype[] }>({
+    url: '/personalized'
   });
   return res.result;
 };

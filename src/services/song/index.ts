@@ -7,12 +7,11 @@ import { songDetailType, rankListType } from './type';
  * @returns
  */
 export const SONG_DETAIL = async (id: string): Promise<songDetailType> => {
-  const res = await request<{ playlist: songDetailType }>({
+  const res = await request.get<{ playlist: songDetailType }>({
     url: '/playlist/detail',
     params: {
       id,
-    },
-    method: 'get',
+    }
   });
   return res.playlist;
 };
@@ -22,7 +21,7 @@ export const SONG_DETAIL = async (id: string): Promise<songDetailType> => {
  * @returns
  */
 export const TOP_LIST = async (): Promise<rankListType[]> => {
-  const res = await request<{ list: rankListType[] }>({
+  const res = await request.get<{ list: rankListType[] }>({
     url: '/toplist/detail',
     method: 'get',
   });

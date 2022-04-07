@@ -11,9 +11,8 @@ export const SINGER_LIST = async (
   type: number,
   area: number,
 ): Promise<singerListType[]> => {
-  const res = await request<{ artists: singerListType[] }>({
+  const res = await request.get<{ artists: singerListType[] }>({
     url: '/artist/list',
-    method: 'get',
     params: {
       type,
       area,
@@ -30,15 +29,14 @@ export const SINGER_LIST = async (
 export const SINGER_DETAIL = async (
   id: string,
 ): Promise<{ artist: singerType; hotSongs: songType[] }> => {
-  const res = await request<{
+  const res = await request.get<{
     artist: singerType;
     hotSongs: songType[];
   }>({
     url: '/artists',
     params: {
       id,
-    },
-    method: 'get',
+    }
   });
   return {
     artist: res.artist,

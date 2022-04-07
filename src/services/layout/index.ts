@@ -12,10 +12,9 @@ import {
  * @returns { ids: number[]}
  */
 export const LOVE_LIST = async (id: number): Promise<number[]> => {
-  const res = await request<{ ids: number[] }>({
+  const res = await request.get<{ ids: number[] }>({
     url: '/likelist',
-    method: 'get',
-    params: { id },
+    params: { id }
   });
   return res.ids;
 };
@@ -25,9 +24,8 @@ export const LOVE_LIST = async (id: number): Promise<number[]> => {
  * @returns
  */
 export const LOGIN_OUT = async (): Promise<any> => {
-  return await request<any>({
-    url: '/logout',
-    method: 'get',
+  return await request.get<any>({
+    url: '/logout'
   });
 };
 
@@ -36,9 +34,8 @@ export const LOGIN_OUT = async (): Promise<any> => {
  * @returns
  */
 export const HOT_SEARCH = async (): Promise<hotSearchType[]> => {
-  const res = await request<{ data: hotSearchType[] }>({
-    url: '/search/hot/detail',
-    method: 'get',
+  const res = await request.get<{ data: hotSearchType[] }>({
+    url: '/search/hot/detail'
   });
   return res.data;
 };
@@ -51,12 +48,11 @@ export const HOT_SEARCH = async (): Promise<hotSearchType[]> => {
 export const SEARCH_RESULT = async (
   keywords: string,
 ): Promise<searchResultType> => {
-  const res = await request<{ result: searchResultType }>({
+  const res = await request.get<{ result: searchResultType }>({
     url: '/search/suggest',
     params: {
       keywords,
-    },
-    method: 'get',
+    }
   });
   return res.result;
 };
@@ -67,12 +63,11 @@ export const SEARCH_RESULT = async (
  * @returns
  */
 export const ALBUM_COVER = async (id: number): Promise<string> => {
-  const res = await request<{ album: { picUrl: string } }>({
+  const res = await request.get<{ album: { picUrl: string } }>({
     url: '/album',
     params: {
       id,
-    },
-    method: 'get',
+    }
   });
   return res.album.picUrl;
 };
