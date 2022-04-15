@@ -4,7 +4,7 @@ import { Tabs } from 'antd';
 import SongTable from '@/component/songTable/index' // 热门歌曲
 import { SONG_DETAIL } from '@/services/song/index';
 import {songDetailType} from '@/services/song/type'
-import SongInfo from './SongInfo'
+import SongInfo from './songInfo'
 import styles from './index.less'
 const { TabPane } = Tabs;
 interface props{
