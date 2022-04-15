@@ -9,13 +9,13 @@ export default defineConfig({
     immer: true,
     hmr: false,
   },
-  proxy: {
-    '/api': {
-      target: 'http://www.soupjian.work:3000',
-      changeOrigin: true,
-      pathRewrite: { '^/api': '' },
-    },
-  },
+  // proxy: {
+  //   '/api': {
+  //     target: 'https://music-soupjian.vercel.app',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^/api': '' },
+  //   },
+  // },
   routes: [
     {
       path: '/',
